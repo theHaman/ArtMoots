@@ -1,108 +1,48 @@
-// Simple localStorage database
-const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
-const ADMIN_USER = "Othman"; // Change this to your admin username
+// posts-database.js
+// Simple localStorage post store used by posts.html and moots.html
 
-document.getElementById('logout-btn').addEventListener('click', () => {
-  localStorage.removeItem('loggedInUser');
-  window.location.href = 'index.html';
-});
-
-if (!loggedInUser) {
-  alert('Please sign in first!');
-  window.location.href = 'account.html';
+function getPosts() {
+  return JSON.parse(localStorage.getItem("posts") || "[]");
 }
 
-const postForm = document.getElementById('postForm');
-const postsList = document.getElementById('postsList');
-
-let posts = JSON.parse(localStorage.getItem('posts')) || [];
-let likedPosts = JSON.parse(localStorage.getItem('likedPosts')) || {};
-
-function savePosts() {
-  localStorage.setItem('posts', JSON.stringify(posts));
+function savePosts(posts) {
+  localStorage.setItem("posts", JSON.stringify(posts));
 }
 
-function renderPosts() {
-  postsList.innerHTML = '';
-  posts
-    .slice()
-    .reverse()
-    .forEach((post, index) => {
-      const postDiv = document.createElement('div');
-      postDiv.className = 'post';
-      postDiv.innerHTML = `
-        <strong>@${post.user}</strong>
-        <p>${post.description}</p>
-        <img src="${post.image}" alt="Post image" />
-        <div class="actions">
-          <button onclick="likePost(${index})">
-            ❤️ ${post.likes || 0}
-          </button>
-          ${
-            post.user === loggedInUser.username || loggedInUser.username === ADMIN_USER
-              ? `<button onclick="deletePost(${index})">🗑️ Delete</button>`
-              : ''
-          }
-        </div>
-      `;
-      postsList.appendChild(postDiv);
-    });
+function addPost(username, description, imageData) {
+  const posts = getPosts();
+  posts.push({
+    id: Date.now(),
+    username,
+    description,
+    image: imageData || null,
+    date: new Date().toISOString(),
+    likes: [],
+  });
+  savePosts(posts);
 }
 
-postForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const description = document.getElementById('description').value;
-  const imageInput = document.getElementById('imageInput').files[0];
-  if (!imageInput) return alert('Please select an image.');
+function deletePostById(id) {
+  const posts = getPosts().filter(p => p.id !== id);
+  savePosts(posts);
+}
 
-  const reader = new FileReader();
-  reader.onload = function () {
-    const newPost = {
-      user: loggedInUser.username,
-      description,
-      image: reader.result,
-      likes: 0
-    };
-    posts.push(newPost);
-    savePosts();
-    renderPosts();
-    postForm.reset();
-  };
-  reader.readAsDataURL(imageInput);
-});
-
-function deletePost(index) {
-  const post = posts[index];
-  if (
-    post.user === loggedInUser.username ||
-    loggedInUser.username === ADMIN_USER
-  ) {
-    if (confirm('Delete this post?')) {
-      posts.splice(index, 1);
-      savePosts();
-      renderPosts();
-    }
+function toggleLikeById(id, username) {
+  const posts = getPosts();
+  const idx = posts.findIndex(p => p.id === id);
+  if (idx === -1) return;
+  const likes = posts[idx].likes || [];
+  if (likes.includes(username)) {
+    // unlike
+    posts[idx].likes = likes.filter(u => u !== username);
   } else {
-    alert('You can only delete your own posts.');
+    // like
+    likes.push(username);
+    posts[idx].likes = likes;
   }
+  savePosts(posts);
 }
 
-function likePost(index) {
-  const post = posts[index];
-  const userLikes = likedPosts[loggedInUser.username] || [];
-
-  if (userLikes.includes(index)) {
-    alert('You already liked this post.');
-    return;
-  }
-
-  post.likes = (post.likes || 0) + 1;
-  userLikes.push(index);
-  likedPosts[loggedInUser.username] = userLikes;
-
-  localStorage.setItem('likedPosts', JSON.stringify(likedPosts));
-  savePosts();
-  renderPosts();
+function getUserPosts(username) {
+  return getPosts().filter(p => p.username === username);
 }
-
-renderPosts();

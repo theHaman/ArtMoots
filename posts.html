@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ArtMoots - Posts</title>
   <meta name="description" content="Share and explore posts from artists." />
-
   <style>
+    /* (same styles as you previously used — preserved) */
     :root {
       --bg: #f9f9f9;
       --text: #333;
@@ -15,134 +15,27 @@
       --accent: #111;
       --max-width: 1000px;
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: "Segoe UI", Arial, sans-serif;
-      background-color: var(--bg);
-      color: var(--text);
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    header {
-      background: white;
-      border-bottom: 1px solid var(--border);
-      padding: 1rem 0;
-    }
-
-    .header-container {
-      max-width: var(--max-width);
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 1rem;
-    }
-
-    .logo {
-      font-size: 1.4rem;
-      font-weight: bold;
-      letter-spacing: 0.5px;
-    }
-
-    nav a {
-      margin-left: 1rem;
-      text-decoration: none;
-      color: var(--text);
-      font-weight: 500;
-      padding: 0.4rem 0.6rem;
-      border-radius: 4px;
-    }
-
+    body { font-family: "Segoe UI", Arial, sans-serif; background-color: var(--bg); color: var(--text); display: flex; flex-direction: column; min-height: 100vh; }
+    header { background: white; border-bottom: 1px solid var(--border); padding: 1rem 0; }
+    .header-container { max-width: var(--max-width); margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 1rem; }
+    .logo { font-size: 1.4rem; font-weight: bold; letter-spacing: 0.5px; }
+    nav a { margin-left: 1rem; text-decoration: none; color: var(--text); font-weight: 500; padding: 0.4rem 0.6rem; border-radius: 4px; }
     nav a:hover { background: #eee; }
-
-    main {
-      flex: 1;
-      max-width: var(--max-width);
-      margin: 2rem auto;
-      padding: 0 1rem;
-    }
-
+    main { flex: 1; max-width: var(--max-width); margin: 2rem auto; padding: 0 1rem; }
     h1 { text-align: center; margin-bottom: 1.5rem; }
-
-    .post-form {
-      background: white;
-      padding: 1rem;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      margin-bottom: 2rem;
-    }
-
-    .post-form input, .post-form textarea, .post-form button {
-      display: block;
-      width: 100%;
-      margin-top: 0.5rem;
-      padding: 0.5rem;
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      font-size: 1rem;
-    }
-
-    .post-form button {
-      background: var(--accent);
-      color: white;
-      cursor: pointer;
-    }
-
-    .posts {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 1rem;
-    }
-
-    .post-card {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 1rem;
-    }
-
-    .post-card img {
-      width: 100%;
-      border-radius: 4px;
-      margin-bottom: 0.5rem;
-    }
-
-    .post-actions {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 0.5rem;
-    }
-
-    .post-actions button {
-      border: none;
-      background: none;
-      cursor: pointer;
-      color: var(--muted);
-      font-size: 1rem;
-    }
-
-    .post-user {
-      display: block;
-      margin-top: 0.5rem;
-      font-size: 0.85rem;
-      color: var(--muted);
-    }
-
-    footer {
-      background: white;
-      border-top: 1px solid var(--border);
-      padding: 1rem 0;
-      text-align: center;
-      color: var(--muted);
-      font-size: 0.9rem;
-    }
+    .post-form { background: white; padding: 1rem; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 2rem; }
+    .post-form input, .post-form textarea, .post-form button { display: block; width: 100%; margin-top: 0.5rem; padding: 0.5rem; border: 1px solid var(--border); border-radius: 4px; font-size: 1rem; }
+    .post-form button { background: var(--accent); color: white; cursor: pointer; }
+    .posts { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; }
+    .post-card { background: white; border: 1px solid var(--border); border-radius: 8px; padding: 1rem; }
+    .post-card img { width: 100%; border-radius: 4px; margin-bottom: 0.5rem; }
+    .post-actions { display: flex; justify-content: space-between; margin-top: 0.5rem; }
+    .post-actions button { border: none; background: none; cursor: pointer; color: var(--muted); font-size: 1rem; }
+    .post-user { display: block; margin-top: 0.5rem; font-size: 0.85rem; color: var(--muted); }
+    footer { background: white; border-top: 1px solid var(--border); padding: 1rem 0; text-align: center; color: var(--muted); font-size: 0.9rem; }
   </style>
 </head>
-
 <body>
   <header>
     <div class="header-container">
@@ -152,8 +45,8 @@
         <a href="posts.html">Posts</a>
         <a href="moots.html">Moots</a>
         <a href="help.html">Help</a>
-        <a class="btn" href="account.html?mode=login">Sign In</a>
-        <a class="btn" href="account.html?mode=signup">Sign Up</a>
+        <!-- account buttons will be updated by script below -->
+        <span id="accountButtons"></span>
       </nav>
     </div>
   </header>
@@ -161,7 +54,7 @@
   <main>
     <h1>Share Your Art</h1>
 
-    <div class="post-form">
+    <div class="post-form" id="postForm">
       <label>Image:</label>
       <input type="file" id="imageInput" accept="image/*">
       <label>Description:</label>
@@ -169,99 +62,154 @@
       <button id="postBtn">Post</button>
     </div>
 
-    <div class="posts"></div>
+    <div class="posts" id="postsContainer"></div>
   </main>
 
   <footer>© <span id="year"></span> ArtMoots — Built for art lovers</footer>
 
+  <!-- load account functions first so getCurrentUser() is available -->
+  <script src="accounts-database.js"></script>
+  <script src="posts-database.js"></script>
+
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    const postsContainer = document.querySelector(".posts");
+    // ADMIN name - change to your username (exact match)
+    const ADMIN_USER = "Othman"; // <- set this to the admin account username you want
+
+    // helper to get currently logged-in username (from accounts-database.js)
+    function currentUser() {
+      // prefer function if present
+      if (typeof getCurrentUser === "function") return getCurrentUser();
+      // fallback to common key names
+      return localStorage.getItem("currentUser") || localStorage.getItem("loggedInUser") || null;
+    }
+
+    // header account buttons (keeps your design)
+    const accountButtons = document.getElementById("accountButtons");
+    function updateAccountButtons() {
+      const user = currentUser();
+      if (user) {
+        accountButtons.innerHTML = `<span style="margin-left:1rem;font-weight:600">${user}</span>
+          <a class="btn" href="account.html?mode=account" style="margin-left:0.6rem">My Account</a>
+          <a class="btn" id="logoutBtn" href="#" style="margin-left:0.6rem">Logout</a>`;
+        document.getElementById("logoutBtn").addEventListener("click", e=>{
+          e.preventDefault();
+          if (typeof logout === "function") logout();
+          else localStorage.removeItem("currentUser");
+          // reload so header and features update
+          window.location.reload();
+        });
+      } else {
+        accountButtons.innerHTML = `<a class="btn" href="account.html?mode=login">Sign In</a>
+          <a class="btn" href="account.html?mode=signup" style="margin-left:0.6rem">Sign Up</a>`;
+      }
+    }
+    updateAccountButtons();
+
+    // posts UI + logic
+    const postsContainer = document.getElementById("postsContainer");
     const postBtn = document.getElementById("postBtn");
     const imageInput = document.getElementById("imageInput");
     const descInput = document.getElementById("descInput");
-    const currentUser = localStorage.getItem("loggedInUser") || null;
-    const adminUser = "ArtMootsOwner"; // change this to your admin name
 
-    let posts = JSON.parse(localStorage.getItem("posts")) || [];
-
-    function savePosts() {
-      localStorage.setItem("posts", JSON.stringify(posts));
-    }
-
+    // render posts from posts-database.js
     function renderPosts() {
+      const posts = getPosts().slice().reverse(); // newest first
       postsContainer.innerHTML = "";
-      posts.forEach((p, i) => {
+      if (posts.length === 0) {
+        postsContainer.innerHTML = "<p style='grid-column:1/-1;color:#666'>No posts yet.</p>";
+        return;
+      }
+      posts.forEach(post => {
         const div = document.createElement("div");
         div.className = "post-card";
+        // check owner/admin in real-time
+        const user = currentUser();
+        const canDelete = user && (user === post.username || user === ADMIN_USER);
+        const liked = user && post.likes && post.likes.includes(user);
         div.innerHTML = `
-          <img src="${p.image}" alt="art post">
-          <p>${p.description || ""}</p>
+          ${post.image ? `<img src="${post.image}" alt="art post">` : ""}
+          <p>${post.description || ""}</p>
           <div class="post-actions">
-            <button class="like-btn" data-index="${i}">❤️ ${p.likes || 0}</button>
-            ${
-              currentUser === adminUser || currentUser === p.user
-                ? `<button class="delete-btn" data-index="${i}">🗑️ Delete</button>`
-                : ""
-            }
+            <button class="like-btn" data-id="${post.id}">${post.likes?post.likes.length:0} ❤️</button>
+            ${canDelete ? `<button class="delete-btn" data-id="${post.id}">🗑️ Delete</button>` : ""}
           </div>
-          <small class="post-user">Posted by: ${p.user}</small>
+          <small class="post-user">Posted by: ${post.username}</small>
         `;
+        // reflect liked state visually
+        const likeBtn = div.querySelector(".like-btn");
+        if (liked) likeBtn.style.color = "crimson";
+
         postsContainer.appendChild(div);
+      });
+      // attach event listeners (event delegation is optimal, but we can attach per render)
+      attachPostHandlers();
+    }
+
+    function attachPostHandlers() {
+      // like buttons
+      document.querySelectorAll(".like-btn").forEach(btn => {
+        btn.onclick = function() {
+          const id = Number(this.dataset.id);
+          const user = currentUser();
+          if (!user) { alert("Please sign in to like posts."); return; }
+          const posts = getPosts();
+          const p = posts.find(x => x.id === id);
+          if (!p) return;
+          p.likes = p.likes || [];
+          if (p.likes.includes(user)) { alert("You already liked this post."); return; }
+          p.likes.push(user);
+          savePosts(posts);
+          renderPosts();
+        };
+      });
+      // delete buttons
+      document.querySelectorAll(".delete-btn").forEach(btn => {
+        btn.onclick = function() {
+          const id = Number(this.dataset.id);
+          const user = currentUser();
+          const posts = getPosts();
+          const p = posts.find(x => x.id === id);
+          if (!p) return;
+          if (!(user === p.username || user === ADMIN_USER)) {
+            alert("You can only delete your own posts.");
+            return;
+          }
+          if (!confirm("Delete this post?")) return;
+          // delete by id
+          deletePostById(id);
+          renderPosts();
+        };
       });
     }
 
+    // Posting
     postBtn.onclick = () => {
-      if (!currentUser) {
-        alert("Please sign in to post.");
-        return;
-      }
-
+      const user = currentUser();
+      if (!user) { alert("Please sign in to post."); return; }
       const file = imageInput.files[0];
-      if (!file) return alert("Please select an image.");
-      const reader = new FileReader();
-      reader.onload = () => {
-        posts.push({
-          image: reader.result,
-          description: descInput.value.trim(),
-          user: currentUser,
-          likes: 0,
-          likedUsers: []
-        });
-        savePosts();
-        renderPosts();
+      const desc = descInput.value.trim();
+      if (!file && !desc) { alert("Please add an image or description"); return; }
+
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          addPost(user, desc, e.target.result);
+          descInput.value = "";
+          imageInput.value = "";
+          renderPosts();
+        };
+        reader.readAsDataURL(file);
+      } else {
+        // allow text-only posts
+        addPost(user, desc, null);
         descInput.value = "";
-        imageInput.value = "";
-      };
-      reader.readAsDataURL(file);
+        renderPosts();
+      }
     };
 
-    postsContainer.addEventListener("click", (e) => {
-      if (e.target.classList.contains("delete-btn")) {
-        const i = e.target.dataset.index;
-        posts.splice(i, 1);
-        savePosts();
-        renderPosts();
-      } else if (e.target.classList.contains("like-btn")) {
-        const i = e.target.dataset.index;
-        const post = posts[i];
-        if (!currentUser) {
-          alert("Please sign in to like posts.");
-          return;
-        }
-        if (post.likedUsers && post.likedUsers.includes(currentUser)) {
-          alert("You already liked this post.");
-          return;
-        }
-        post.likedUsers = post.likedUsers || [];
-        post.likedUsers.push(currentUser);
-        post.likes = (post.likes || 0) + 1;
-        savePosts();
-        renderPosts();
-      }
-    });
-
+    // initial render
     renderPosts();
   </script>
 </body>
