@@ -1,2 +1,0 @@
-# ArtMoots
-ArtMoots website
