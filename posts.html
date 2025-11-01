@@ -34,7 +34,7 @@ button:hover{background:#222;}
   <nav>
     <a href="index.html">Home</a>
     <a href="posts.html">Posts</a>
-    <a href="Moots.html">Moots</a>
+    <a href="moots.html">Moots</a>
     <span id="userDisplay"></span>
     <a class="btn" id="myAccountBtn" href="#" style="display:none;">My Account</a>
     <a class="btn" id="signInBtn" href="#">Sign In</a>
@@ -64,6 +64,7 @@ button:hover{background:#222;}
 
 <script src="accounts-database.js"></script>
 <script>
+// Header login system
 const currentUser = getCurrentUser();
 const userDisplay = document.getElementById("userDisplay");
 const logoutBtn = document.getElementById("logoutBtn");
@@ -84,10 +85,7 @@ if(currentUser){
   signUpBtn.href = `account.html?mode=signup&return=${encodeURIComponent(returnURL)}`;
 }
 
-logoutBtn.addEventListener("click",()=>{
-  logout();
-  window.location.reload();
-});
+logoutBtn.addEventListener("click",()=>{ logout(); window.location.reload(); });
 
 // Posts logic
 let posts = JSON.parse(localStorage.getItem("posts") || "[]");
@@ -106,8 +104,7 @@ function renderPosts(filter=""){
          div.innerHTML=`<h4>${p.title}</h4>
                         <p>${p.description}</p>
                         <p>by ${p.user}</p>
-                        <img src="${p.image}">`;
-         // Edit button only for author
+                        ${p.image?`<img src="${p.image}">`:""}`;
          if(p.user === currentUser){
            const editBtn = document.createElement("button");
            editBtn.textContent = "Edit";
@@ -120,7 +117,6 @@ function renderPosts(filter=""){
 }
 renderPosts();
 
-// Add new post from file
 addPostBtn.addEventListener("click", ()=>{
   if(!currentUser){ alert("Please sign in to post."); return; }
   const title = postTitle.value.trim();
@@ -132,28 +128,23 @@ addPostBtn.addEventListener("click", ()=>{
   reader.onload = function(e){
     posts.push({title, description, user:currentUser, image:e.target.result});
     localStorage.setItem("posts", JSON.stringify(posts));
-    postTitle.value="";
-    postDescription.value="";
-    postImageFile.value="";
+    postTitle.value=""; postDescription.value=""; postImageFile.value="";
     renderPosts();
   }
   reader.readAsDataURL(file);
 });
 
-// Edit post function
 function editPost(index){
   const post = posts[index];
   const newTitle = prompt("Edit title:", post.title);
   const newDescription = prompt("Edit description:", post.description);
-  if(newTitle !== null && newDescription !== null){
-    post.title = newTitle;
-    post.description = newDescription;
+  if(newTitle!==null && newDescription!==null){
+    post.title=newTitle; post.description=newDescription;
     localStorage.setItem("posts", JSON.stringify(posts));
     renderPosts();
   }
 }
 
-// Search
 document.getElementById("searchInput").addEventListener("input", e=>{
   renderPosts(e.target.value);
 });

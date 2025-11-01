@@ -1,8 +1,8 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ArtMoots</title>
 <style>
 :root {--bg:#f9f9f9;--text:#333;--muted:#666;--accent:#111;--border:#ddd;--max-width:1000px;}
@@ -16,6 +16,8 @@ nav a:hover{background:#eee;}
 main{flex:1;max-width:var(--max-width);margin:2rem auto;padding:0 1rem;}
 .hero{text-align:center;margin-bottom:3rem;}
 .hero img{max-width:100%;border-radius:8px;}
+.btn{border:1px solid var(--text);background:transparent;padding:0.5rem 1rem;text-decoration:none;color:var(--text);border-radius:4px;transition:0.2s;}
+.btn:hover{background:#eee;}
 </style>
 </head>
 <body>
@@ -26,7 +28,7 @@ main{flex:1;max-width:var(--max-width);margin:2rem auto;padding:0 1rem;}
   <nav>
     <a href="index.html">Home</a>
     <a href="posts.html">Posts</a>
-    <a href="Moots.html">Moots</a>
+    <a href="moots.html">Moots</a>
     <span id="userDisplay"></span>
     <a class="btn" id="myAccountBtn" href="#" style="display:none;">My Account</a>
     <a class="btn" id="signInBtn" href="#">Sign In</a>
