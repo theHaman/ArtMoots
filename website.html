@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ArtMoots</title>
+<style>
+:root {--bg:#f9f9f9;--text:#333;--muted:#666;--accent:#111;--border:#ddd;--max-width:1000px;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;min-height:100vh;}
+header{background:white;border-bottom:1px solid var(--border);padding:1rem 0;}
+.header-container{max-width:var(--max-width);margin:0 auto;display:flex;justify-content:space-between;align-items:center;padding:0 1rem;}
+.logo{font-size:1.4rem;font-weight:bold;letter-spacing:0.5px;}
+nav a,#userDisplay{margin-left:1rem;text-decoration:none;color:var(--text);font-weight:500;padding:0.4rem 0.6rem;border-radius:4px;}
+nav a:hover{background:#eee;}
+main{flex:1;max-width:var(--max-width);margin:2rem auto;padding:0 1rem;}
+.hero{text-align:center;margin-bottom:3rem;}
+.hero img{max-width:100%;border-radius:8px;}
+</style>
+</head>
+<body>
+
+<header>
+<div class="header-container">
+  <div class="logo">ArtMoots</div>
+  <nav>
+    <a href="website.html">Home</a>
+    <a href="posts.html">Posts</a>
+    <a href="Moots.html">Moots</a>
+    <span id="userDisplay"></span>
+    <a class="btn" id="myAccountBtn" href="#" style="display:none;">My Account</a>
+    <a class="btn" id="signInBtn" href="#">Sign In</a>
+    <a class="btn" id="signUpBtn" href="#">Sign Up</a>
+    <a class="btn" id="logoutBtn" href="#" style="display:none;">Logout</a>
+  </nav>
+</div>
+</header>
+
+<main>
+<div class="hero">
+  <h1>Welcome to ArtMoots</h1>
+  <p>A simple place where artists and visitors can connect, share, and appreciate art.</p>
+  <img src="https://picsum.photos/800/300?random=2" alt="Art Showcase">
+</div>
+</main>
+
+<script src="accounts-database.js"></script>
+<script>
+// Header login system
+const currentUser = getCurrentUser();
+const userDisplay = document.getElementById("userDisplay");
+const myAccountBtn = document.getElementById("myAccountBtn");
+const logoutBtn = document.getElementById("logoutBtn");
+const signInBtn = document.getElementById("signInBtn");
+const signUpBtn = document.getElementById("signUpBtn");
+
+if(currentUser){
+  userDisplay.textContent = currentUser;
+  myAccountBtn.style.display="inline-block";
+  logoutBtn.style.display="inline-block";
+  signInBtn.style.display="none";
+  signUpBtn.style.display="none";
+  myAccountBtn.href = "account.html?mode=account";
+} else {
+  const returnURL = window.location.href;
+  signInBtn.href = `account.html?mode=login&return=${encodeURIComponent(returnURL)}`;
+  signUpBtn.href = `account.html?mode=signup&return=${encodeURIComponent(returnURL)}`;
+}
+
+logoutBtn.addEventListener("click",()=>{
+  logout();
+  window.location.reload();
+});
+</script>
+</body>
+</html>

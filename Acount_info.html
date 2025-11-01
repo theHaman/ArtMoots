@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Website</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+        #accountPage { display: none; }
+    </style>
+</head>
+<body>
+
+    <div id="mainPage">
+        <h1>Welcome to the Website</h1>
+        <button id="signInBtn">Sign In</button>
+    </div>
+
+    <div id="accountPage">
+        <h1>Your Account</h1>
+        <p id="userInfo">Username: </p>
+        <button id="signOutBtn">Sign Out</button>
+    </div>
+
+    <script>
+        const signInBtn = document.getElementById('signInBtn');
+        const signOutBtn = document.getElementById('signOutBtn');
+        const mainPage = document.getElementById('mainPage');
+        const accountPage = document.getElementById('accountPage');
+        const userInfo = document.getElementById('userInfo');
+
+        // Simulate user login
+        signInBtn.addEventListener('click', () => {
+            const username = prompt("Enter your username:"); // simple input
+            if(username){
+                // Hide main page and show account page
+                mainPage.style.display = 'none';
+                accountPage.style.display = 'block';
+                userInfo.textContent = `Username: ${username}`;
+            }
+        });
+
+        // Sign out logic
+        signOutBtn.addEventListener('click', () => {
+            mainPage.style.display = 'block';
+            accountPage.style.display = 'none';
+        });
+    </script>
+
+</body>
+</html>
