@@ -7,25 +7,30 @@
 <style>
 :root {
   --bg: #f9f9f9;
-  --text: #333;
-  --muted: #666;
-  --accent: #111;
+  --text: #222;
   --border: #ddd;
-  --max-width: 1000px;
+  --max-width: 900px;
+  --accent: #111;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: "Segoe UI", Arial, sans-serif; background: var(--bg); color: var(--text); display: flex; flex-direction: column; min-height: 100vh; }
+
 header { background: white; border-bottom: 1px solid var(--border); padding: 1rem 0; }
 .header-container { max-width: var(--max-width); margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 1rem; }
-.logo { font-size: 1.4rem; font-weight: bold; letter-spacing: 0.5px; }
+.logo { font-size: 1.4rem; font-weight: bold; }
 nav a, #userDisplay { margin-left: 1rem; text-decoration: none; color: var(--text); font-weight: 500; padding: 0.4rem 0.6rem; border-radius: 4px; }
 nav a:hover { background: #eee; }
+
 main { flex: 1; max-width: var(--max-width); margin: 2rem auto; padding: 0 1rem; }
+
 .user-list { display: flex; flex-direction: column; gap: 0.5rem; }
-.user-item { background: white; padding: 0.8rem; border-radius: 6px; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-.user-item span { font-weight: 500; }
-.btn { border: 1px solid var(--accent); background: transparent; padding: 0.4rem 0.8rem; border-radius: 4px; cursor: pointer; }
+.user-item { background: white; padding: 1rem; border-radius: 6px; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
+.user-item:hover { background: #fafafa; }
+.btn { border: 1px solid var(--accent); background: transparent; padding: 0.4rem 0.8rem; border-radius: 4px; cursor: pointer; transition: 0.2s; }
 .btn:hover { background: #eee; }
+.posts-container { margin-top: 0.8rem; border-left: 2px solid var(--border); padding-left: 1rem; display: none; }
+.post-item { background: #fff; padding: 0.6rem; border: 1px solid var(--border); border-radius: 4px; margin-bottom: 0.5rem; }
+.post-item h4 { margin-bottom: 0.3rem; }
 </style>
 </head>
 <body>
@@ -36,7 +41,7 @@ main { flex: 1; max-width: var(--max-width); margin: 2rem auto; padding: 0 1rem;
     <nav>
       <a href="index.html">Home</a>
       <a href="posts.html">Posts</a>
-      <a href="Moots.html">Moots</a>
+      <a href="moots.html">Moots</a>
       <span id="userDisplay"></span>
       <a class="btn" id="myAccountBtn" href="#" style="display:none;">My Account</a>
       <a class="btn" id="signInBtn" href="#">Sign In</a>
@@ -52,8 +57,9 @@ main { flex: 1; max-width: var(--max-width); margin: 2rem auto; padding: 0 1rem;
 </main>
 
 <script src="accounts-database.js"></script>
+<script src="posts-database.js"></script>
 <script>
-// Header login system
+// Header system
 const currentUser = getCurrentUser();
 const userDisplay = document.getElementById("userDisplay");
 const myAccountBtn = document.getElementById("myAccountBtn");
@@ -79,24 +85,59 @@ logoutBtn.addEventListener("click",()=>{
   window.location.reload();
 });
 
-// Load all accounts as "Moots"
+// Moots (users) list
 const usersContainer = document.getElementById("usersContainer");
+
 function renderUsers() {
   const accounts = getAccounts();
   usersContainer.innerHTML = "";
   if(accounts.length === 0){
-    usersContainer.innerHTML = "<p style='color: var(--muted);'>No artists yet.</p>";
+    usersContainer.innerHTML = "<p>No artists yet.</p>";
     return;
   }
   accounts.forEach(acc => {
-    const div = document.createElement("div");
-    div.className = "user-item";
-    div.innerHTML = `<span>${acc.username}</span><span>${acc.email}</span>`;
-    usersContainer.appendChild(div);
+    const userDiv = document.createElement("div");
+    userDiv.className = "user-item";
+    userDiv.innerHTML = `
+      <span>${acc.username}</span>
+      <button class="btn view-posts">View Posts</button>
+    `;
+    const postsContainer = document.createElement("div");
+    postsContainer.className = "posts-container";
+    userDiv.appendChild(postsContainer);
+
+    const button = userDiv.querySelector(".view-posts");
+    button.addEventListener("click", () => {
+      if (postsContainer.style.display === "block") {
+        postsContainer.style.display = "none";
+        button.textContent = "View Posts";
+      } else {
+        showUserPosts(acc.username, postsContainer);
+        postsContainer.style.display = "block";
+        button.textContent = "Hide Posts";
+      }
+    });
+
+    usersContainer.appendChild(userDiv);
   });
 }
+
+function showUserPosts(username, container) {
+  const posts = getUserPosts(username);
+  container.innerHTML = "";
+  if (posts.length === 0) {
+    container.innerHTML = "<p style='color:#666;'>No posts yet.</p>";
+    return;
+  }
+  posts.forEach(post => {
+    const postEl = document.createElement("div");
+    postEl.className = "post-item";
+    postEl.innerHTML = `<h4>${post.title}</h4><p>${post.content}</p>`;
+    container.appendChild(postEl);
+  });
+}
+
 renderUsers();
 </script>
-
 </body>
 </html>
