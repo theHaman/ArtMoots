@@ -1,38 +1,108 @@
-// posts-database.js
+// Simple localStorage database
+const loggedInUser = JSON.parse(localStorage.getItem('loggedInUser'));
+const ADMIN_USER = "Othman"; // Change this to your admin username
 
-function getPosts() {
-  return JSON.parse(localStorage.getItem("posts") || "[]");
+document.getElementById('logout-btn').addEventListener('click', () => {
+  localStorage.removeItem('loggedInUser');
+  window.location.href = 'index.html';
+});
+
+if (!loggedInUser) {
+  alert('Please sign in first!');
+  window.location.href = 'account.html';
 }
 
-function savePosts(posts) {
-  localStorage.setItem("posts", JSON.stringify(posts));
+const postForm = document.getElementById('postForm');
+const postsList = document.getElementById('postsList');
+
+let posts = JSON.parse(localStorage.getItem('posts')) || [];
+let likedPosts = JSON.parse(localStorage.getItem('likedPosts')) || {};
+
+function savePosts() {
+  localStorage.setItem('posts', JSON.stringify(posts));
 }
 
-function addPost(username, title, content, image=null) {
-  const posts = getPosts();
-  posts.push({ id: Date.now(), username, title, content, image, date: new Date().toISOString(), likes: [] });
-  savePosts(posts);
+function renderPosts() {
+  postsList.innerHTML = '';
+  posts
+    .slice()
+    .reverse()
+    .forEach((post, index) => {
+      const postDiv = document.createElement('div');
+      postDiv.className = 'post';
+      postDiv.innerHTML = `
+        <strong>@${post.user}</strong>
+        <p>${post.description}</p>
+        <img src="${post.image}" alt="Post image" />
+        <div class="actions">
+          <button onclick="likePost(${index})">
+            ❤️ ${post.likes || 0}
+          </button>
+          ${
+            post.user === loggedInUser.username || loggedInUser.username === ADMIN_USER
+              ? `<button onclick="deletePost(${index})">🗑️ Delete</button>`
+              : ''
+          }
+        </div>
+      `;
+      postsList.appendChild(postDiv);
+    });
 }
 
-function deletePost(post) {
-  const posts = getPosts().filter(p => p.id !== post.id);
-  savePosts(posts);
-}
+postForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const description = document.getElementById('description').value;
+  const imageInput = document.getElementById('imageInput').files[0];
+  if (!imageInput) return alert('Please select an image.');
 
-function toggleLike(post, username) {
-  const posts = getPosts();
-  const index = posts.findIndex(p => p.id === post.id);
-  if(index > -1){
-    const likes = posts[index].likes || [];
-    if(likes.includes(username)){
-      posts[index].likes = likes.filter(u=>u!==username);
-    } else {
-      posts[index].likes.push(username);
+  const reader = new FileReader();
+  reader.onload = function () {
+    const newPost = {
+      user: loggedInUser.username,
+      description,
+      image: reader.result,
+      likes: 0
+    };
+    posts.push(newPost);
+    savePosts();
+    renderPosts();
+    postForm.reset();
+  };
+  reader.readAsDataURL(imageInput);
+});
+
+function deletePost(index) {
+  const post = posts[index];
+  if (
+    post.user === loggedInUser.username ||
+    loggedInUser.username === ADMIN_USER
+  ) {
+    if (confirm('Delete this post?')) {
+      posts.splice(index, 1);
+      savePosts();
+      renderPosts();
     }
-    savePosts(posts);
+  } else {
+    alert('You can only delete your own posts.');
   }
 }
 
-function getUserPosts(username) {
-  return getPosts().filter(p => p.username === username);
+function likePost(index) {
+  const post = posts[index];
+  const userLikes = likedPosts[loggedInUser.username] || [];
+
+  if (userLikes.includes(index)) {
+    alert('You already liked this post.');
+    return;
+  }
+
+  post.likes = (post.likes || 0) + 1;
+  userLikes.push(index);
+  likedPosts[loggedInUser.username] = userLikes;
+
+  localStorage.setItem('likedPosts', JSON.stringify(likedPosts));
+  savePosts();
+  renderPosts();
 }
+
+renderPosts();
