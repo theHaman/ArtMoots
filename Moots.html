@@ -1,143 +1,59 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ArtMoots - Moots</title>
-<style>
-:root {
-  --bg: #f9f9f9;
-  --text: #222;
-  --border: #ddd;
-  --max-width: 900px;
-  --accent: #111;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: "Segoe UI", Arial, sans-serif; background: var(--bg); color: var(--text); display: flex; flex-direction: column; min-height: 100vh; }
-
-header { background: white; border-bottom: 1px solid var(--border); padding: 1rem 0; }
-.header-container { max-width: var(--max-width); margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 1rem; }
-.logo { font-size: 1.4rem; font-weight: bold; }
-nav a, #userDisplay { margin-left: 1rem; text-decoration: none; color: var(--text); font-weight: 500; padding: 0.4rem 0.6rem; border-radius: 4px; }
-nav a:hover { background: #eee; }
-
-main { flex: 1; max-width: var(--max-width); margin: 2rem auto; padding: 0 1rem; }
-
-.user-list { display: flex; flex-direction: column; gap: 0.5rem; }
-.user-item { background: white; padding: 1rem; border-radius: 6px; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
-.user-item:hover { background: #fafafa; }
-.btn { border: 1px solid var(--accent); background: transparent; padding: 0.4rem 0.8rem; border-radius: 4px; cursor: pointer; transition: 0.2s; }
-.btn:hover { background: #eee; }
-.posts-container { margin-top: 0.8rem; border-left: 2px solid var(--border); padding-left: 1rem; display: none; }
-.post-item { background: #fff; padding: 0.6rem; border: 1px solid var(--border); border-radius: 4px; margin-bottom: 0.5rem; }
-.post-item h4 { margin-bottom: 0.3rem; }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ArtMoots - Moots</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <header>
+    <div class="header-container">
+      <div class="logo">ArtMoots</div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="posts.html">Posts</a>
+        <a href="moots.html">Moots</a>
+        <a href="help.html">Help</a>
+        <span id="userDisplay"></span>
+        <a class="btn" id="myAccountBtn" href="#" style="display:none;">My Account</a>
+        <a class="btn" id="signInBtn" href="#">Sign In</a>
+        <a class="btn" id="signUpBtn" href="#">Sign Up</a>
+        <a class="btn" id="logoutBtn" href="#" style="display:none;">Logout</a>
+      </nav>
+    </div>
+  </header>
 
-<header>
-  <div class="header-container">
-    <div class="logo">ArtMoots</div>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="posts.html">Posts</a>
-      <a href="Moots.html">Moots</a>
-      <span id="userDisplay"></span>
-      <a class="btn" id="myAccountBtn" href="#" style="display:none;">My Account</a>
-      <a class="btn" id="signInBtn" href="#">Sign In</a>
-      <a class="btn" id="signUpBtn" href="#">Sign Up</a>
-      <a class="btn" id="logoutBtn" href="#" style="display:none;">Logout</a>
-    </nav>
-  </div>
-</header>
+  <main>
+    <h1>Art Moots</h1>
+    <div id="mootsContainer"></div>
+  </main>
 
-<main>
-  <h2>All Artists</h2>
-  <div class="user-list" id="usersContainer"></div>
-</main>
+  <footer>
+    <p>© 2025 ArtMoots</p>
+  </footer>
 
-<script src="accounts-database.js"></script>
-<script src="posts-database.js"></script>
-<script>
-// Header system
-const currentUser = getCurrentUser();
-const userDisplay = document.getElementById("userDisplay");
-const myAccountBtn = document.getElementById("myAccountBtn");
-const logoutBtn = document.getElementById("logoutBtn");
-const signInBtn = document.getElementById("signInBtn");
-const signUpBtn = document.getElementById("signUpBtn");
+  <script src="accounts-database.js"></script>
+  <script src="posts-database.js"></script>
+  <script src="header.js"></script>
+  <script>
+    const users = JSON.parse(localStorage.getItem("users")) || [];
+    const mootsContainer = document.getElementById("mootsContainer");
 
-if(currentUser){
-  userDisplay.textContent = currentUser;
-  myAccountBtn.style.display = "inline-block";
-  logoutBtn.style.display = "inline-block";
-  signInBtn.style.display = "none";
-  signUpBtn.style.display = "none";
-  myAccountBtn.href = "account.html?mode=account";
-} else {
-  const returnURL = window.location.href;
-  signInBtn.href = `account.html?mode=login&return=${encodeURIComponent(returnURL)}`;
-  signUpBtn.href = `account.html?mode=signup&return=${encodeURIComponent(returnURL)}`;
-}
-
-logoutBtn.addEventListener("click",()=>{
-  logout();
-  window.location.reload();
-});
-
-// Moots (users) list
-const usersContainer = document.getElementById("usersContainer");
-
-function renderUsers() {
-  const accounts = getAccounts();
-  usersContainer.innerHTML = "";
-  if(accounts.length === 0){
-    usersContainer.innerHTML = "<p>No artists yet.</p>";
-    return;
-  }
-  accounts.forEach(acc => {
-    const userDiv = document.createElement("div");
-    userDiv.className = "user-item";
-    userDiv.innerHTML = `
-      <span>${acc.username}</span>
-      <button class="btn view-posts">View Posts</button>
-    `;
-    const postsContainer = document.createElement("div");
-    postsContainer.className = "posts-container";
-    userDiv.appendChild(postsContainer);
-
-    const button = userDiv.querySelector(".view-posts");
-    button.addEventListener("click", () => {
-      if (postsContainer.style.display === "block") {
-        postsContainer.style.display = "none";
-        button.textContent = "View Posts";
-      } else {
-        showUserPosts(acc.username, postsContainer);
-        postsContainer.style.display = "block";
-        button.textContent = "Hide Posts";
-      }
+    users.forEach(u => {
+      const div = document.createElement("div");
+      div.className = "moot-card";
+      div.innerHTML = `
+        <h3>${u.username}</h3>
+        <button onclick="viewUserPosts('${u.username}')">View Posts</button>
+      `;
+      mootsContainer.appendChild(div);
     });
 
-    usersContainer.appendChild(userDiv);
-  });
-}
-
-function showUserPosts(username, container) {
-  const posts = getUserPosts(username);
-  container.innerHTML = "";
-  if (posts.length === 0) {
-    container.innerHTML = "<p style='color:#666;'>No posts yet.</p>";
-    return;
-  }
-  posts.forEach(post => {
-    const postEl = document.createElement("div");
-    postEl.className = "post-item";
-    postEl.innerHTML = `<h4>${post.title}</h4><p>${post.content}</p>`;
-    container.appendChild(postEl);
-  });
-}
-
-renderUsers();
-</script>
+    function viewUserPosts(username) {
+      localStorage.setItem("viewUser", username);
+      window.location.href = "posts.html";
+    }
+  </script>
 </body>
 </html>
