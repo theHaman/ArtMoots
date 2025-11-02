@@ -5,112 +5,50 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ArtMoots - Posts</title>
 <style>
-:root {
-  --bg: #f9f9f9;
-  --text: #333;
-  --accent: #111;
-  --border: #ddd;
-  --max-width: 1000px;
-}
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-  font-family: "Segoe UI", Arial, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-header { background: white; border-bottom: 1px solid var(--border); padding: 1rem 0; }
-
-.header-container {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 1rem;
-}
-
-.logo { font-size: 1.4rem; font-weight: bold; letter-spacing: 0.5px; }
-
-nav a, #userDisplay {
-  margin-left: 1rem;
-  text-decoration: none;
-  color: var(--text);
-  font-weight: 500;
-  padding: 0.4rem 0.6rem;
-  border-radius: 4px;
-}
-
-nav a:hover { background: #eee; }
-
-main { flex: 1; max-width: var(--max-width); margin: 2rem auto; padding: 0 1rem; }
-
-.posts-container { margin-top: 1rem; display: flex; flex-direction: column; gap: 1rem; }
-
-.post { background: white; padding: 0.5rem; border-radius: 6px; border: 1px solid var(--border); }
-
-.post img { max-width: 100%; border-radius: 4px; margin-top: 0.3rem; }
-
-form#createPost {
-  background: white;
-  padding: 1rem;
-  border-radius: 6px;
-  margin-bottom: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-input, textarea { padding: 0.5rem; border-radius: 4px; border: 1px solid var(--border); }
-
-button {
-  background: var(--accent);
-  color: white;
-  border: none;
-  padding: 0.5rem;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-button:hover { background: #222; }
+:root{--bg:#f9f9f9;--text:#333;--accent:#111;--border:#ddd;}
+body{font-family:"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;min-height:100vh;}
+header{background:white;border-bottom:1px solid var(--border);padding:1rem 0;}
+.header-container{max-width:1000px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;padding:0 1rem;}
+.logo{font-size:1.4rem;font-weight:bold;}
+nav a,#userDisplay{margin-left:1rem;text-decoration:none;color:var(--text);font-weight:500;padding:0.4rem 0.6rem;border-radius:4px;}
+nav a:hover{background:#eee;}
+main{flex:1;max-width:1000px;margin:2rem auto;padding:0 1rem;}
+.posts-container{margin-top:1rem;display:flex;flex-direction:column;gap:1rem;}
+.post{background:white;padding:0.5rem;border-radius:6px;border:1px solid var(--border);}
+.post img{max-width:100%;border-radius:4px;margin-top:0.3rem;}
+form#createPost{background:white;padding:1rem;border-radius:6px;margin-bottom:1rem;display:flex;flex-direction:column;gap:0.5rem;}
+input,textarea{padding:0.5rem;border-radius:4px;border:1px solid var(--border);}
+button{background:var(--accent);color:white;border:none;padding:0.5rem;border-radius:4px;cursor:pointer;}
+button:hover{background:#222;}
 </style>
 </head>
 <body>
 
 <header>
-<div class="header-container">
-  <div class="logo">ArtMoots</div>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="posts.html">Posts</a>
-    <a href="moots.html">Moots</a>
-    <a href="help.html">Help</a>
-    <span id="userDisplay"></span>
-    <a class="btn" id="myAccountBtn" href="#" style="display:none;">My Account</a>
-    <a class="btn" id="signInBtn" href="#">Sign In</a>
-    <a class="btn" id="signUpBtn" href="#">Sign Up</a>
-    <a class="btn" id="logoutBtn" href="#" style="display:none;">Logout</a>
-  </nav>
-</div>
+  <div class="header-container">
+    <div class="logo">ArtMoots</div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="posts.html">Posts</a>
+      <span id="userDisplay"></span>
+      <a class="btn" id="logoutBtn" href="#" style="display:none;">Logout</a>
+      <a class="btn" id="signInBtn" href="accounts.html?mode=login">Sign In</a>
+      <a class="btn" id="signUpBtn" href="accounts.html?mode=signup">Sign Up</a>
+    </nav>
+  </div>
 </header>
 
 <main>
-<h2>Create a Post</h2>
-<form id="createPost" style="display:none;">
-  <input type="text" id="postTitle" placeholder="Title" required>
-  <textarea id="postDesc" placeholder="Description" required></textarea>
-  <!-- Hidden image URL variable handled in JS -->
-  <input type="file" id="postImageFile" accept="image/*" required>
-  <button type="submit">Post</button>
-</form>
+  <h2>Create a Post</h2>
+  <form id="createPost" style="display:none;">
+    <input type="text" id="postTitle" placeholder="Title" required>
+    <textarea id="postDesc" placeholder="Description" required></textarea>
+    <input type="file" id="postImageInput" accept="image/*">
+    <button type="submit">Post</button>
+  </form>
 
-<h2>All Posts</h2>
-<div class="posts-container" id="postsContainer"></div>
+  <h2>All Posts</h2>
+  <div class="posts-container" id="postsContainer"></div>
 </main>
 
 <script type="module">
@@ -128,88 +66,80 @@ const firebaseConfig = {
   appId: "1:1056886155154:web:0de8b27263c11571ea034b",
   measurementId: "G-YX4MMZS1JB"
 };
-
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
 const userDisplay = document.getElementById("userDisplay");
-const myAccountBtn = document.getElementById("myAccountBtn");
 const logoutBtn = document.getElementById("logoutBtn");
 const signInBtn = document.getElementById("signInBtn");
 const signUpBtn = document.getElementById("signUpBtn");
 
-onAuthStateChanged(auth, user => {
+const createPostForm = document.getElementById("createPost");
+const postsContainer = document.getElementById("postsContainer");
+const postImageInput = document.getElementById("postImageInput");
+
+let imageDataURL = ""; // store image URL in background
+
+onAuthStateChanged(auth, user=>{
   if(user){
-    userDisplay.textContent = user.email;
-    myAccountBtn.style.display = "inline-block";
+    userDisplay.textContent = user.displayName || "Anonymous";
     logoutBtn.style.display = "inline-block";
     signInBtn.style.display = "none";
     signUpBtn.style.display = "none";
-    myAccountBtn.href = "account.html?mode=account";
-    document.getElementById("createPost").style.display = "flex";
+    createPostForm.style.display = "flex";
   } else {
     userDisplay.textContent = "";
-    myAccountBtn.style.display = "none";
     logoutBtn.style.display = "none";
     signInBtn.style.display = "inline-block";
     signUpBtn.style.display = "inline-block";
+    createPostForm.style.display = "none";
   }
 });
 
-logoutBtn.addEventListener("click", () => signOut(auth));
+logoutBtn.addEventListener("click",()=>signOut(auth));
 
-// --- Hidden image URL generation ---
-let imageUrl = ""; // stores the base64 URL in memory
-const postImageFile = document.getElementById("postImageFile");
-
-postImageFile.addEventListener("change", () => {
-  const file = postImageFile.files[0];
-  if(!file) return;
-
-  const reader = new FileReader();
-  reader.onload = () => {
-    imageUrl = reader.result; // generated in background
-  };
-  reader.readAsDataURL(file);
+postImageInput.addEventListener("change", e=>{
+  const file = e.target.files[0];
+  if(file){
+    const reader = new FileReader();
+    reader.onload = () => {
+      imageDataURL = reader.result; // background URL
+    };
+    reader.readAsDataURL(file);
+  }
 });
 
-// --- Post submission ---
-const createPostForm = document.getElementById("createPost");
-const postsContainer = document.getElementById("postsContainer");
-
-createPostForm.addEventListener("submit", async e => {
+// Submit post
+createPostForm.addEventListener("submit", async e=>{
   e.preventDefault();
   const title = document.getElementById("postTitle").value;
   const desc = document.getElementById("postDesc").value;
   const user = auth.currentUser;
+  if(!user) return alert("Sign in to post.");
 
-  if(!user) return alert("You must be signed in to post.");
-  if(!imageUrl) return alert("Please wait for the image to load.");
-
-  await addDoc(collection(db, "posts"), {
-    user: user.email,
+  await addDoc(collection(db,"posts"),{
+    user: user.displayName || "Anonymous",
     title,
     description: desc,
-    image: imageUrl, // stored from hidden variable
+    image: imageDataURL,
     createdAt: new Date()
   });
 
   createPostForm.reset();
-  imageUrl = ""; // reset for next post
-  postsContainer.innerHTML = "";
+  imageDataURL = "";
   loadPosts();
 });
 
-// --- Load posts ---
+// Load posts
 async function loadPosts(){
-  const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
+  postsContainer.innerHTML="";
+  const q = query(collection(db,"posts"), orderBy("createdAt","desc"));
   const snapshot = await getDocs(q);
-
-  snapshot.forEach(doc => {
+  snapshot.forEach(doc=>{
     const data = doc.data();
     const div = document.createElement("div");
-    div.className = "post";
+    div.className="post";
     div.innerHTML = `
       <h3>${data.title}</h3>
       <p>${data.description}</p>
