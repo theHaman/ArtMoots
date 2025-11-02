@@ -3,120 +3,55 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ArtMoots - Posts</title>
+<title>ArtMoots - Account</title>
 <style>
-:root {
-  --bg: #f9f9f9;
-  --text: #333;
-  --accent: #111;
-  --border: #ddd;
-  --max-width: 1000px;
-}
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-  font-family: "Segoe UI", Arial, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-header { background: white; border-bottom: 1px solid var(--border); padding: 1rem 0; }
-
-.header-container {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 1rem;
-}
-
-.logo { font-size: 1.4rem; font-weight: bold; letter-spacing: 0.5px; }
-
-nav a, #userDisplay {
-  margin-left: 1rem;
-  text-decoration: none;
-  color: var(--text);
-  font-weight: 500;
-  padding: 0.4rem 0.6rem;
-  border-radius: 4px;
-}
-
-nav a:hover { background: #eee; }
-
-main { flex: 1; max-width: var(--max-width); margin: 2rem auto; padding: 0 1rem; }
-
-.posts-container { margin-top: 1rem; display: flex; flex-direction: column; gap: 1rem; }
-
-.post { background: white; padding: 0.5rem; border-radius: 6px; border: 1px solid var(--border); }
-
-.post img { max-width: 100%; border-radius: 4px; margin-top: 0.3rem; }
-
-form#createPost {
-  background: white;
-  padding: 1rem;
-  border-radius: 6px;
-  margin-bottom: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-input, textarea { padding: 0.5rem; border-radius: 4px; border: 1px solid var(--border); }
-
-button {
-  background: var(--accent);
-  color: white;
-  border: none;
-  padding: 0.5rem;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-button:hover { background: #222; }
+:root{--bg:#f9f9f9;--text:#333;--accent:#111;--border:#ddd;}
+body{font-family:"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem;}
+form{background:white;padding:2rem;border-radius:8px;width:320px;display:flex;flex-direction:column;gap:1rem;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
+input{padding:0.6rem;border-radius:6px;border:1px solid var(--border);}
+input:focus{border-color:var(--accent);}
+button{background:var(--accent);color:white;border:none;padding:0.6rem;border-radius:6px;cursor:pointer;font-weight:500;}
+button:hover{background:#222;}
+.toggle{color:var(--accent);cursor:pointer;font-size:0.9rem;text-align:center;}
+#accountInfo{display:none;background:white;padding:1.5rem;border-radius:8px;width:320px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.05);}
 </style>
 </head>
 <body>
 
-<header>
-<div class="header-container">
-  <div class="logo">ArtMoots</div>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="posts.html">Posts</a>
-    <a href="moots.html">Moots</a>
-    <a href="help.html">Help</a>
-    <span id="userDisplay"></span>
-    <a class="btn" id="myAccountBtn" href="#" style="display:none;">My Account</a>
-    <a class="btn" id="signInBtn" href="#">Sign In</a>
-    <a class="btn" id="signUpBtn" href="#">Sign Up</a>
-    <a class="btn" id="logoutBtn" href="#" style="display:none;">Logout</a>
-  </nav>
-</div>
-</header>
+<h1>Welcome to ArtMoots</h1>
 
-<main>
-<h2>Create a Post</h2>
-<form id="createPost" style="display:none;">
-  <input type="text" id="postTitle" placeholder="Title" required>
-  <textarea id="postDesc" placeholder="Description" required></textarea>
-  <!-- Hidden image URL variable handled in JS -->
-  <input type="file" id="postImageFile" accept="image/*" required>
-  <button type="submit">Post</button>
+<!-- Sign-Up Form -->
+<form id="signupForm">
+  <h2>Sign Up</h2>
+  <input type="text" id="signupName" placeholder="Full Name" required>
+  <input type="email" id="signupEmail" placeholder="Email" required>
+  <input type="password" id="signupPassword" placeholder="Password" required>
+  <button type="submit">Create Account</button>
+  <div class="toggle" onclick="toggleForms()">Already have an account? Log in</div>
 </form>
 
-<h2>All Posts</h2>
-<div class="posts-container" id="postsContainer"></div>
-</main>
+<!-- Login Form -->
+<form id="loginForm" style="display:none">
+  <h2>Login</h2>
+  <input type="email" id="loginEmail" placeholder="Email" required>
+  <input type="password" id="loginPassword" placeholder="Password" required>
+  <button type="submit">Log In</button>
+  <div class="toggle" onclick="toggleForms()">Don't have an account? Sign up</div>
+</form>
+
+<!-- Account Info -->
+<div id="accountInfo">
+  <h2>My Account</h2>
+  <p id="accEmail"></p>
+  <button id="logoutBtn">Logout</button>
+</div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+import { 
+  getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile 
+} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
 // Firebase config
 const firebaseConfig = {
@@ -128,99 +63,81 @@ const firebaseConfig = {
   appId: "1:1056886155154:web:0de8b27263c11571ea034b",
   measurementId: "G-YX4MMZS1JB"
 };
-
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const userDisplay = document.getElementById("userDisplay");
-const myAccountBtn = document.getElementById("myAccountBtn");
+// Elements
+const signupForm = document.getElementById("signupForm");
+const loginForm = document.getElementById("loginForm");
+const accountInfo = document.getElementById("accountInfo");
+const accEmail = document.getElementById("accEmail");
 const logoutBtn = document.getElementById("logoutBtn");
-const signInBtn = document.getElementById("signInBtn");
-const signUpBtn = document.getElementById("signUpBtn");
 
+// Toggle forms
+function toggleForms(){
+  signupForm.style.display = signupForm.style.display==="none"?"flex":"none";
+  loginForm.style.display = loginForm.style.display==="none"?"flex":"none";
+}
+
+// Handle return URL and mode
+const params = new URLSearchParams(window.location.search);
+const mode = params.get("mode");
+const returnPage = params.get("return") || "index.html";
+
+// Show account info if signed in
 onAuthStateChanged(auth, user => {
   if(user){
-    userDisplay.textContent = user.email;
-    myAccountBtn.style.display = "inline-block";
-    logoutBtn.style.display = "inline-block";
-    signInBtn.style.display = "none";
-    signUpBtn.style.display = "none";
-    myAccountBtn.href = "account.html?mode=account";
-    document.getElementById("createPost").style.display = "flex";
+    signupForm.style.display="none";
+    loginForm.style.display="none";
+    accountInfo.style.display="block";
+    accEmail.textContent = `Name: ${user.displayName || ""}\nEmail: ${user.email}`;
   } else {
-    userDisplay.textContent = "";
-    myAccountBtn.style.display = "none";
-    logoutBtn.style.display = "none";
-    signInBtn.style.display = "inline-block";
-    signUpBtn.style.display = "inline-block";
+    if(mode==="login"){ signupForm.style.display="none"; loginForm.style.display="flex"; }
+    if(mode==="signup"){ signupForm.style.display="flex"; loginForm.style.display="none"; }
   }
 });
 
-logoutBtn.addEventListener("click", () => signOut(auth));
-
-// --- Hidden image URL generation ---
-let imageUrl = ""; // stores the base64 URL in memory
-const postImageFile = document.getElementById("postImageFile");
-
-postImageFile.addEventListener("change", () => {
-  const file = postImageFile.files[0];
-  if(!file) return;
-
-  const reader = new FileReader();
-  reader.onload = () => {
-    imageUrl = reader.result; // generated in background
-  };
-  reader.readAsDataURL(file);
-});
-
-// --- Post submission ---
-const createPostForm = document.getElementById("createPost");
-const postsContainer = document.getElementById("postsContainer");
-
-createPostForm.addEventListener("submit", async e => {
+// Sign Up with Display Name
+signupForm.addEventListener("submit", async e=>{
   e.preventDefault();
-  const title = document.getElementById("postTitle").value;
-  const desc = document.getElementById("postDesc").value;
-  const user = auth.currentUser;
+  const name = document.getElementById("signupName").value.trim();
+  const email = document.getElementById("signupEmail").value.trim();
+  const password = document.getElementById("signupPassword").value;
 
-  if(!user) return alert("You must be signed in to post.");
-  if(!imageUrl) return alert("Please wait for the image to load.");
+  try {
+    const cred = await createUserWithEmailAndPassword(auth, email, password);
+    
+    // Set display name
+    await updateProfile(cred.user, { displayName: name });
 
-  await addDoc(collection(db, "posts"), {
-    user: user.email,
-    title,
-    description: desc,
-    image: imageUrl, // stored from hidden variable
-    createdAt: new Date()
-  });
+    // Store in Firestore (optional)
+    await setDoc(doc(db, "users", cred.user.uid), { email, name });
 
-  createPostForm.reset();
-  imageUrl = ""; // reset for next post
-  postsContainer.innerHTML = "";
-  loadPosts();
+    window.location.href = returnPage;
+  } catch(error) {
+    console.error(error);
+    alert(error.message);
+  }
 });
 
-// --- Load posts ---
-async function loadPosts(){
-  const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
-  const snapshot = await getDocs(q);
+// Login
+loginForm.addEventListener("submit", async e=>{
+  e.preventDefault();
+  const email = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPassword").value;
+  try {
+    await signInWithEmailAndPassword(auth,email,password);
+    window.location.href = returnPage;
+  } catch(error){
+    console.error(error);
+    alert(error.message);
+  }
+});
 
-  snapshot.forEach(doc => {
-    const data = doc.data();
-    const div = document.createElement("div");
-    div.className = "post";
-    div.innerHTML = `
-      <h3>${data.title}</h3>
-      <p>${data.description}</p>
-      ${data.image ? `<img src="${data.image}">` : ""}
-      <small>by ${data.user}</small>
-    `;
-    postsContainer.appendChild(div);
-  });
-}
-
-loadPosts();
+// Logout
+logoutBtn.addEventListener("click",()=> signOut(auth).then(()=> window.location.href="index.html"));
 </script>
+
 </body>
 </html>
