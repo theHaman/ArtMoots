@@ -20,14 +20,17 @@ button:hover{background:#222;}
 
 <h1>Welcome to ArtMoots</h1>
 
+<!-- Sign-Up Form -->
 <form id="signupForm">
   <h2>Sign Up</h2>
+  <input type="text" id="signupName" placeholder="Full Name" required>
   <input type="email" id="signupEmail" placeholder="Email" required>
   <input type="password" id="signupPassword" placeholder="Password" required>
   <button type="submit">Create Account</button>
   <div class="toggle" onclick="toggleForms()">Already have an account? Log in</div>
 </form>
 
+<!-- Login Form -->
 <form id="loginForm" style="display:none">
   <h2>Login</h2>
   <input type="email" id="loginEmail" placeholder="Email" required>
@@ -36,6 +39,7 @@ button:hover{background:#222;}
   <div class="toggle" onclick="toggleForms()">Don't have an account? Sign up</div>
 </form>
 
+<!-- Account Info -->
 <div id="accountInfo">
   <h2>My Account</h2>
   <p id="accEmail"></p>
@@ -44,9 +48,12 @@ button:hover{background:#222;}
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+import { 
+  getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile 
+} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyDMBb5n4Tyf9XLSHU_7CZ1obDlHjzrw258",
   authDomain: "database-artmoots.firebaseapp.com",
@@ -60,41 +67,58 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+// Elements
 const signupForm = document.getElementById("signupForm");
 const loginForm = document.getElementById("loginForm");
 const accountInfo = document.getElementById("accountInfo");
 const accEmail = document.getElementById("accEmail");
 const logoutBtn = document.getElementById("logoutBtn");
 
+// Toggle forms
 function toggleForms(){
   signupForm.style.display = signupForm.style.display==="none"?"flex":"none";
   loginForm.style.display = loginForm.style.display==="none"?"flex":"none";
 }
 
+// Handle return URL and mode
 const params = new URLSearchParams(window.location.search);
 const mode = params.get("mode");
 const returnPage = params.get("return") || "index.html";
 
+// Show account info if signed in
 onAuthStateChanged(auth, user => {
   if(user){
     signupForm.style.display="none";
     loginForm.style.display="none";
     accountInfo.style.display="block";
-    accEmail.textContent = "Email: "+user.email;
+    accEmail.textContent = `Name: ${user.displayName || ""}\nEmail: ${user.email}`;
   } else {
     if(mode==="login"){ signupForm.style.display="none"; loginForm.style.display="flex"; }
     if(mode==="signup"){ signupForm.style.display="flex"; loginForm.style.display="none"; }
   }
 });
 
-// Sign Up
+// Sign Up with Display Name
 signupForm.addEventListener("submit", async e=>{
   e.preventDefault();
+  const name = document.getElementById("signupName").value.trim();
   const email = document.getElementById("signupEmail").value.trim();
   const password = document.getElementById("signupPassword").value;
-  const cred = await createUserWithEmailAndPassword(auth,email,password);
-  await setDoc(doc(db,"users",cred.user.uid), { email });
-  window.location.href = returnPage;
+
+  try {
+    const cred = await createUserWithEmailAndPassword(auth, email, password);
+    
+    // Set display name
+    await updateProfile(cred.user, { displayName: name });
+
+    // Store in Firestore (optional)
+    await setDoc(doc(db, "users", cred.user.uid), { email, name });
+
+    window.location.href = returnPage;
+  } catch(error) {
+    console.error(error);
+    alert(error.message);
+  }
 });
 
 // Login
@@ -102,8 +126,13 @@ loginForm.addEventListener("submit", async e=>{
   e.preventDefault();
   const email = document.getElementById("loginEmail").value.trim();
   const password = document.getElementById("loginPassword").value;
-  await signInWithEmailAndPassword(auth,email,password);
-  window.location.href = returnPage;
+  try {
+    await signInWithEmailAndPassword(auth,email,password);
+    window.location.href = returnPage;
+  } catch(error){
+    console.error(error);
+    alert(error.message);
+  }
 });
 
 // Logout
