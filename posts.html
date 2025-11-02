@@ -21,22 +21,25 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  padding-left: 16px; /* stick everything to left */
+  padding-left: 16px;   /* stick main content to left */
+  padding-right: 16px;  /* optional right padding */
 }
 
 header {
   background: white;
   border-bottom: 1px solid var(--border);
-  padding: 1rem 0;
+  padding: 1rem 0;      /* unchanged header */
 }
 
 .header-container {
+  max-width: 1200px;
+  margin: 0 auto;       /* keep header centered */
   display: flex;
-  justify-content: flex-start; /* align to left */
+  justify-content: space-between;
   align-items: center;
-  padding-left: 16px;
-  gap: 1rem;
+  padding: 0 16px;
 }
+
 
 .logo {
   font-size: 1.4rem;
