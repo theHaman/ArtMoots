@@ -62,7 +62,7 @@ main {
   margin: 2rem auto;
   padding: 0 1rem;
   display: grid;
-  grid-template-columns: 350px 1fr; /* form left, posts right */
+  grid-template-columns: 350px 1fr; /* wider form column */
   gap: 2rem;
 }
 
@@ -77,6 +77,8 @@ main {
   gap: 0.5rem;
   height: fit-content;
 }
+
+#createPost h2 { margin-bottom: 0.5rem; }
 
 input, textarea {
   padding: 0.5rem;
@@ -96,62 +98,57 @@ button {
 
 button:hover { background: #222; }
 
-/* Posts Box */
-.posts-section {
-  width: 600px;
-  height: 600px;
-  overflow-y: auto;   /* scroll if content exceeds height */
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: white;
-  padding: 1rem;
-}
-
-.posts-section h2 { margin-bottom: 1rem; text-align: center; }
-
-/* Posts Grid inside fixed box */
+/* Posts Grid */
 .posts-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 0.5rem;
+  grid-template-columns: repeat(5, 1fr); /* ✅ 5 images per row */
+  gap: 1rem;
   justify-items: center;
 }
 
 .post {
-  background: #f9f9f9;
+  background: white;
   border-radius: 6px;
   border: 1px solid var(--border);
-  width: 100%;      
+  width: 300px;
+  height: 600px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
   text-align: center;
-  padding: 0.3rem;
+  padding: 0.5rem;
   overflow: hidden;
 }
 
 .post img {
-  width: 100%;        /* fit the width of the post */
-  height: auto;       /* maintain aspect ratio */
-  max-height: 300px;  /* prevents image from overflowing */
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
   border-radius: 4px;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.5rem;
 }
 
-.post h3, .post p, .post small {
-  margin: 0.2rem 0;
-}
+.post h3 { margin: 0.3rem 0; font-size: 1rem; }
+.post p { font-size: 0.9rem; overflow: auto; flex-grow: 1; }
+.post small { color: #777; margin-top: 0.3rem; font-size: 0.8rem; }
 
 /* Responsive */
+@media (max-width: 1800px) { /* fewer columns on smaller screens */
+  .posts-container { grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 1400px) {
+  main { grid-template-columns: 300px 1fr; }
+  .posts-container { grid-template-columns: repeat(3, 1fr); }
+}
 @media (max-width: 1000px) {
   main { grid-template-columns: 1fr; }
-  .posts-section { width: 100%; height: 500px; }
   .posts-container { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 600px) {
   .posts-container { grid-template-columns: 1fr; }
   .post { width: 100%; height: auto; }
-  .post img { height: 150px; }
+  .post img { height: 300px; }
 }
 </style>
 </head>
@@ -184,7 +181,7 @@ button:hover { background: #222; }
     <button type="submit">Post</button>
   </form>
 
-  <!-- Right: Fixed Posts Box -->
+  <!-- Right: Posts Grid -->
   <div class="posts-section">
     <h2>All Posts</h2>
     <div class="posts-container" id="postsContainer"></div>
