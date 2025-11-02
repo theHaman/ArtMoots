@@ -188,7 +188,7 @@ createPostForm.addEventListener("submit", async e => {
   if(!imageUrl) return alert("Please wait for the image to load.");
 
   await addDoc(collection(db, "posts"), {
-    user: user.email,
+    user: user.displayName || "Anonymous",
     title,
     description: desc,
     image: imageUrl, // stored from hidden variable
