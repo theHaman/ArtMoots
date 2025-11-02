@@ -10,7 +10,6 @@
   --text: #333;
   --accent: #111;
   --border: #ddd;
-  --max-width: 1200px;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -22,6 +21,7 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  padding-left: 16px; /* stick everything to left */
 }
 
 header {
@@ -31,12 +31,11 @@ header {
 }
 
 .header-container {
-  max-width: var(--max-width);
-  margin: 0 auto;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start; /* align to left */
   align-items: center;
-  padding: 0 1rem;
+  padding-left: 16px;
+  gap: 1rem;
 }
 
 .logo {
@@ -46,7 +45,6 @@ header {
 }
 
 nav a, #userDisplay {
-  margin-left: 1rem;
   text-decoration: none;
   color: var(--text);
   font-weight: 500;
@@ -58,12 +56,11 @@ nav a:hover { background: #eee; }
 
 main {
   flex: 1;
-  max-width: var(--max-width);
-  margin: 2rem auto;
-  padding: 0 1rem;
+  margin: 2rem 0;
   display: grid;
-  grid-template-columns: 300px 1fr; /* ✅ form on left, posts on right */
+  grid-template-columns: 300px 1fr; /* form left, posts right */
   gap: 2rem;
+  padding-right: 16px; /* optional right padding */
 }
 
 /* Create Post Form */
@@ -75,7 +72,6 @@ main {
   display: none;
   flex-direction: column;
   gap: 0.5rem;
-  height: fit-content;
 }
 
 #createPost h2 { margin-bottom: 0.5rem; }
@@ -101,9 +97,10 @@ button:hover { background: #222; }
 /* Posts Grid */
 .posts-container {
   display: grid;
-  grid-auto-flow: row;              /* ensures items fill left to right, then down */
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* adjust width */
+  grid-auto-flow: row; /* left to right, then wrap down */
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 1rem;
+  justify-items: start; /* stick posts to left */
 }
 
 .post {
@@ -111,6 +108,8 @@ button:hover { background: #222; }
   border-radius: 6px;
   border: 1px solid var(--border);
   width: 100%;
+  max-width: 200px;
+  padding: 0.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -118,12 +117,11 @@ button:hover { background: #222; }
 }
 
 .post img {
-  width: 100%;   /* scales to the post width */
-  height: auto;  /* maintain aspect ratio */
+  width: 100%;
+  height: auto;
   border-radius: 4px;
   margin-top: 0.3rem;
 }
-
 
 .post h3 {
   margin-bottom: 0.3rem;
@@ -135,10 +133,14 @@ button:hover { background: #222; }
 }
 
 /* Responsive */
-@media (max-width: 400px) {
+@media (max-width: 700px) {
   main {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* stack form and posts */
   }
+  .posts-container {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+  .post { max-width: 100%; }
 }
 </style>
 </head>
@@ -183,7 +185,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebas
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 import { getFirestore, collection, addDoc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyDMBb5n4Tyf9XLSHU_7CZ1obDlHjzrw258",
   authDomain: "database-artmoots.firebaseapp.com",
