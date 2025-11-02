@@ -29,145 +29,177 @@ button:hover{background:#222;}
 <body>
 
 <header>
-    <div class="header-container">
-      <div class="logo">ArtMoots</div>
-      <nav>
-        <a href="index.html">Home</a>
-        <a href="posts.html">Posts</a>
-        <a href="moots.html">Moots</a>
-        <a href="help.html">Help</a>
-        <span id="userDisplay"></span>
-        <a class="btn" id="myAccountBtn" href="#" style="display:none;">My Account</a>
-        <a class="btn" id="signInBtn" href="#">Sign In</a>
-        <a class="btn" id="signUpBtn" href="#">Sign Up</a>
-        <a class="btn" id="logoutBtn" href="#" style="display:none;">Logout</a>
-      </nav>
-    </div>
+  <div class="header-container">
+    <div class="logo">ArtMoots</div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="posts.html">Posts</a>
+      <a href="moots.html">Moots</a>
+      <a href="help.html">Help</a>
+      <span id="userDisplay"></span>
+      <a class="btn" id="myAccountBtn" href="#" style="display:none;">My Account</a>
+      <a class="btn" id="signInBtn" href="#">Sign In</a>
+      <a class="btn" id="signUpBtn" href="#">Sign Up</a>
+      <a class="btn" id="logoutBtn" href="#" style="display:none;">Logout</a>
+    </nav>
+  </div>
 </header>
 
 <main>
-<div class="sidebar">
-  <h3>Search Posts</h3>
-  <input type="text" id="searchInput" placeholder="Search posts...">
-</div>
+  <div class="sidebar">
+    <h3>Search Posts</h3>
+    <input type="text" id="searchInput" placeholder="Search posts...">
+  </div>
 
-<div class="posts-container">
-  <h2>New Post</h2>
-  <input type="text" id="postTitle" placeholder="Title">
-  <textarea id="postDescription" placeholder="Description" rows="3"></textarea>
-  <input type="file" id="postImageFile" accept="image/*">
-  <button id="addPostBtn">Add Post</button>
+  <div class="posts-container">
+    <h2>New Post</h2>
+    <input type="text" id="postTitle" placeholder="Title">
+    <textarea id="postDescription" placeholder="Description" rows="3"></textarea>
+    <input type="file" id="postImageFile" accept="image/*">
+    <button id="addPostBtn">Add Post</button>
 
-  <h2>All Posts</h2>
-  <div id="postsList"></div>
-</div>
+    <h2>All Posts</h2>
+    <div id="postsList"></div>
+  </div>
 </main>
 
-<script src="accounts-database.js"></script>
-<script src="posts-database.js"></script>
-<script>
-const currentUser = getCurrentUser();
-const userDisplay = document.getElementById("userDisplay");
-const logoutBtn = document.getElementById("logoutBtn");
-const signInBtn = document.getElementById("signInBtn");
-const signUpBtn = document.getElementById("signUpBtn");
-const myAccountBtn = document.getElementById("myAccountBtn");
+<!-- Firebase integration -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
-if(currentUser){
-  userDisplay.textContent = currentUser;
-  logoutBtn.style.display="inline-block";
-  myAccountBtn.style.display="inline-block";
-  signInBtn.style.display="none";
-  signUpBtn.style.display="none";
-  myAccountBtn.href="account.html?mode=account";
-} else {
-  const returnURL = window.location.href;
-  signInBtn.href = `account.html?mode=login&return=${encodeURIComponent(returnURL)}`;
-  signUpBtn.href = `account.html?mode=signup&return=${encodeURIComponent(returnURL)}`;
-}
+  const firebaseConfig = {
+    apiKey: "AIzaSyDMBb5n4Tyf9XLSHU_7CZ1obDlHjzrw258",
+    authDomain: "database-artmoots.firebaseapp.com",
+    projectId: "database-artmoots",
+    storageBucket: "database-artmoots.firebasestorage.app",
+    messagingSenderId: "1056886155154",
+    appId: "1:1056886155154:web:0de8b27263c11571ea034b",
+    measurementId: "G-YX4MMZS1JB"
+  };
 
-logoutBtn.addEventListener("click",()=>{
-  logout();
-  window.location.reload();
-});
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
 
-const postsList = document.getElementById("postsList");
-const addPostBtn = document.getElementById("addPostBtn");
-const postTitle = document.getElementById("postTitle");
-const postDescription = document.getElementById("postDescription");
-const postImageFile = document.getElementById("postImageFile");
+  // ---- Account Handling ----
+  import { getCurrentUser, logout } from "./accounts-database.js";
 
-function renderPosts(filter=""){
-  postsList.innerHTML="";
-  getPosts().filter(p => p.title.toLowerCase().includes(filter.toLowerCase()) || p.description.toLowerCase().includes(filter.toLowerCase()))
-       .forEach((p,i)=>{
-         const div = document.createElement("div");
-         div.className="post";
-         div.innerHTML=`<h4>${p.title}</h4>
-                        <p>${p.description}</p>
-                        <p>by ${p.user}</p>
-                        <img src="${p.image}">`;
-         if(p.user === currentUser){
-           const editBtn = document.createElement("button");
-           editBtn.textContent = "Edit";
-           editBtn.className="edit-btn";
-           editBtn.addEventListener("click",()=>editPost(i));
-           div.appendChild(editBtn);
+  const currentUser = getCurrentUser();
+  const userDisplay = document.getElementById("userDisplay");
+  const logoutBtn = document.getElementById("logoutBtn");
+  const signInBtn = document.getElementById("signInBtn");
+  const signUpBtn = document.getElementById("signUpBtn");
+  const myAccountBtn = document.getElementById("myAccountBtn");
 
-           const deleteBtn = document.createElement("button");
-           deleteBtn.textContent = "Delete";
-           deleteBtn.style.background="#c00";
-           deleteBtn.style.marginLeft="0.5rem";
-           deleteBtn.addEventListener("click",()=>deletePost(i));
-           div.appendChild(deleteBtn);
-         }
-         postsList.appendChild(div);
-       });
-}
-renderPosts();
-
-// Add new post from file
-addPostBtn.addEventListener("click", ()=>{
-  if(!currentUser){ alert("Please sign in to post."); return; }
-  const title = postTitle.value.trim();
-  const description = postDescription.value.trim();
-  const file = postImageFile.files[0];
-  if(!title || !file){ alert("Enter title and select an image."); return; }
-
-  const reader = new FileReader();
-  reader.onload = function(e){
-    addPost({title, description, user:currentUser, image:e.target.result});
-    postTitle.value="";
-    postDescription.value="";
-    postImageFile.value="";
-    renderPosts();
+  if(currentUser){
+    userDisplay.textContent = currentUser;
+    logoutBtn.style.display="inline-block";
+    myAccountBtn.style.display="inline-block";
+    signInBtn.style.display="none";
+    signUpBtn.style.display="none";
+    myAccountBtn.href="account.html?mode=account";
+  } else {
+    const returnURL = window.location.href;
+    signInBtn.href = `account.html?mode=login&return=${encodeURIComponent(returnURL)}`;
+    signUpBtn.href = `account.html?mode=signup&return=${encodeURIComponent(returnURL)}`;
   }
-  reader.readAsDataURL(file);
-});
 
-// Edit post function
-function editPost(index){
-  const post = getPosts()[index];
-  const newTitle = prompt("Edit title:", post.title);
-  const newDescription = prompt("Edit description:", post.description);
-  if(newTitle !== null && newDescription !== null){
-    editPostDB(index, {title: newTitle, description: newDescription});
-    renderPosts();
+  logoutBtn.addEventListener("click",()=>{
+    logout();
+    window.location.reload();
+  });
+
+  // ---- Posts Handling ----
+  const postsList = document.getElementById("postsList");
+  const addPostBtn = document.getElementById("addPostBtn");
+  const postTitle = document.getElementById("postTitle");
+  const postDescription = document.getElementById("postDescription");
+  const postImageFile = document.getElementById("postImageFile");
+
+  async function getPosts() {
+    const snapshot = await getDocs(collection(db, "posts"));
+    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   }
-}
 
-// Delete post function
-function deletePost(index){
-  if(confirm("Are you sure you want to delete this post?")){
-    deletePostDB(index);
-    renderPosts();
+  async function addPost(postData) {
+    await addDoc(collection(db, "posts"), postData);
   }
-}
 
-// Search
-document.getElementById("searchInput").addEventListener("input", e=>{
-  renderPosts(e.target.value);
-});
+  async function deletePostDB(id) {
+    await deleteDoc(doc(db, "posts", id));
+  }
+
+  async function editPostDB(id, updatedData) {
+    await updateDoc(doc(db, "posts", id), updatedData);
+  }
+
+  async function renderPosts(filter="") {
+    postsList.innerHTML="";
+    const posts = await getPosts();
+    posts
+      .filter(p => p.title.toLowerCase().includes(filter.toLowerCase()) || p.description.toLowerCase().includes(filter.toLowerCase()))
+      .forEach((p)=>{
+        const div = document.createElement("div");
+        div.className="post";
+        div.innerHTML=`<h4>${p.title}</h4>
+                       <p>${p.description}</p>
+                       <p>by ${p.user || "Anonymous"}</p>
+                       ${p.image ? `<img src="${p.image}">` : ""}`;
+        if(p.user === currentUser){
+          const editBtn = document.createElement("button");
+          editBtn.textContent = "Edit";
+          editBtn.className="edit-btn";
+          editBtn.addEventListener("click", async ()=>{
+            const newTitle = prompt("Edit title:", p.title);
+            const newDesc = prompt("Edit description:", p.description);
+            if(newTitle !== null && newDesc !== null){
+              await editPostDB(p.id, {title: newTitle, description: newDesc});
+              renderPosts();
+            }
+          });
+          div.appendChild(editBtn);
+
+          const deleteBtn = document.createElement("button");
+          deleteBtn.textContent = "Delete";
+          deleteBtn.style.background="#c00";
+          deleteBtn.style.marginLeft="0.5rem";
+          deleteBtn.addEventListener("click", async ()=>{
+            if(confirm("Are you sure you want to delete this post?")){
+              await deletePostDB(p.id);
+              renderPosts();
+            }
+          });
+          div.appendChild(deleteBtn);
+        }
+        postsList.appendChild(div);
+      });
+  }
+
+  renderPosts();
+
+  // Add new post
+  addPostBtn.addEventListener("click", ()=>{
+    if(!currentUser){ alert("Please sign in to post."); return; }
+    const title = postTitle.value.trim();
+    const description = postDescription.value.trim();
+    const file = postImageFile.files[0];
+    if(!title || !file){ alert("Enter title and select an image."); return; }
+
+    const reader = new FileReader();
+    reader.onload = async function(e){
+      await addPost({title, description, user:currentUser, image:e.target.result});
+      postTitle.value="";
+      postDescription.value="";
+      postImageFile.value="";
+      renderPosts();
+    }
+    reader.readAsDataURL(file);
+  });
+
+  // Search
+  document.getElementById("searchInput").addEventListener("input", e=>{
+    renderPosts(e.target.value);
+  });
 </script>
 </body>
 </html>
