@@ -14,15 +14,13 @@ header{background:white;border-bottom:1px solid var(--border);padding:1rem 0;}
 nav a,#userDisplay{margin-left:1rem;text-decoration:none;color:var(--text);font-weight:500;padding:0.4rem 0.6rem;border-radius:4px;}
 nav a:hover{background:#eee;}
 main{flex:1;max-width:var(--max-width);margin:2rem auto;padding:0 1rem;}
-.posts-container{flex:1;display:flex;flex-direction:column;gap:1rem;}
-.post{background:white;padding:1rem;border-radius:8px;border:1px solid var(--border);}
-.post img{max-width:100%;border-radius:6px;margin-top:0.5rem;}
-input,textarea,button{padding:0.5rem;border-radius:6px;border:1px solid var(--border);}
-textarea{resize:none;}
+.posts-container{display:flex;flex-direction:column;gap:1rem;margin-top:1rem;}
+.post{background:white;padding:1rem;border-radius:6px;border:1px solid var(--border);}
+.post img{max-width:100%;border-radius:4px;margin-top:0.5rem;}
+form#createPost{background:white;padding:1rem;border-radius:6px;margin-bottom:1rem;display:flex;flex-direction:column;gap:0.5rem;}
+input, textarea, button{padding:0.5rem;border-radius:4px;border:1px solid var(--border);}
 button{background:var(--accent);color:white;border:none;cursor:pointer;}
 button:hover{background:#222;}
-.time{font-size:0.8rem;color:var(--muted);}
-form#createPost{background:white;padding:1rem;border-radius:6px;margin-bottom:1rem;display:flex;flex-direction:column;gap:0.5rem;}
 </style>
 </head>
 <body>
@@ -79,57 +77,57 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-// Header
+// Header login system
 const userDisplay = document.getElementById("userDisplay");
 const myAccountBtn = document.getElementById("myAccountBtn");
 const logoutBtn = document.getElementById("logoutBtn");
 const signInBtn = document.getElementById("signInBtn");
 const signUpBtn = document.getElementById("signUpBtn");
+const createPostForm = document.getElementById("createPost");
+const postsContainer = document.getElementById("postsContainer");
 
-onAuthStateChanged(auth, user=>{
+onAuthStateChanged(auth, user => {
   if(user){
     userDisplay.textContent = user.email;
-    myAccountBtn.style.display="inline-block";
-    logoutBtn.style.display="inline-block";
-    signInBtn.style.display="none";
-    signUpBtn.style.display="none";
-    myAccountBtn.href="account.html?mode=account";
-    document.getElementById("createPost").style.display="flex";
+    myAccountBtn.style.display = "inline-block";
+    logoutBtn.style.display = "inline-block";
+    signInBtn.style.display = "none";
+    signUpBtn.style.display = "none";
+    myAccountBtn.href = "account.html?mode=account";
+    createPostForm.style.display = "flex";
   } else {
-    userDisplay.textContent="";
-    myAccountBtn.style.display="none";
-    logoutBtn.style.display="none";
-    signInBtn.style.display="inline-block";
-    signUpBtn.style.display="inline-block";
+    userDisplay.textContent = "";
+    myAccountBtn.style.display = "none";
+    logoutBtn.style.display = "none";
+    signInBtn.style.display = "inline-block";
+    signUpBtn.style.display = "inline-block";
+    createPostForm.style.display = "none";
     const returnURL = window.location.href;
     signInBtn.href = `account.html?mode=login&return=${encodeURIComponent(returnURL)}`;
     signUpBtn.href = `account.html?mode=signup&return=${encodeURIComponent(returnURL)}`;
   }
 });
 
-logoutBtn.addEventListener("click",()=> signOut(auth));
+logoutBtn.addEventListener("click", ()=> signOut(auth));
 
-// Handle creating a post with image upload
-const createPostForm = document.getElementById("createPost");
-const postsContainer = document.getElementById("postsContainer");
-
-createPostForm.addEventListener("submit", async e=>{
+// Handle creating a post
+createPostForm.addEventListener("submit", async e => {
   e.preventDefault();
   const title = document.getElementById("postTitle").value.trim();
   const desc = document.getElementById("postDesc").value.trim();
   const file = document.getElementById("postImageFile").files[0];
 
-  if(!file) return alert("You must select an image.");
-  const user = auth.currentUser;
-  if(!user) return alert("You must be signed in to post.");
+  if(!title || !file) return alert("Title and image are required.");
 
   try {
-    const fileRef = ref(storage, `posts/${Date.now()}_${file.name}`);
-    await uploadBytes(fileRef, file);
-    const imageURL = await getDownloadURL(fileRef);
+    // Upload image to Firebase Storage
+    const storageRef = ref(storage, `posts/${Date.now()}_${file.name}`);
+    await uploadBytes(storageRef, file);
+    const imageURL = await getDownloadURL(storageRef);
 
-    await addDoc(collection(db,"posts"), {
-      user: user.email,
+    // Save post to Firestore
+    await addDoc(collection(db, "posts"), {
+      user: auth.currentUser.email,
       title,
       description: desc,
       image: imageURL,
@@ -138,30 +136,33 @@ createPostForm.addEventListener("submit", async e=>{
 
     createPostForm.reset();
     loadPosts();
+
   } catch(err){
-    console.error(err);
-    alert("Error posting: " + err.message);
+    console.error("Error posting:", err);
+    alert("Failed to create post. See console.");
   }
 });
 
 // Load all posts
 async function loadPosts(){
-  postsContainer.innerHTML="";
+  postsContainer.innerHTML = "";
   const q = query(collection(db,"posts"), orderBy("createdAt","desc"));
   const snapshot = await getDocs(q);
   snapshot.forEach(doc=>{
     const data = doc.data();
-    const time = data.createdAt?.toDate ? data.createdAt.toDate() : new Date();
     const div = document.createElement("div");
-    div.className="post";
-    div.innerHTML = `<h3>${data.title}</h3>
-                     <p>${data.description || ""}</p>
-                     <img src="${data.image}">
-                     <small>by ${data.user} | ${time.toLocaleString()}</small>`;
+    div.className = "post";
+    div.innerHTML = `
+      <h3>${data.title}</h3>
+      <p>${data.description || ""}</p>
+      ${data.image ? `<img src="${data.image}">` : ""}
+      <small>by ${data.user} | ${data.createdAt?.toDate ? data.createdAt.toDate().toLocaleString() : ""}</small>
+    `;
     postsContainer.appendChild(div);
   });
 }
 
+// Initial load
 loadPosts();
 </script>
 </body>
