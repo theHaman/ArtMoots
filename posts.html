@@ -101,9 +101,9 @@ button:hover { background: #222; }
 /* Posts Grid */
 .posts-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* ✅ grid layout */
+  grid-auto-flow: row;              /* ensures items fill left to right, then down */
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* adjust width */
   gap: 1rem;
-  justify-items: center;
 }
 
 .post {
@@ -111,8 +111,6 @@ button:hover { background: #222; }
   border-radius: 6px;
   border: 1px solid var(--border);
   width: 100%;
-  max-width: 200px;
-  padding: 0.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -120,11 +118,12 @@ button:hover { background: #222; }
 }
 
 .post img {
-  width: 100%;
-  height: auto;
+  width: 100%;   /* scales to the post width */
+  height: auto;  /* maintain aspect ratio */
   border-radius: 4px;
   margin-top: 0.3rem;
 }
+
 
 .post h3 {
   margin-bottom: 0.3rem;
