@@ -259,13 +259,15 @@ createPostForm.addEventListener("submit", async e => {
   if (!user) return alert("You must be signed in to post.");
   if (!imageUrl) return alert("Please wait for the image to load.");
 
-  await addDoc(collection(db, "posts"), {
-    user: user.displayName || "Anonymous",
-    title,
-    description: desc,
-    image: imageUrl,
-    createdAt: new Date()
-  });
+await addDoc(collection(db, "posts"), {
+  user: user.displayName || "Anonymous",
+  title,
+  description: desc,
+  image: imageUrl,
+  likes: 0,
+  views: 0,
+  createdAt: new Date()
+});
 
   createPostForm.reset();
   imageUrl = "";
