@@ -17,7 +17,6 @@
   --bg:#f7f7f7;
   --text:#111;
   --muted:#666;
-  --border:#dcdcdc;
   --purple:#caa6ff;
 }
 
@@ -100,8 +99,10 @@ header{
   font-size:1rem;
 }
 
-.search-icon{
-  font-size:1.2rem;
+.search-icon img{
+  width:20px;
+  height:20px;
+  object-fit:contain;
 }
 
 /* NAV */
@@ -255,8 +256,6 @@ main{
 .artist-card{
   min-width:260px;
 
-  border:1px solid #666;
-
   border-radius:16px;
 
   overflow:hidden;
@@ -310,21 +309,44 @@ main{
 }
 
 /* =========================
-   LARGE ARTWORK CARDS
+   POPULAR POSTS
 ========================= */
 
-.art-card{
-  min-width:420px;
+.popular-card{
 
-  height:340px;
+  min-width:420px;
 
   border-radius:18px;
 
-  background:#d2d2d2;
+  overflow:hidden;
 
-  border:1px solid #666;
+  background:white;
 
   flex-shrink:0;
+
+}
+
+.popular-card img{
+
+  width:100%;
+  height:280px;
+
+  object-fit:cover;
+
+  display:block;
+
+}
+
+.popular-info{
+
+  padding:1rem;
+
+}
+
+.popular-info h3{
+
+  margin-bottom:0.5rem;
+
 }
 
 /* =========================
@@ -358,6 +380,41 @@ main{
   cursor:pointer;
 }
 
+/* =========================
+   FRAMER BADGE
+========================= */
+
+.framer-badge{
+  position:fixed;
+
+  right:18px;
+  bottom:80px;
+
+  background:white;
+
+  border-radius:14px;
+
+  padding:0.9rem 1rem;
+
+  display:flex;
+  align-items:center;
+  gap:0.6rem;
+
+  font-size:0.9rem;
+  font-weight:500;
+
+  box-shadow:
+    0 10px 20px rgba(0,0,0,0.06);
+}
+
+.badge-icon{
+  width:16px;
+  height:16px;
+
+  background:black;
+
+  border-radius:4px;
+}
 
 /* =========================
    RESPONSIVE
@@ -393,9 +450,8 @@ main{
     flex-direction:column;
   }
 
-  .art-card{
+  .popular-card{
     min-width:300px;
-    height:240px;
   }
 
 }
@@ -415,7 +471,7 @@ main{
     <div class="search-bar">
 
       <div class="search-icon">
-        <img src="search-icon-png-1.png" style="width: 70px; height: 70px;">
+        <img src="img/search-icon-png-1.png">
       </div>
 
       <input
@@ -428,7 +484,7 @@ main{
     <nav>
 
       <a href="posts.html">
-        Gallary
+        Gallery
       </a>
 
       <a href="#">
@@ -468,7 +524,7 @@ main{
 
       </a>
 
-      <a href="#"
+      <a href="posts.html"
          class="hero-btn purple">
 
          Lets see some art!
@@ -495,8 +551,6 @@ main{
 
     <div class="horizontal-scroll">
 
-      <!-- CARD -->
-
       <div class="artist-card">
 
         <div class="artist-image"></div>
@@ -521,8 +575,6 @@ main{
 
       </div>
 
-      <!-- CARD -->
-
       <div class="artist-card">
 
         <div class="artist-image"></div>
@@ -546,34 +598,6 @@ main{
         </div>
 
       </div>
-
-      <!-- CARD -->
-
-      <div class="artist-card">
-
-        <div class="artist-image"></div>
-
-        <div class="artist-info">
-
-          <div class="artist-row">
-
-            <div class="artist-avatar"></div>
-
-            <div class="artist-lines">
-
-              <div class="artist-line"></div>
-
-              <div class="artist-line small"></div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      <!-- CARD -->
 
       <div class="artist-card">
 
@@ -611,12 +635,8 @@ main{
       Most Popular
     </h2>
 
-    <div class="horizontal-scroll">
-
-      <div class="art-card"></div>
-      <div class="art-card"></div>
-      <div class="art-card"></div>
-      <div class="art-card"></div>
+    <div class="horizontal-scroll"
+         id="popularPosts">
 
     </div>
 
@@ -624,6 +644,107 @@ main{
 
 </main>
 
+<!-- FLOATING BUTTON -->
+
+<div class="floating-button">
+  ✎
+</div>
+
+<!-- FRAMER BADGE -->
+
+<div class="framer-badge">
+
+  <div class="badge-icon"></div>
+
+  Made in Framer
+
+</div>
+
+<!-- FIREBASE -->
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  query,
+  orderBy,
+  limit
+}
+from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+/* FIREBASE CONFIG */
+
+const firebaseConfig = {
+
+  apiKey: "AIzaSyDMBb5n4Tyf9XLSHU_7CZ1obDlHjzrw258",
+
+  authDomain: "database-artmoots.firebaseapp.com",
+
+  projectId: "database-artmoots",
+
+  storageBucket: "database-artmoots.firebasestorage.app",
+
+  messagingSenderId: "1056886155154",
+
+  appId: "1:1056886155154:web:0de8b27263c11571ea034b"
+
+};
+
+const app = initializeApp(firebaseConfig);
+
+const db = getFirestore(app);
+
+/* LOAD MOST POPULAR POSTS */
+
+const popularContainer =
+  document.getElementById("popularPosts");
+
+async function loadPopularPosts(){
+
+  const q = query(
+    collection(db, "posts"),
+    orderBy("likes", "desc"),
+    limit(10)
+  );
+
+  const snapshot = await getDocs(q);
+
+  snapshot.forEach(doc => {
+
+    const data = doc.data();
+
+    const card = document.createElement("div");
+
+    card.className = "popular-card";
+
+    card.innerHTML = `
+
+      <img src="${data.image}">
+
+      <div class="popular-info">
+
+        <h3>${data.title}</h3>
+
+        <p>❤️ ${data.likes || 0}</p>
+
+      </div>
+
+    `;
+
+    popularContainer.appendChild(card);
+
+  });
+
+}
+
+loadPopularPosts();
+
+</script>
 
 </body>
 </html>
