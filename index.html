@@ -4,90 +4,584 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>ArtMoots</title>
+
 <style>
-:root {--bg:#f9f9f9;--text:#333;--accent:#111;--border:#ddd;--max-width:1000px;}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:"Segoe UI",Arial,sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;min-height:100vh;}
-header{background:white;border-bottom:1px solid var(--border);padding:1rem 0;}
-.header-container{max-width:var(--max-width);margin:0 auto;display:flex;justify-content:space-between;align-items:center;padding:0 1rem;}
-.logo{font-size:1.4rem;font-weight:bold;letter-spacing:0.5px;}
-nav a,#userDisplay{margin-left:1rem;text-decoration:none;color:var(--text);font-weight:500;padding:0.4rem 0.6rem;border-radius:4px;}
-nav a:hover{background:#eee;}
-main{flex:1;max-width:var(--max-width);margin:2rem auto;padding:0 1rem;}
-.hero{text-align:center;margin-bottom:3rem;}
+:root{
+  --bg:#f5f5f5;
+  --text:#222;
+  --accent:#111;
+  --border:#ddd;
+  --max-width:1200px;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:"Segoe UI",Arial,sans-serif;
+  background:linear-gradient(-45deg,#f7f7f7,#ececec,#ffffff,#f3f3f3);
+  background-size:400% 400%;
+  animation:bgMove 15s ease infinite;
+  color:var(--text);
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+header{
+  background:rgba(255,255,255,0.8);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border);
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+
+.header-container{
+  max-width:var(--max-width);
+  margin:0 auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:1rem;
+}
+
+.logo{
+  font-size:1.5rem;
+  font-weight:700;
+  letter-spacing:0.5px;
+}
+
+nav{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+}
+
+nav a,
+#userDisplay{
+  margin-left:1rem;
+  text-decoration:none;
+  color:var(--text);
+  font-weight:500;
+  padding:0.5rem 0.8rem;
+  border-radius:8px;
+  transition:0.25s;
+}
+
+nav a:hover{
+  background:#eee;
+  transform:translateY(-2px);
+}
+
+/* =========================
+   MAIN
+========================= */
+
+main{
+  flex:1;
+  width:100%;
+  max-width:var(--max-width);
+  margin:2rem auto;
+  padding:0 1rem;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+  position:relative;
+  overflow:hidden;
+  background:rgba(255,255,255,0.75);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,0.6);
+  border-radius:28px;
+  padding:7rem 2rem;
+  text-align:center;
+  box-shadow:0 15px 40px rgba(0,0,0,0.08);
+  margin-bottom:3rem;
+}
+
+.hero::before{
+  content:"";
+  position:absolute;
+  width:400px;
+  height:400px;
+  background:radial-gradient(circle,#dcdcdc,transparent 70%);
+  top:-120px;
+  left:-120px;
+  animation:float1 8s ease-in-out infinite alternate;
+}
+
+.hero::after{
+  content:"";
+  position:absolute;
+  width:350px;
+  height:350px;
+  background:radial-gradient(circle,#cfcfcf,transparent 70%);
+  bottom:-120px;
+  right:-120px;
+  animation:float2 10s ease-in-out infinite alternate;
+}
+
+.hero-content{
+  position:relative;
+  z-index:2;
+}
+
+.hero h1{
+  font-size:5rem;
+  margin-bottom:1rem;
+  letter-spacing:1px;
+}
+
+.hero p{
+  max-width:700px;
+  margin:0 auto 2rem;
+  font-size:1.2rem;
+  line-height:1.8;
+  color:#555;
+}
+
+.hero-buttons{
+  display:flex;
+  justify-content:center;
+  gap:1rem;
+  flex-wrap:wrap;
+}
+
+.hero-btn{
+  padding:1rem 1.6rem;
+  border-radius:14px;
+  text-decoration:none;
+  font-weight:600;
+  transition:0.3s;
+}
+
+.hero-btn.primary{
+  background:#111;
+  color:white;
+}
+
+.hero-btn.primary:hover{
+  transform:translateY(-4px);
+  box-shadow:0 10px 20px rgba(0,0,0,0.15);
+}
+
+.hero-btn.secondary{
+  background:white;
+  border:1px solid var(--border);
+  color:#111;
+}
+
+.hero-btn.secondary:hover{
+  background:#f3f3f3;
+  transform:translateY(-4px);
+}
+
+/* =========================
+   FEATURES
+========================= */
+
+.features{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:1.5rem;
+  margin-bottom:3rem;
+}
+
+.feature-card{
+  background:rgba(255,255,255,0.75);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,0.7);
+  border-radius:20px;
+  padding:2rem;
+  transition:0.3s;
+  box-shadow:0 10px 25px rgba(0,0,0,0.05);
+}
+
+.feature-card:hover{
+  transform:translateY(-8px);
+  box-shadow:0 15px 35px rgba(0,0,0,0.1);
+}
+
+.feature-card h3{
+  margin-bottom:1rem;
+  font-size:1.3rem;
+}
+
+.feature-card p{
+  color:#666;
+  line-height:1.6;
+}
+
+/* =========================
+   SHOWCASE
+========================= */
+
+.showcase{
+  margin-top:4rem;
+}
+
+.showcase h2{
+  text-align:center;
+  margin-bottom:2rem;
+  font-size:2rem;
+}
+
+.showcase-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:1.5rem;
+}
+
+.showcase-card{
+  overflow:hidden;
+  border-radius:20px;
+  position:relative;
+  height:320px;
+  background:white;
+  border:1px solid var(--border);
+  transition:0.3s;
+}
+
+.showcase-card:hover{
+  transform:translateY(-8px);
+}
+
+.showcase-card img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:0.4s;
+}
+
+.showcase-card:hover img{
+  transform:scale(1.08);
+}
+
+.showcase-overlay{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top,rgba(0,0,0,0.7),transparent);
+  display:flex;
+  align-items:flex-end;
+  padding:1.5rem;
+  color:white;
+  font-weight:600;
+  font-size:1.1rem;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+  text-align:center;
+  padding:2rem;
+  color:#666;
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes bgMove{
+  0%{
+    background-position:0% 50%;
+  }
+
+  50%{
+    background-position:100% 50%;
+  }
+
+  100%{
+    background-position:0% 50%;
+  }
+}
+
+@keyframes float1{
+  from{
+    transform:translateY(0px);
+  }
+
+  to{
+    transform:translateY(-30px);
+  }
+}
+
+@keyframes float2{
+  from{
+    transform:translateY(0px);
+  }
+
+  to{
+    transform:translateY(25px);
+  }
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:768px){
+
+  .hero h1{
+    font-size:3rem;
+  }
+
+  .hero{
+    padding:5rem 1.5rem;
+  }
+
+  nav{
+    justify-content:center;
+  }
+
+}
 </style>
 </head>
+
 <body>
 
 <header>
   <div class="header-container">
+
     <div class="logo">ArtMoots</div>
+
     <nav>
       <a href="index.html">Home</a>
       <a href="posts.html">Posts</a>
       <a href="moots.html">Moots</a>
       <a href="help.html">Help</a>
+
       <span id="userDisplay"></span>
-      <a class="btn" id="myAccountBtn" href="#" style="display:none;">My Account</a>
-      <a class="btn" id="signInBtn" href="#">Sign In</a>
-      <a class="btn" id="signUpBtn" href="#">Sign Up</a>
-      <a class="btn" id="logoutBtn" href="#" style="display:none;">Logout</a>
+
+      <a id="myAccountBtn" href="#" style="display:none;">
+        My Account
+      </a>
+
+      <a id="signInBtn" href="#">
+        Sign In
+      </a>
+
+      <a id="signUpBtn" href="#">
+        Sign Up
+      </a>
+
+      <a id="logoutBtn" href="#" style="display:none;">
+        Logout
+      </a>
     </nav>
+
   </div>
 </header>
 
 <main>
-  <div class="hero">
-    <h1>Welcome to ArtMoots</h1>
-    <p>A simple place where artists and visitors can connect, share, and appreciate art.</p>
-  </div>
+
+  <!-- HERO -->
+
+  <section class="hero">
+
+    <div class="hero-content">
+
+      <h1>ArtMoots</h1>
+
+      <p>
+        A creative social space where artists share artwork,
+        discover inspiration, and connect with moots around the world.
+      </p>
+
+      <div class="hero-buttons">
+
+        <a href="posts.html" class="hero-btn primary">
+          Explore Posts
+        </a>
+
+        <a href="moots.html" class="hero-btn secondary">
+          Find Moots
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- FEATURES -->
+
+  <section class="features">
+
+    <div class="feature-card">
+      <h3>🎨 Share Artwork</h3>
+
+      <p>
+        Upload illustrations, sketches, paintings,
+        digital art, and creative projects.
+      </p>
+    </div>
+
+    <div class="feature-card">
+      <h3>👥 Meet Artists</h3>
+
+      <p>
+        Connect with artists who share your style,
+        interests, and creative energy.
+      </p>
+    </div>
+
+    <div class="feature-card">
+      <h3>✨ Discover Inspiration</h3>
+
+      <p>
+        Explore artwork from the community
+        and discover new creative ideas daily.
+      </p>
+    </div>
+
+  </section>
+
+  <!-- SHOWCASE -->
+
+  <section class="showcase">
+
+    <h2>Featured Inspiration</h2>
+
+    <div class="showcase-grid">
+
+      <div class="showcase-card">
+        <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=1200&auto=format&fit=crop" alt="">
+        <div class="showcase-overlay">
+          Digital Illustration
+        </div>
+      </div>
+
+      <div class="showcase-card">
+        <img src="https://images.unsplash.com/photo-1515405295579-ba7b45403062?q=80&w=1200&auto=format&fit=crop" alt="">
+        <div class="showcase-overlay">
+          Traditional Painting
+        </div>
+      </div>
+
+      <div class="showcase-card">
+        <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=1200&auto=format&fit=crop" alt="">
+        <div class="showcase-overlay">
+          Creative Workspace
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
 </main>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+<footer>
+  © 2026 ArtMoots — Share Creativity With The World
+</footer>
 
-// Firebase config
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+/* =========================
+   FIREBASE
+========================= */
+
 const firebaseConfig = {
-  apiKey: "AIzaSyDMBb5n4Tyf9XLSHU_7CZ1obDlHjzrw258",
+
+  apiKey: "YOUR_API_KEY",
+
   authDomain: "database-artmoots.firebaseapp.com",
+
   projectId: "database-artmoots",
-  storageBucket: "database-artmoots.firebasestorage.app",
+
+  storageBucket: "database-artmoots.appspot.com",
+
   messagingSenderId: "1056886155154",
+
   appId: "1:1056886155154:web:0de8b27263c11571ea034b",
+
   measurementId: "G-YX4MMZS1JB"
 };
+
 const app = initializeApp(firebaseConfig);
+
 const auth = getAuth(app);
 
-// Header login system
+/* =========================
+   NAVIGATION AUTH
+========================= */
+
 const userDisplay = document.getElementById("userDisplay");
+
 const myAccountBtn = document.getElementById("myAccountBtn");
+
 const logoutBtn = document.getElementById("logoutBtn");
+
 const signInBtn = document.getElementById("signInBtn");
+
 const signUpBtn = document.getElementById("signUpBtn");
 
 onAuthStateChanged(auth, user => {
+
   if(user){
-    userDisplay.textContent = user.displayName || "Anonymous";
+
+    userDisplay.textContent =
+      user.displayName || "Anonymous";
+
     myAccountBtn.style.display = "inline-block";
+
     logoutBtn.style.display = "inline-block";
+
     signInBtn.style.display = "none";
+
     signUpBtn.style.display = "none";
-    myAccountBtn.href = "account.html?mode=account";
+
+    myAccountBtn.href =
+      "account.html?mode=account";
+
   } else {
+
     userDisplay.textContent = "";
+
     myAccountBtn.style.display = "none";
+
     logoutBtn.style.display = "none";
+
     signInBtn.style.display = "inline-block";
+
     signUpBtn.style.display = "inline-block";
+
     const returnURL = window.location.href;
-    signInBtn.href = `account.html?mode=login&return=${encodeURIComponent(returnURL)}`;
-    signUpBtn.href = `account.html?mode=signup&return=${encodeURIComponent(returnURL)}`;
+
+    signInBtn.href =
+      `account.html?mode=login&return=${encodeURIComponent(returnURL)}`;
+
+    signUpBtn.href =
+      `account.html?mode=signup&return=${encodeURIComponent(returnURL)}`;
   }
+
 });
 
-logoutBtn.addEventListener("click",()=> signOut(auth));
+logoutBtn.addEventListener("click", () => {
+  signOut(auth);
+});
+
 </script>
 
 </body>
