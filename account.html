@@ -5,54 +5,136 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ArtMoots Auth</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-body{
-  font-family:Inter;
-  background:#f7f7f7;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.card{
-  width:420px;
-  background:white;
-  padding:2rem;
-  border-radius:20px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.08);
+body {
+  font-family: 'Inter', sans-serif;
+  background: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 2rem;
 }
 
-input,textarea{
-  width:100%;
-  padding:1rem;
-  margin-top:0.7rem;
-  border:none;
-  background:#eee;
-  border-radius:12px;
+.card {
+  width: 100%;
+  max-width: 920px;
+  background: white;
+  padding: 3rem 2.5rem;
+  border-radius: 12px;
+  border: 1px solid #f0f0f0;
+  box-shadow: 0 15px 45px rgba(0,0,0,0.06);
 }
 
-button{
-  width:100%;
-  margin-top:1rem;
-  padding:1rem;
-  border:none;
-  border-radius:12px;
-  background:black;
-  color:white;
-  font-weight:600;
-  cursor:pointer;
+h2 {
+  font-size: 2.2rem;
+  font-weight: 500;
+  color: #000000;
+  margin-bottom: 1.5rem;
 }
 
-.hidden{display:none;}
+/* INPUTS & TEXTAREA */
+input, textarea {
+  width: 100%;
+  padding: 0.9rem 1.2rem;
+  margin-bottom: 0.8rem;
+  border: 1px solid #111111;
+  background: #ffffff;
+  border-radius: 14px;
+  font-size: 1rem;
+  color: #111111;
+  outline: none;
+}
 
-.switch{
-  margin-top:1rem;
-  text-align:center;
-  cursor:pointer;
-  color:#555;
+input::placeholder, textarea::placeholder {
+  color: #999999;
+}
+
+textarea {
+  height: 100px;
+  resize: none;
+  font-family: inherit;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* SIGN UP HEADER SKELETON PREVIEW */
+.profile-preview-skeleton {
+  width: 100%;
+  height: 80px;
+  background: #e5e5e5;
+  border-radius: 16px;
+  margin-bottom: 1.5rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.avatar-skeleton {
+  width: 64px;
+  height: 64px;
+  background: #e5e5e5;
+  border: 4px solid #ffffff;
+  border-radius: 50%;
+  position: absolute;
+  left: 12px;
+  bottom: -12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* BUTTONS */
+.btn-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 1rem;
+  margin-bottom: 1.2rem;
+}
+
+button {
+  width: 140px;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 14px;
+  background: #000000;
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+.hidden {
+  display: none;
+}
+
+/* REDIRECT FOOTER TEXT */
+.switch {
+  text-align: center;
+  font-size: 1rem;
+  color: #000000;
+}
+
+.switch span {
+  color: #53a6ff;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.switch span:hover {
+  text-decoration: underline;
 }
 </style>
 </head>
@@ -61,30 +143,36 @@ button{
 
 <div class="card">
 
-  <!-- SIGN UP -->
   <form id="signup">
-    <h2>Create Account</h2>
+    <h2>Sign Up</h2>
+    
+    <div class="profile-preview-skeleton">
+      <div class="avatar-skeleton"></div>
+    </div>
 
+    <textarea id="bio" placeholder="Talk about yourself..&#10;(what do you do,&#10;what art do you make, how are you&#10;today?)"></textarea>
     <input id="name" placeholder="Username" required>
-    <textarea id="bio" placeholder="Bio"></textarea>
-    <input id="email" placeholder="Email" required>
+    <input id="email" type="email" placeholder="Email" required>
     <input id="password" type="password" placeholder="Password" required>
 
-    <button type="submit">Create Account</button>
+    <div class="btn-container">
+      <button type="submit">Log in</button>
+    </div>
 
-    <div class="switch" onclick="showLogin()">Already have an account?</div>
+    <div class="switch">Have an Account? <span onclick="showLogin()">Login!</span></div>
   </form>
 
-  <!-- LOGIN -->
   <form id="login" class="hidden">
     <h2>Login</h2>
 
-    <input id="loginEmail" placeholder="Email" required>
+    <input id="loginEmail" type="email" placeholder="Email" required>
     <input id="loginPassword" type="password" placeholder="Password" required>
 
-    <button type="submit">Login</button>
+    <div class="btn-container">
+      <button type="submit">Log in</button>
+    </div>
 
-    <div class="switch" onclick="showSignup()">Create account</div>
+    <div class="switch">No account? <span onclick="showSignup()">make one here!</span></div>
   </form>
 
 </div>
@@ -107,7 +195,7 @@ import {
   getDoc
 } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-/* FIREBASE */
+/* FIREBASE INITIALIZATION */
 const app = initializeApp({
   apiKey: "AIzaSyDMBb5n4Tyf9XLSHU_7CZ1obDlHjzrw258",
   authDomain: "database-artmoots.firebaseapp.com",
@@ -117,11 +205,11 @@ const app = initializeApp({
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-/* ELEMENTS */
+/* DOM ELEMENTS */
 const signupForm = document.getElementById("signup");
 const loginForm = document.getElementById("login");
 
-/* UI SWITCH */
+/* INTERFACE VIEW ROUTER */
 window.showLogin = () => {
   signupForm.classList.add("hidden");
   loginForm.classList.remove("hidden");
@@ -133,7 +221,7 @@ window.showSignup = () => {
 };
 
 /* =========================
-   SIGNUP
+   SIGNUP PROCESS
 ========================= */
 signupForm.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -144,7 +232,6 @@ signupForm.addEventListener("submit", async (e) => {
   const password = document.getElementById("password").value;
 
   try {
-
     const cred = await createUserWithEmailAndPassword(auth, email, password);
 
     await updateProfile(cred.user, {
@@ -162,16 +249,14 @@ signupForm.addEventListener("submit", async (e) => {
       following: 0
     });
 
-    // Firebase handles session automatically
     window.location.href = "index.html";
-
   } catch (err) {
     alert(err.message);
   }
 });
 
 /* =========================
-   LOGIN (FIXED CLEAN FLOW)
+   LOGIN PROCESS
 ========================= */
 loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -180,19 +265,15 @@ loginForm.addEventListener("submit", async (e) => {
   const password = document.getElementById("loginPassword").value;
 
   try {
-
     await signInWithEmailAndPassword(auth, email, password);
-
-    // IMPORTANT: Firebase session is already active
     window.location.href = "index.html";
-
   } catch (err) {
     alert(err.message);
   }
 });
 
 /* =========================
-   SESSION CHECK
+   ACTIVE ACCOUNT STATE LISTENER
 ========================= */
 onAuthStateChanged(auth, async (user) => {
   if (!user) return;
