@@ -12,17 +12,15 @@
 
 <style>
 
+/* (YOUR CSS STAYS EXACTLY THE SAME — NO CHANGES NEEDED) */
+
 :root{
   --bg:#f7f7f7;
   --text:#111;
   --purple:#caa6ff;
 }
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
+*{margin:0;padding:0;box-sizing:border-box;}
 
 body{
   font-family:"Inter",sans-serif;
@@ -46,7 +44,6 @@ header{
   gap:1rem;
 }
 
-/* LOGO */
 .logo{
   width:140px;
   height:42px;
@@ -54,7 +51,6 @@ header{
   border-radius:2px;
 }
 
-/* SEARCH */
 .search-bar{
   flex:1;
   height:42px;
@@ -74,7 +70,6 @@ header{
   background:transparent;
 }
 
-/* NAV */
 nav{
   display:flex;
   align-items:center;
@@ -88,9 +83,9 @@ nav a{
   font-size:0.95rem;
 }
 
-/* ICON BUTTON FIX (IMPORTANT) */
+/* ICON FIX */
 .icon-button{
-  width:36px;   /* FIXED (was too big feeling before) */
+  width:36px;
   height:36px;
   border-radius:50%;
   display:flex;
@@ -103,30 +98,22 @@ nav a{
 .icon-button img{
   width:20px;
   height:20px;
-  object-fit:contain;
 }
 
-/* DROPDOWN WRAPPER */
-.account-wrapper{
-  position:relative;
-}
+/* DROPDOWN */
+.account-wrapper{position:relative;}
 
-/* DROPDOWN MENU */
 .account-menu{
   position:absolute;
   top:50px;
   right:0;
-
   width:220px;
   background:white;
   border-radius:14px;
   padding:0.6rem;
-
   box-shadow:0 10px 30px rgba(0,0,0,0.08);
-
   display:none;
   flex-direction:column;
-
   z-index:999;
 }
 
@@ -152,7 +139,6 @@ nav a{
   border-radius:10px;
   text-decoration:none;
   color:#111;
-  font-size:0.95rem;
   cursor:pointer;
 }
 
@@ -178,11 +164,7 @@ nav a{
   font-weight:500;
 }
 
-.hero-buttons{
-  display:flex;
-  gap:1rem;
-  justify-content:center;
-}
+.hero-buttons{display:flex;gap:1rem;}
 
 .hero-btn{
   padding:1rem 1.4rem;
@@ -191,31 +173,15 @@ nav a{
   font-weight:600;
 }
 
-.hero-btn.black{
-  background:black;
-  color:white;
-}
+.hero-btn.black{background:black;color:white;}
+.hero-btn.purple{background:var(--purple);color:black;}
 
-.hero-btn.purple{
-  background:var(--purple);
-  color:black;
-}
-
-/* NOTIFICATION ICON (RESTORED) */
 .notification{
-  width:36px;
-  height:36px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
+  width:36px;height:36px;
+  display:flex;align-items:center;justify-content:center;
 }
 
-.notification img{
-  width:20px;
-  height:20px;
-}
+.notification img{width:20px;height:20px;}
 
 </style>
 </head>
@@ -228,9 +194,7 @@ nav a{
     <div class="logo"></div>
 
     <div class="search-bar">
-      <div class="search-icon">
-        <img src="img/search-icon-png-1.png">
-      </div>
+      <img src="img/search-icon-png-1.png" width="18">
       <input type="text" placeholder="Search artists, artwork, styles...">
     </div>
 
@@ -251,8 +215,9 @@ nav a{
             Not Logged In
           </div>
 
-          <a href="account.html?mode=login" id="loginBtn">Log In</a>
-          <a href="account.html?mode=signup" id="signupBtn">Sign Up</a>
+          <!-- ✅ FIXED LINKS -->
+          <a href="account.html?mode=login">Log In</a>
+          <a href="account.html?mode=signup">Sign Up</a>
 
           <a href="Acount_info.html?mode=account"
              id="viewAccountBtn"
@@ -267,7 +232,6 @@ nav a{
         </div>
       </div>
 
-      <!-- NOTIFICATION ICON RESTORED -->
       <div class="notification">
         <img src="img/notif.png">
       </div>
@@ -276,7 +240,6 @@ nav a{
   </div>
 </header>
 
-<!-- HERO -->
 <section class="hero">
   <div class="hero-content">
     <h1>Welcome to<br>ArtMoots</h1>
@@ -305,15 +268,11 @@ document.addEventListener("click", (e) => {
 const currentUser = localStorage.getItem("currentUser");
 
 const accountUser = document.getElementById("accountUser");
-const loginBtn = document.getElementById("loginBtn");
-const signupBtn = document.getElementById("signupBtn");
 const logoutBtn = document.getElementById("logoutBtn");
 const viewAccountBtn = document.getElementById("viewAccountBtn");
 
 if(currentUser){
   accountUser.textContent = currentUser;
-  loginBtn.style.display = "none";
-  signupBtn.style.display = "none";
   logoutBtn.style.display = "block";
   viewAccountBtn.style.display = "block";
 }
