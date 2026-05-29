@@ -12,13 +12,13 @@ ACCOUNT.HTML
 <title>ArtMoots - Account</title>
 
 <link rel="preconnect"
-      href="https://googleapis.com">
+      href="https://fonts.googleapis.com">
 
 <link rel="preconnect"
-      href="https://gstatic.com"
+      href="https://fonts.gstatic.com"
       crossorigin>
 
-<link href="https://googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
       rel="stylesheet">
 
 <style>
@@ -321,7 +321,7 @@ nav a{
 
     <nav>
 
-      <a href="account.html">
+      <a href="index.html">
         Home
       </a>
 
@@ -342,7 +342,7 @@ nav a{
   <div class="banner">
 
     <img id="bannerPreview"
-         src="https://placehold.co">
+         src="https://placehold.co/1200x300">
 
   </div>
 
@@ -353,7 +353,7 @@ nav a{
     <div class="pfp">
 
       <img id="pfpPreview"
-           src="https://placehold.co">
+           src="https://placehold.co/200">
 
     </div>
 
@@ -461,13 +461,13 @@ nav a{
 <script type="module">
 
 import { initializeApp }
-from "https://gstatic.com";
+from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
 
 import {
   getAuth,
   onAuthStateChanged
 }
-from "https://gstatic.com";
+from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
 import {
 
@@ -488,7 +488,7 @@ import {
   getDocs
 
 }
-from "https://gstatic.com";
+from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
 /* FIREBASE */
 
@@ -496,7 +496,7 @@ const firebaseConfig = {
 
   apiKey: "AIzaSyDMBb5n4Tyf9XLSHU_7CZ1obDlHjzrw258",
 
-  authDomain: "://firebaseapp.com",
+  authDomain: "database-artmoots.firebaseapp.com",
 
   projectId: "database-artmoots",
 
@@ -589,25 +589,6 @@ function fileToBase64(file){
 
 }
 
-/* USER POST GALLERY LOADER */
-async function loadUserPosts(uid) {
-  if (!userPosts) return;
-  userPosts.innerHTML = "";
-  try {
-    const q = query(collection(db, "posts"), where("userId", "==", uid));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      const data = doc.data();
-      const postEl = document.createElement("div");
-      postEl.className = "post";
-      postEl.innerHTML = `<img src="${data.imageUrl || 'https://placehold.co'}" alt="Artwork">`;
-      userPosts.appendChild(postEl);
-    });
-  } catch (error) {
-    console.error("Error loading user artwork elements:", error);
-  }
-}
-
 /* LOAD USER */
 
 onAuthStateChanged(auth,
@@ -615,7 +596,7 @@ async user => {
 
   if(!user){
 
-    location.href = "account.html"; // Redirects to your login page file name
+    location.href = "index.html";
 
     return;
 
@@ -639,10 +620,10 @@ async user => {
       data.bio || "No bio yet.";
 
     pfpPreview.src =
-      data.pfp || "https://placehold.co";
+      data.pfp || "https://placehold.co/200";
 
     bannerPreview.src =
-      data.banner || "https://placehold.co";
+      data.banner || "https://placehold.co/1200x300";
 
     followersCount.textContent =
       data.followers || 0;
@@ -677,8 +658,7 @@ saveProfile.onclick = async () => {
   let banner =
     bannerPreview.src;
 
-  // FIXED: Targets the actual single file wrapper object [0] inside the array list 
-  if(pfpInput.files && pfpInput.files[0]){
+  if(pfpInput.files[0]){
 
     pfp =
       await fileToBase64(
@@ -687,8 +667,7 @@ saveProfile.onclick = async () => {
 
   }
 
-  // FIXED: Targets the actual single file wrapper object [0] inside the array list 
-  if(bannerInput.files && bannerInput.files[0]){
+  if(bannerInput.files[0]){
 
     banner =
       await fileToBase64(
@@ -697,20 +676,76 @@ saveProfile.onclick = async () => {
 
   }
 
-  try {
-    await setDoc(doc(db, "users", user.uid), {
-      username: usernameInput.value,
-      bio: bioInput.value,
-      pfp: pfp,
-      banner: banner
-    }, { merge: true });
+  await setDoc(doc(db,"users",user.uid),{
 
-    alert("Profile saved successfully!");
-    location.reload();
-  } catch (error) {
-    console.error("Error saving document changes:", error);
-  }
+    uid:user.uid,
+
+    username:
+      usernameInput.value,
+
+    bio:
+      bioInput.value,
+
+    pfp,
+
+    banner,
+
+    followers:0,
+
+    following:0
+
+  });
+
+  location.reload();
+
 };
+
+/* USER POSTS */
+
+async function loadUserPosts(uid){
+
+  const q = query(
+
+    collection(db,"posts"),
+
+    where("uid","==",uid)
+
+  );
+
+  const snapshot =
+    await getDocs(q);
+
+  snapshot.forEach(postDoc => {
+
+    const data =
+      postDoc.data();
+
+    const div =
+      document.createElement("div");
+
+    div.className = "post";
+
+    div.innerHTML = `
+
+      <img src="${data.image}">
+
+      <div class="post-content">
+
+        <h3>
+          ${data.title}
+        </h3>
+
+      </div>
+
+    `;
+
+    userPosts.appendChild(div);
+
+  });
+
+}
+
 </script>
+
 </body>
 </html>
