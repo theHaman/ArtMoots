@@ -1,5 +1,5 @@
 <!-- =========================================================
-ACCOUNT.HTML
+ACCOUNT.HTML (FIXED VERSION)
 ========================================================= -->
 
 <!DOCTYPE html>
@@ -15,6 +15,7 @@ ACCOUNT.HTML
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
   <style>
+    /* Your existing styles remain the same */
     :root{
       --bg:#f7f7f7;
       --text:#111;
@@ -27,7 +28,6 @@ ACCOUNT.HTML
       color:var(--text);
     }
 
-    /* HEADER */
     header{ padding:1rem; background:white; }
     .header-container{
       display:flex; align-items:center; justify-content:space-between;
@@ -35,7 +35,6 @@ ACCOUNT.HTML
     nav{ display:flex; gap:1rem; }
     nav a{ text-decoration:none; color:#111; }
 
-    /* PROFILE */
     .profile{
       max-width:1100px;
       margin:auto;
@@ -129,6 +128,20 @@ ACCOUNT.HTML
 
     .post img{ width:100%; display:block; }
     .post-content{ padding:1rem; }
+    
+    .loading {
+      text-align: center;
+      padding: 2rem;
+      color: #666;
+    }
+    
+    .no-posts {
+      text-align: center;
+      padding: 2rem;
+      color: #666;
+      background: white;
+      border-radius: 20px;
+    }
   </style>
 </head>
 
@@ -146,19 +159,17 @@ ACCOUNT.HTML
 
 <div class="profile">
 
-  <!-- BANNER -->
   <div class="banner">
     <img id="bannerPreview" src="https://placehold.co/1200x300" />
   </div>
 
-  <!-- PROFILE INFO -->
   <div class="profile-info">
     <div class="pfp">
       <img id="pfpPreview" src="https://placehold.co/200" />
     </div>
 
-    <h1 id="profileName">Artist</h1>
-    <p class="bio" id="profileBio">No bio yet.</p>
+    <h1 id="profileName">Loading...</h1>
+    <p class="bio" id="profileBio"></p>
 
     <div class="stats">
       <div>
@@ -173,9 +184,7 @@ ACCOUNT.HTML
 
     <button class="edit-btn" id="toggleEdit">Edit Profile</button>
 
-    <!-- EDIT PROFILE -->
     <div class="edit-section" id="editSection" style="display:none;">
-
       <input type="text" id="usernameInput" placeholder="Username" />
       <textarea id="bioInput" placeholder="Bio"></textarea>
 
@@ -185,16 +194,16 @@ ACCOUNT.HTML
       <label>Banner Image</label>
       <input type="file" id="bannerInput" accept="image/*" />
 
-      <!-- optional: status text -->
       <div id="saveStatus" style="margin: 0.5rem 0 1rem; color:#666;"></div>
 
       <button class="save-btn" id="saveProfile">Save Profile</button>
     </div>
 
-    <!-- USER POSTS -->
     <div class="user-posts">
       <h2>My Artwork</h2>
-      <div class="posts-grid" id="userPosts"></div>
+      <div class="posts-grid" id="userPosts">
+        <div class="loading">Loading your artwork...</div>
+      </div>
     </div>
 
   </div>
@@ -211,13 +220,11 @@ ACCOUNT.HTML
     collection,
     query,
     where,
-    getDocs
+    getDocs,
+    orderBy
   } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-
-  // ✅ Storage (the fix)
   import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-storage.js";
 
-  /* FIREBASE */
   const firebaseConfig = {
     apiKey: "AIzaSyDMBb5n4Tyf9XLSHU_7CZ1obDlHjzrw258",
     authDomain: "database-artmoots.firebaseapp.com",
@@ -230,8 +237,6 @@ ACCOUNT.HTML
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
-
-  // ✅ init storage
   const storage = getStorage(app);
 
   /* ELEMENTS */
@@ -259,9 +264,7 @@ ACCOUNT.HTML
     editSection.style.display = (editSection.style.display === "none") ? "block" : "none";
   };
 
-  /* IMAGE PREVIEW (does NOT save blob URLs) */
-  // We preview using base64 (your original approach), so Firestore won’t end up with blob: URLs.
-  function fileToBase64(file){
+  function fileToBase64(file) {
     return new Promise((resolve) => {
       const reader = new FileReader();
       reader.onload = () => resolve(reader.result);
@@ -281,43 +284,76 @@ ACCOUNT.HTML
     bannerPreview.src = await fileToBase64(file);
   });
 
-  /* LOAD USER */
+  /* FIXED: LOAD USER WITH BETTER ERROR HANDLING */
   onAuthStateChanged(auth, async (user) => {
-    if(!user){
+    if (!user) {
+      console.log("No user logged in, redirecting...");
       location.href = "index.html";
       return;
     }
 
-    const userRef = doc(db, "users", user.uid);
-    const userSnap = await getDoc(userRef);
+    console.log("User logged in:", user.uid);
 
-    if(userSnap.exists()){
-      const data = userSnap.data();
+    try {
+      const userRef = doc(db, "users", user.uid);
+      const userSnap = await getDoc(userRef);
 
-      profileName.textContent = data.username || "Artist";
-      profileBio.textContent = data.bio || "No bio yet.";
+      if (userSnap.exists()) {
+        const data = userSnap.data();
+        console.log("User data loaded:", data);
 
-      // These should be stable URLs (Storage download URLs)
-      pfpPreview.src = data.pfp || "https://placehold.co/200";
-      bannerPreview.src = data.banner || "https://placehold.co/1200x300";
+        profileName.textContent = data.username || "Artist";
+        profileBio.textContent = data.bio || "No bio yet.";
 
-      followersCount.textContent = data.followers || 0;
-      followingCount.textContent = data.following || 0;
+        // Set image URLs
+        if (data.pfp && data.pfp !== "https://placehold.co/200") {
+          pfpPreview.src = data.pfp;
+        }
+        if (data.banner && data.banner !== "https://placehold.co/1200x300") {
+          bannerPreview.src = data.banner;
+        }
 
-      usernameInput.value = data.username || "";
-      bioInput.value = data.bio || "";
+        followersCount.textContent = data.followers || 0;
+        followingCount.textContent = data.following || 0;
+
+        usernameInput.value = data.username || "";
+        bioInput.value = data.bio || "";
+      } else {
+        console.log("Creating new user document...");
+        // Create initial user document
+        await setDoc(userRef, {
+          uid: user.uid,
+          username: user.email?.split('@')[0] || "Artist",
+          bio: "No bio yet.",
+          pfp: "https://placehold.co/200",
+          banner: "https://placehold.co/1200x300",
+          followers: 0,
+          following: 0
+        });
+        // Reload to show new data
+        location.reload();
+      }
+
+      // Load user posts
+      await loadUserPosts(user.uid);
+      
+    } catch (error) {
+      console.error("Error loading user data:", error);
+      profileName.textContent = "Error loading profile";
     }
-
-    loadUserPosts(user.uid);
   });
 
-  /* SAVE PROFILE (upload to Storage, store download URL in Firestore) */
+  /* FIXED: SAVE PROFILE */
   saveProfile.onclick = async () => {
     const user = auth.currentUser;
-    if(!user) return;
+    if (!user) {
+      alert("You must be logged in to save profile changes");
+      return;
+    }
 
-    try{
+    try {
       saveStatus.textContent = "Saving...";
+      saveStatus.style.color = "#666";
 
       let pfpUrl = null;
       let bannerUrl = null;
@@ -325,69 +361,106 @@ ACCOUNT.HTML
       // Upload PFP if user selected a new file
       if (pfpInput.files[0]) {
         const file = pfpInput.files[0];
-        const pfpRef = ref(storage, `users/${user.uid}/pfp/${file.name}`);
+        const timestamp = Date.now();
+        const pfpRef = ref(storage, `users/${user.uid}/pfp_${timestamp}.jpg`);
         await uploadBytes(pfpRef, file);
         pfpUrl = await getDownloadURL(pfpRef);
+        console.log("PFP uploaded:", pfpUrl);
       }
 
       // Upload Banner if user selected a new file
       if (bannerInput.files[0]) {
         const file = bannerInput.files[0];
-        const bannerRef = ref(storage, `users/${user.uid}/banner/${file.name}`);
+        const timestamp = Date.now();
+        const bannerRef = ref(storage, `users/${user.uid}/banner_${timestamp}.jpg`);
         await uploadBytes(bannerRef, file);
         bannerUrl = await getDownloadURL(bannerRef);
+        console.log("Banner uploaded:", bannerUrl);
       }
 
-      // Keep existing URLs if user didn't select new files
-      // (We take them from the preview which currently holds the existing stored URLs)
-      if (!pfpUrl) pfpUrl = pfpPreview.src;
-      if (!bannerUrl) bannerUrl = bannerPreview.src;
+      // Get current user data to preserve existing values
+      const userRef = doc(db, "users", user.uid);
+      const userSnap = await getDoc(userRef);
+      const currentData = userSnap.exists() ? userSnap.data() : {};
 
-      await setDoc(doc(db, "users", user.uid), {
+      // Update user document
+      await setDoc(userRef, {
         uid: user.uid,
-        username: usernameInput.value,
-        bio: bioInput.value,
-        pfp: pfpUrl,
-        banner: bannerUrl,
-        followers: 0,
-        following: 0
+        username: usernameInput.value || currentData.username || "Artist",
+        bio: bioInput.value || currentData.bio || "No bio yet.",
+        pfp: pfpUrl || currentData.pfp || "https://placehold.co/200",
+        banner: bannerUrl || currentData.banner || "https://placehold.co/1200x300",
+        followers: currentData.followers || 0,
+        following: currentData.following || 0
       });
 
-      saveStatus.textContent = "Saved!";
-      location.reload();
-    }catch(err){
+      saveStatus.textContent = "Saved! Redirecting...";
+      saveStatus.style.color = "green";
+      
+      // Reload page after short delay to show updated data
+      setTimeout(() => {
+        location.reload();
+      }, 1000);
+      
+    } catch (err) {
       console.error("Save failed:", err);
-      saveStatus.textContent = "Save failed. Check console.";
-      alert("Save failed. Check browser console for details.");
+      saveStatus.textContent = "Save failed: " + err.message;
+      saveStatus.style.color = "red";
+      alert("Save failed: " + err.message);
     }
   };
 
-  /* USER POSTS */
-  async function loadUserPosts(uid){
-    userPosts.innerHTML = "";
+  /* FIXED: LOAD USER POSTS WITH BETTER DEBUGGING */
+  async function loadUserPosts(uid) {
+    if (!uid) {
+      console.error("No UID provided to loadUserPosts");
+      userPosts.innerHTML = '<div class="no-posts">Error: No user ID found</div>';
+      return;
+    }
 
-    const q = query(
-      collection(db, "posts"),
-      where("uid", "==", uid)
-    );
+    try {
+      userPosts.innerHTML = '<div class="loading">Loading your artwork...</div>';
+      console.log("Loading posts for user:", uid);
 
-    const snapshot = await getDocs(q);
+      // Create query to find posts by user ID
+      const q = query(
+        collection(db, "posts"),
+        where("userId", "==", uid), // Make sure this matches your field name in posts
+        orderBy("timestamp", "desc")
+      );
 
-    snapshot.forEach((postDoc) => {
-      const data = postDoc.data();
+      const querySnapshot = await getDocs(q);
+      console.log(`Found ${querySnapshot.size} posts for user ${uid}`);
 
-      const div = document.createElement("div");
-      div.className = "post";
+      if (querySnapshot.empty) {
+        userPosts.innerHTML = '<div class="no-posts">No artwork yet. Create your first post!</div>';
+        return;
+      }
 
-      div.innerHTML = `
-        <img src="${data.image}">
-        <div class="post-content">
-          <h3>${data.title}</h3>
-        </div>
-      `;
+      userPosts.innerHTML = "";
 
-      userPosts.appendChild(div);
-    });
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        console.log("Post data:", data);
+
+        const postDiv = document.createElement("div");
+        postDiv.className = "post";
+
+        postDiv.innerHTML = `
+          <img src="${data.imageUrl || data.image || 'https://placehold.co/400'}" alt="${data.title || 'Artwork'}">
+          <div class="post-content">
+            <h3>${data.title || 'Untitled'}</h3>
+            ${data.description ? `<p style="color:#666; margin-top:0.5rem;">${data.description.substring(0, 100)}</p>` : ''}
+          </div>
+        `;
+
+        userPosts.appendChild(postDiv);
+      });
+      
+    } catch (error) {
+      console.error("Error loading posts:", error);
+      userPosts.innerHTML = `<div class="no-posts">Error loading posts: ${error.message}</div>`;
+    }
   }
 </script>
 
