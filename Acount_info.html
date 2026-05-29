@@ -287,10 +287,16 @@ const pfpInput = document.getElementById("pfpInput");
 const bannerInput = document.getElementById("bannerInput");
 const userPosts = document.getElementById("userPosts");
 
-/* TOGGLE EDIT MODULE VISIBILITY */
-toggleEdit.onclick = () => {
-  editSection.style.display = editSection.style.display === "none" ? "block" : "none";
-};
+/* TOGGLE EDIT MODULE VISIBILITY (Bypasses external crashes) */
+if (toggleEdit && editSection) {
+  toggleEdit.onclick = () => {
+    if (editSection.style.display === "none" || editSection.style.display === "") {
+      editSection.style.display = "block";
+    } else {
+      editSection.style.display = "none";
+    }
+  };
+}
 
 /* AUTO-RESIZER & COMPRESSOR UTILITY FUNCTION */
 function fileToBase64(file, maxWidth = 600, maxHeight = 400) {
@@ -325,7 +331,6 @@ function fileToBase64(file, maxWidth = 600, maxHeight = 400) {
         const ctx = canvas.getContext("2d");
         ctx.drawImage(img, 0, 0, width, height);
 
-        // Uses high optimization (0.6 quality value scales sizes to incredibly small footprint)
         const compressedBase64 = canvas.toDataURL("image/jpeg", 0.6);
         resolve(compressedBase64);
       };
@@ -337,6 +342,7 @@ function fileToBase64(file, maxWidth = 600, maxHeight = 400) {
 
 /* FETCH AND LOAD ASSIGNED GALLERY POSTS */
 async function loadUserPosts(uid) {
+  if (!userPosts) return;
   userPosts.innerHTML = "";
   try {
     const q = query(collection(db, "posts"), where("userId", "==", uid));
@@ -349,7 +355,7 @@ async function loadUserPosts(uid) {
       userPosts.appendChild(postEl);
     });
   } catch (error) {
-    console.error("Error loading posts:", error);
+    console.error("Error loading posts safely:", error);
   }
 }
 
@@ -360,61 +366,47 @@ onAuthStateChanged(auth, async (user) => {
     return;
   }
 
-  const userRef = doc(db, "users", user.uid);
-  const userSnap = await getDoc(userRef);
+  try {
+    const userRef = doc(db, "users", user.uid);
+    const userSnap = await getDoc(userRef);
 
-  if (userSnap.exists()) {
-    const data = userSnap.data();
-    profileName.textContent = data.username || "Artist";
-    profileBio.textContent = data.bio || "No bio yet.";
-    pfpPreview.src = data.pfp || "https://placehold.co";
-    bannerPreview.src = data.banner || "https://placehold.co";
-    followersCount.textContent = data.followers || 0;
-    followingCount.textContent = data.following || 0;
-    usernameInput.value = data.username || "";
-    bioInput.value = data.bio || "";
+    if (userSnap.exists()) {
+      const data = userSnap.data();
+      if(profileName) profileName.textContent = data.username || "Artist";
+      if(profileBio) profileBio.textContent = data.bio || "No bio yet.";
+      if(pfpPreview) pfpPreview.src = data.pfp || "https://placehold.co";
+      if(bannerPreview) bannerPreview.src = data.banner || "https://placehold.co";
+      if(followersCount) followersCount.textContent = data.followers || 0;
+      if(followingCount) followingCount.textContent = data.following || 0;
+      if(usernameInput) usernameInput.value = data.username || "";
+      if(bioInput) bioInput.value = data.bio || "";
+    }
+    await loadUserPosts(user.uid);
+  } catch (authError) {
+    console.error("Error during setup processing:", authError);
   }
-  loadUserPosts(user.uid);
 });
 
 /* WRITE EXECUTABLE FORM VALUES DIRECTLY TO FIRESTORE */
-saveProfile.onclick = async () => {
-  const user = auth.currentUser;
-  if (!user) return;
+if (saveProfile) {
+  saveProfile.onclick = async () => {
+    const user = auth.currentUser;
+    if (!user) return;
 
-  let pfp = pfpPreview.src;
-  let banner = bannerPreview.src;
+    let pfp = pfpPreview ? pfpPreview.src : "https://placehold.co";
+    let banner = bannerPreview ? bannerPreview.src : "https://placehold.co";
 
-  saveProfile.disabled = true;
-  saveProfile.textContent = "Processing...";
+    saveProfile.disabled = true;
+    saveProfile.textContent = "Processing...";
 
-  try {
-    // FIXED: Explicitly targeting item entry index [0] from the input fields arrays
-    if (pfpInput.files && pfpInput.files[0]) {
-      pfp = await fileToBase64(pfpInput.files[0], 250, 250);
-    }
+    try {
+      if (pfpInput && pfpInput.files && pfpInput.files[0]) {
+        pfp = await fileToBase64(pfpInput.files[0], 250, 250);
+      }
 
-    if (bannerInput.files && bannerInput.files[0]) {
-      banner = await fileToBase64(bannerInput.files[0], 1000, 350);
-    }
+      if (bannerInput && bannerInput.files && bannerInput.files[0]) {
+        banner = await fileToBase64(bannerInput.files[0], 1000, 350);
+      }
 
-    await setDoc(doc(db, "users", user.uid), {
-      username: usernameInput.value || "Artist",
-      bio: bioInput.value || "No bio yet.",
-      pfp: pfp,
-      banner: banner
-    }, { merge: true });
-
-    alert("Profile saved successfully!");
-    location.reload();
-  } catch (err) {
-    console.error("Detailed Error Logs:", err);
-    alert("Failed to save profile. Open your browser Console (F12) to see why it was rejected.");
-  } finally {
-    saveProfile.disabled = false;
-    saveProfile.textContent = "Save Profile";
-  }
-};
-</script>
-</body>
-</html>
+      await setDoc(doc(db, "users", user.uid), {
+        username: usernameInput.value || "Artist",
