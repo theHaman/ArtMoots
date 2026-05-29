@@ -11,14 +11,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-
 :root{
-  --bg:#f7f7f7;
+  --bg:#ffffff;
   --text:#111;
+  --placeholder-blue: #cbe6ff;
 }
 
 /* RESET */
-*{
+* {
   margin:0;
   padding:0;
   box-sizing:border-box;
@@ -28,15 +28,15 @@ body{
   font-family:"Inter",sans-serif;
   background:var(--bg);
   color:var(--text);
+  padding-bottom: 4rem;
 }
 
 /* =========================
-   HEADER (MATCH HOME PAGE)
+   HEADER
 ========================= */
-
 header{
   width:100%;
-  padding:1rem;
+  padding:1rem 2rem;
   display:flex;
   justify-content:center;
 }
@@ -87,7 +87,6 @@ nav a{
 /* =========================
    DROPDOWN
 ========================= */
-
 .account-wrapper{
   position:relative;
 }
@@ -116,14 +115,35 @@ nav a{
   border-bottom:1px solid #eee;
 }
 
+.account-menu a, .account-menu button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 0.6rem 1rem;
+  text-decoration: none;
+  color: #111;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.account-menu a:hover, .account-menu button:hover {
+  background: #f5f5f5;
+}
+
 /* =========================
-   PROFILE LAYOUT FIX
+   PROFILE LAYOUT
 ========================= */
+.banner-container {
+  max-width: 100%;
+  margin: 0 1rem;
+  position: relative;
+}
 
 .banner{
-  height:300px;
-  background:#ddd;
-  border-radius:0 0 30px 30px;
+  height:260px;
+  background:#d9d9d9;
   overflow:hidden;
   position:relative;
 }
@@ -134,18 +154,17 @@ nav a{
   object-fit:cover;
 }
 
-/* FIXED PFP OVERLAY */
+/* PFP OVERLAY OVERLAPPING THE BANNER EDGE */
 .pfp{
-  width:140px;
-  height:140px;
+  width:160px;
+  height:160px;
   border-radius:50%;
-  border:6px solid white;
+  border:4px solid white;
   overflow:hidden;
-  background:#ccc;
-
+  background:#cccccc;
   position:absolute;
   left:2rem;
-  bottom:-70px;
+  bottom:-40px;
   z-index:2;
 }
 
@@ -156,133 +175,168 @@ nav a{
 }
 
 .profile-info{
-  max-width:1100px;
-  margin:auto;
-  padding:2rem;
-  padding-top:90px;
+  max-width: 100%;
+  padding: 0 3rem;
+  margin-top: 3.5rem;
 }
 
 .profile-info h1{
-  font-size:2rem;
+  font-size:2.2rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
 }
 
 .bio{
-  margin-top:1rem;
-  color:#666;
+  font-size: 0.95rem;
+  color:#111;
   max-width:600px;
-  line-height:1.6;
+  margin-bottom: 0.5rem;
 }
 
-.stats{
-  display:flex;
-  gap:2rem;
-  margin-top:1.5rem;
-}
-
-.stat-number{
-  font-weight:700;
-}
-
-/* BUTTONS */
-.edit-btn{
-  margin-top:2rem;
-  padding:1rem;
-  border:none;
-  background:black;
-  color:white;
-  border-radius:14px;
-  cursor:pointer;
+.joined-date {
+  font-size: 0.8rem;
+  color: #666;
+  margin-bottom: 1rem;
 }
 
 /* EDIT SECTION */
+.edit-btn{
+  padding: 0.4rem 1.2rem;
+  border: 1px solid #000;
+  background: black;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
 .edit-section{
   display:none;
   margin-top:2rem;
   background:white;
   padding:1.5rem;
-  border-radius:20px;
+  border: 1px solid #ddd;
+  border-radius:14px;
+  max-width: 500px;
 }
 
 .edit-section input,
 .edit-section textarea{
   width:100%;
-  padding:1rem;
+  padding:0.8rem;
   margin-bottom:1rem;
-  border:none;
-  background:#f2f2f2;
-  border-radius:12px;
+  border:1px solid #ccc;
+  background:#ffffff;
+  border-radius:8px;
 }
+
+/* =========================
+   ART GALLERY GRID
+========================= */
+.gallery-section {
+  margin-top: 3rem;
+  padding: 0 3rem;
+}
+
+.gallery-title {
+  font-size: 1.8rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+}
+
+/* Columns container matching image layout structure */
+.art-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+}
+
+.art-item {
+  background: var(--placeholder-blue);
+  border-radius: 4px;
+}
+
+/* Alternating height configurations mimicking irregular grid layout columns */
+.art-grid div:nth-child(7n+1) { height: 260px; }
+.art-grid div:nth-child(7n+2) { height: 320px; }
+.art-grid div:nth-child(7n+3) { height: 220px; }
+.art-grid div:nth-child(7n+4) { height: 290px; }
+.art-grid div:nth-child(7n+5) { height: 210px; }
+.art-grid div:nth-child(7n+6) { height: 270px; }
+.art-grid div:nth-child(7n+0) { height: 310px; }
 
 </style>
 </head>
 
 <body>
 
-<!-- HEADER -->
 <header>
   <div class="header-container">
-
     <div class="logo"></div>
-
     <nav>
       <a href="index.html">Home</a>
       <a href="posts.html">Gallery</a>
 
       <div class="account-wrapper">
-
         <div class="icon-button" id="accountButton">
-          <img src="img/my-account-5.png">
+          <img src="img/my-account-5.png" alt="👤">
         </div>
 
         <div class="account-menu" id="accountMenu">
-
           <div class="account-user" id="accountUser">Loading...</div>
-
           <a href="account.html?mode=login" id="loginBtn">Log In</a>
           <a href="account.html?mode=signup" id="signupBtn">Sign Up</a>
-
           <button id="logoutBtn" style="display:none;">Logout</button>
-
         </div>
-
       </div>
-
     </nav>
   </div>
 </header>
 
-<!-- PROFILE -->
-<div class="banner">
-  <img id="bannerPreview" src="https://placehold.co/1200x300">
+<div class="banner-container">
+  <div class="banner">
+    <img id="bannerPreview" src="https://placehold.co/1200x300">
+  </div>
   <div class="pfp">
     <img id="pfpPreview" src="https://placehold.co/200">
   </div>
 </div>
 
 <div class="profile-info">
-
   <h1 id="profileName">Loading...</h1>
-  <p class="bio" id="profileBio"></p>
+  <p class="bio" id="profileBio">No Bio yet...(dont be shy!)</p>
+  <div class="joined-date">Joined 00/00/00</div>
 
-  <div class="stats">
-    <div>
-      <div class="stat-number" id="followersCount">0</div>
-      Followers
-    </div>
-    <div>
-      <div class="stat-number" id="followingCount">0</div>
-      Following
-    </div>
-  </div>
-
-  <button class="edit-btn" id="toggleEdit">Edit Profile</button>
+  <button class="edit-btn" id="toggleEdit">Edit</button>
 
   <div class="edit-section" id="editSection">
-    <input id="usernameInput">
-    <textarea id="bioInput"></textarea>
+    <input id="usernameInput" placeholder="Edit Username">
+    <textarea id="bioInput" placeholder="Edit Bio"></textarea>
   </div>
-
 </div>
+
+<section class="gallery-section">
+  <h2 class="gallery-title">Art</h2>
+  
+  <div class="art-grid">
+    <div class="art-item"></div>
+    <div class="art-item"></div>
+    <div class="art-item"></div>
+    <div class="art-item"></div>
+    <div class="art-item"></div>
+    <div class="art-item"></div>
+    <div class="art-item"></div>
+    
+    <div class="art-item"></div>
+    <div class="art-item"></div>
+    <div class="art-item"></div>
+    <div class="art-item"></div>
+    <div class="art-item"></div>
+    <div class="art-item"></div>
+    <div class="art-item"></div>
+  </div>
+</section>
 
 <script type="module">
 
@@ -299,7 +353,7 @@ const app = initializeApp({
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-/* ELEMENTS */
+/* DOM ELEMENTS */
 const profileName = document.getElementById("profileName");
 const profileBio = document.getElementById("profileBio");
 const pfp = document.getElementById("pfpPreview");
@@ -310,7 +364,7 @@ const loginBtn = document.getElementById("loginBtn");
 const signupBtn = document.getElementById("signupBtn");
 const logoutBtn = document.getElementById("logoutBtn");
 
-/* DROPDOWN */
+/* MENU INTERACTION MANAGERS */
 document.getElementById("accountButton").onclick = (e)=>{
   e.stopPropagation();
   document.getElementById("accountMenu").classList.toggle("show");
@@ -320,15 +374,13 @@ document.addEventListener("click", ()=>{
   document.getElementById("accountMenu").classList.remove("show");
 });
 
-/* EDIT BUTTON */
 document.getElementById("toggleEdit").onclick = ()=>{
   const box = document.getElementById("editSection");
   box.style.display = box.style.display === "block" ? "none" : "block";
 };
 
-/* LOAD USER */
+/* SYNC LOGGED PROFILE WITH USER COLLECTION DATA */
 onAuthStateChanged(auth, async (user)=>{
-
   if(!user){
     profileName.textContent = "Not logged in";
     profileBio.textContent = "";
@@ -341,13 +393,16 @@ onAuthStateChanged(auth, async (user)=>{
   if(snap.exists()){
     const data = snap.data();
 
-    profileName.textContent = data.username || "Artist";
-    profileBio.textContent = data.bio || "No bio yet";
+    // Adjusted properties to match your Firestore registration structure
+    profileName.textContent = data.name || "Artist#00000";
+    if(data.bio) {
+      profileBio.textContent = data.bio;
+    }
 
-    pfp.src = data.pfp || "https://placehold.co/200";
-    banner.src = data.banner || "https://placehold.co/1200x300";
+    if(data.pfp) pfp.src = data.pfp;
+    if(data.banner) banner.src = data.banner;
 
-    accountUser.textContent = data.username || "User";
+    accountUser.textContent = data.name || "User";
   }
 
   loginBtn.style.display="none";
@@ -355,7 +410,7 @@ onAuthStateChanged(auth, async (user)=>{
   logoutBtn.style.display="block";
 });
 
-/* LOGOUT */
+/* TERMINATE ACTIVE SESSIONS */
 logoutBtn.onclick = async ()=>{
   await signOut(auth);
   location.reload();
