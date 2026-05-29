@@ -13,19 +13,11 @@
 
 <style>
 
-/* =========================
-   ROOT
-========================= */
-
 :root{
   --bg:#f7f7f7;
   --text:#111;
   --muted:#666;
 }
-
-/* =========================
-   GLOBAL
-========================= */
 
 *{
   margin:0;
@@ -44,10 +36,6 @@ body{
   padding:2rem;
 }
 
-/* =========================
-   CARD
-========================= */
-
 .card{
   width:100%;
   max-width:520px;
@@ -57,7 +45,6 @@ body{
   box-shadow:0 20px 40px rgba(0,0,0,0.08);
 }
 
-/* TITLE */
 .title{
   text-align:center;
   margin-bottom:2rem;
@@ -71,7 +58,6 @@ body{
   color:var(--muted);
 }
 
-/* FORMS */
 form{
   display:flex;
   flex-direction:column;
@@ -90,9 +76,9 @@ textarea{
 
 textarea{
   min-height:100px;
+  resize:vertical;
 }
 
-/* UPLOAD */
 .upload-box{
   background:#f2f2f2;
   border-radius:18px;
@@ -127,7 +113,6 @@ textarea{
   margin:0 auto 1rem;
 }
 
-/* BUTTON */
 button{
   border:none;
   background:#111;
@@ -138,7 +123,6 @@ button{
   font-weight:600;
 }
 
-/* TOGGLE */
 .toggle{
   text-align:center;
   color:#555;
@@ -224,7 +208,6 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  onAuthStateChanged,
   updateProfile
 } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
@@ -254,10 +237,10 @@ const pfpPreview = document.getElementById("pfpPreview");
 const bannerPreview = document.getElementById("bannerPreview");
 
 /* =========================
-   IMAGE RESIZE (IMPORTANT)
+   HIGH QUALITY RESIZE (FIXED)
 ========================= */
 
-function resizeImage(file, maxWidth, quality = 0.8) {
+function resizeImage(file, maxWidth, quality = 0.85) {
   return new Promise((resolve) => {
     const reader = new FileReader();
 
@@ -268,10 +251,14 @@ function resizeImage(file, maxWidth, quality = 0.8) {
         const canvas = document.createElement("canvas");
         const ctx = canvas.getContext("2d");
 
+        // 🔥 keep quality sharp
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "high";
+
         const scale = maxWidth / img.width;
 
-        canvas.width = maxWidth;
-        canvas.height = img.height * scale;
+        canvas.width = Math.round(img.width * scale);
+        canvas.height = Math.round(img.height * scale);
 
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
@@ -285,28 +272,29 @@ function resizeImage(file, maxWidth, quality = 0.8) {
   });
 }
 
-/* PREVIEW + STORE */
-
+/* IMAGE DATA */
 let pfpData = "";
 let bannerData = "";
 
+/* PROFILE PIC (BETTER QUALITY) */
 pfpInput.addEventListener("change", async () => {
   const file = pfpInput.files[0];
   if (!file) return;
 
-  pfpData = await resizeImage(file, 300, 0.7);
+  pfpData = await resizeImage(file, 400, 0.85);
   pfpPreview.src = pfpData;
 });
 
+/* BANNER (HIGH QUALITY) */
 bannerInput.addEventListener("change", async () => {
   const file = bannerInput.files[0];
   if (!file) return;
 
-  bannerData = await resizeImage(file, 1200, 0.7);
+  bannerData = await resizeImage(file, 1600, 0.88);
   bannerPreview.src = bannerData;
 });
 
-/* TOGGLE FORMS */
+/* TOGGLE */
 window.showLogin = () => {
   signupForm.classList.add("hidden");
   loginForm.classList.remove("hidden");
@@ -344,8 +332,6 @@ signupForm.addEventListener("submit", async (e) => {
       followers: 0,
       following: 0
     });
-
-    localStorage.setItem("currentUser", name);
 
     window.location.href = "index.html";
 
