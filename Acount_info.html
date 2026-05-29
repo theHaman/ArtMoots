@@ -306,7 +306,7 @@ nav a{
 <div class="profile-info">
   <h1 id="profileName">Loading...</h1>
   <p class="bio" id="profileBio">No Bio yet...(dont be shy!)</p>
-  <div class="joined-date">Joined 00/00/00</div>
+  <div class="joined-date" id="joinedDate">Joined 00/00/00</div>
 
   <button class="edit-btn" id="toggleEdit">Edit</button>
 
@@ -356,6 +356,7 @@ const db = getFirestore(app);
 /* DOM ELEMENTS */
 const profileName = document.getElementById("profileName");
 const profileBio = document.getElementById("profileBio");
+const joinedDate = document.getElementById("joinedDate");
 const pfp = document.getElementById("pfpPreview");
 const banner = document.getElementById("bannerPreview");
 
@@ -384,7 +385,20 @@ onAuthStateChanged(auth, async (user)=>{
   if(!user){
     profileName.textContent = "Not logged in";
     profileBio.textContent = "";
+    joinedDate.textContent = "Joined 00/00/00";
     return;
+  }
+
+  // Fetch the authentic creation timestamp metadata from the logged-in User profile
+  if (user.metadata && user.metadata.creationTime) {
+    const creationDate = new Date(user.metadata.creationTime);
+    
+    // Format timestamp into MM/DD/YY string structure
+    const mm = String(creationDate.getMonth() + 1).padStart(2, '0');
+    const dd = String(creationDate.getDate()).padStart(2, '0');
+    const yy = String(creationDate.getFullYear()).slice(-2);
+    
+    joinedDate.textContent = `Joined ${mm}/${dd}/${yy}`;
   }
 
   const ref = doc(db, "users", user.uid);
@@ -393,7 +407,6 @@ onAuthStateChanged(auth, async (user)=>{
   if(snap.exists()){
     const data = snap.data();
 
-    // Adjusted properties to match your Firestore registration structure
     profileName.textContent = data.name || "Artist#00000";
     if(data.bio) {
       profileBio.textContent = data.bio;
