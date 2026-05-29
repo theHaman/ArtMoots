@@ -188,10 +188,6 @@ nav a{
   width:100%;
   display:block;
 }
-
-.post-content{
-  padding:1rem;
-}
 </style>
 </head>
 <body>
@@ -297,7 +293,7 @@ toggleEdit.onclick = () => {
 };
 
 /* AUTO-RESIZER & COMPRESSOR UTILITY FUNCTION */
-function fileToBase64(file, maxWidth = 800, maxHeight = 600) {
+function fileToBase64(file, maxWidth = 600, maxHeight = 400) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -329,8 +325,8 @@ function fileToBase64(file, maxWidth = 800, maxHeight = 600) {
         const ctx = canvas.getContext("2d");
         ctx.drawImage(img, 0, 0, width, height);
 
-        // Compress image to JPEG format at 70% quality (reduces file sizes down significantly)
-        const compressedBase64 = canvas.toDataURL("image/jpeg", 0.7);
+        // Uses high optimization (0.6 quality value scales sizes to incredibly small footprint)
+        const compressedBase64 = canvas.toDataURL("image/jpeg", 0.6);
         resolve(compressedBase64);
       };
       img.onerror = (err) => reject(err);
@@ -393,17 +389,18 @@ saveProfile.onclick = async () => {
   saveProfile.textContent = "Processing...";
 
   try {
+    // FIXED: Explicitly targeting item entry index [0] from the input fields arrays
     if (pfpInput.files && pfpInput.files[0]) {
-      pfp = await fileToBase64(pfpInput.files[0], 300, 300);
+      pfp = await fileToBase64(pfpInput.files[0], 250, 250);
     }
 
     if (bannerInput.files && bannerInput.files[0]) {
-      banner = await fileToBase64(bannerInput.files[0], 1200, 400);
+      banner = await fileToBase64(bannerInput.files[0], 1000, 350);
     }
 
     await setDoc(doc(db, "users", user.uid), {
-      username: usernameInput.value,
-      bio: bioInput.value,
+      username: usernameInput.value || "Artist",
+      bio: bioInput.value || "No bio yet.",
       pfp: pfp,
       banner: banner
     }, { merge: true });
@@ -411,8 +408,8 @@ saveProfile.onclick = async () => {
     alert("Profile saved successfully!");
     location.reload();
   } catch (err) {
-    console.error("Error updating profile data structure: ", err);
-    alert("An error occurred while saving your profile data.");
+    console.error("Detailed Error Logs:", err);
+    alert("Failed to save profile. Open your browser Console (F12) to see why it was rejected.");
   } finally {
     saveProfile.disabled = false;
     saveProfile.textContent = "Save Profile";
