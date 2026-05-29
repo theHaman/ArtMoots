@@ -15,7 +15,6 @@
 :root{
   --bg:#f7f7f7;
   --text:#111;
-  --muted:#666;
   --purple:#caa6ff;
 }
 
@@ -47,6 +46,7 @@ header{
   gap:1rem;
 }
 
+/* LOGO */
 .logo{
   width:140px;
   height:42px;
@@ -72,7 +72,6 @@ header{
   outline:none;
   width:100%;
   background:transparent;
-  font-size:1rem;
 }
 
 /* NAV */
@@ -87,13 +86,12 @@ nav a{
   text-decoration:none;
   color:#111;
   font-size:0.95rem;
-  font-weight:500;
 }
 
-/* ICON BUTTON */
-.icon-button img{
-  width:42px;
-  height:42px;
+/* ICON BUTTON FIX (IMPORTANT) */
+.icon-button{
+  width:36px;   /* FIXED (was too big feeling before) */
+  height:36px;
   border-radius:50%;
   display:flex;
   align-items:center;
@@ -102,26 +100,26 @@ nav a{
   position:relative;
 }
 
-.icon-button:hover{
-  background:#ececec;
+.icon-button img{
+  width:20px;
+  height:20px;
+  object-fit:contain;
 }
 
-/* =========================
-   DROPDOWN FIX (IMPORTANT)
-========================= */
-
+/* DROPDOWN WRAPPER */
 .account-wrapper{
   position:relative;
 }
 
+/* DROPDOWN MENU */
 .account-menu{
   position:absolute;
-  top:55px;
+  top:50px;
   right:0;
 
   width:220px;
   background:white;
-  border-radius:18px;
+  border-radius:14px;
   padding:0.6rem;
 
   box-shadow:0 10px 30px rgba(0,0,0,0.08);
@@ -137,7 +135,7 @@ nav a{
 }
 
 .account-user{
-  padding:0.9rem 1rem;
+  padding:0.8rem 1rem;
   font-size:0.9rem;
   color:#666;
   border-bottom:1px solid #eee;
@@ -150,13 +148,12 @@ nav a{
   border:none;
   background:none;
   text-align:left;
-  padding:0.9rem 1rem;
-  border-radius:12px;
+  padding:0.8rem 1rem;
+  border-radius:10px;
   text-decoration:none;
   color:#111;
   font-size:0.95rem;
   cursor:pointer;
-  font-family:inherit;
 }
 
 .account-menu a:hover,
@@ -169,9 +166,7 @@ nav a{
   margin:0 1rem;
   height:380px;
   border-radius:0 0 18px 18px;
-
-  background:linear-gradient(90deg,#dff5ff 0%,#f6f6f6 30%,#f6f6f6 70%,#dff5ff 100%);
-
+  background:linear-gradient(90deg,#dff5ff,#f6f6f6,#dff5ff);
   display:flex;
   align-items:center;
   justify-content:center;
@@ -179,7 +174,7 @@ nav a{
 }
 
 .hero-content h1{
-  font-size:5rem;
+  font-size:4.5rem;
   font-weight:500;
 }
 
@@ -206,45 +201,20 @@ nav a{
   color:black;
 }
 
-/* MAIN */
-main{
-  padding:2rem 1rem 5rem;
-}
-
-.section{
-  margin-top:2rem;
-}
-
-.section-title{
-  font-size:1.4rem;
-  font-weight:700;
-  margin-bottom:1.5rem;
-}
-
-.horizontal-scroll{
+/* NOTIFICATION ICON (RESTORED) */
+.notification{
+  width:36px;
+  height:36px;
+  border-radius:50%;
   display:flex;
-  gap:1rem;
-  overflow-x:auto;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
 }
 
-/* POPULAR */
-.popular-card{
-  min-width:420px;
-  border-radius:18px;
-  overflow:hidden;
-  background:white;
-}
-
-.popular-card img{
-  width:100%;
-  height:280px;
-  object-fit:cover;
-}
-
-/* RESPONSIVE */
-@media(max-width:700px){
-  nav{ display:none; }
-  .hero-content h1{ font-size:2.7rem; }
+.notification img{
+  width:20px;
+  height:20px;
 }
 
 </style>
@@ -258,6 +228,9 @@ main{
     <div class="logo"></div>
 
     <div class="search-bar">
+      <div class="search-icon">
+        <img src="img/search-icon-png-1.png">
+      </div>
       <input type="text" placeholder="Search artists, artwork, styles...">
     </div>
 
@@ -265,7 +238,7 @@ main{
       <a href="posts.html">Gallery</a>
       <a href="#">About</a>
 
-      <!-- DROPDOWN -->
+      <!-- ACCOUNT -->
       <div class="account-wrapper">
 
         <div class="icon-button" id="accountButton">
@@ -278,20 +251,13 @@ main{
             Not Logged In
           </div>
 
+          <a href="account.html?mode=login" id="loginBtn">Log In</a>
+          <a href="account.html?mode=signup" id="signupBtn">Sign Up</a>
+
           <a href="Acount_info.html?mode=account"
              id="viewAccountBtn"
              style="display:none;">
              View Account
-          </a>
-
-          <a href="account.html?mode=login"
-             id="loginBtn">
-             Log In
-          </a>
-
-          <a href="account.html?mode=signup"
-             id="signupBtn">
-             Sign Up
           </a>
 
           <button id="logoutBtn" style="display:none;">
@@ -301,8 +267,12 @@ main{
         </div>
       </div>
 
-    </nav>
+      <!-- NOTIFICATION ICON RESTORED -->
+      <div class="notification">
+        <img src="img/notif.png">
+      </div>
 
+    </nav>
   </div>
 </header>
 
@@ -314,38 +284,7 @@ main{
   </div>
 </section>
 
-<main>
-
-<section class="section">
-  <h2 class="section-title">Most Popular</h2>
-  <div class="horizontal-scroll" id="popularPosts"></div>
-</section>
-
-</main>
-
 <script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import {
-  getFirestore,
-  collection,
-  getDocs,
-  query,
-  orderBy,
-  limit
-} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDMBb5n4Tyf9XLSHU_7CZ1obDlHjzrw258",
-  authDomain: "database-artmoots.firebaseapp.com",
-  projectId: "database-artmoots",
-  storageBucket: "database-artmoots.firebasestorage.app",
-  messagingSenderId: "1056886155154",
-  appId: "1:1056886155154:web:0de8b27263c11571ea034b"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
 
 /* DROPDOWN */
 const accountButton = document.getElementById("accountButton");
@@ -357,42 +296,32 @@ accountButton.addEventListener("click", (e) => {
 });
 
 document.addEventListener("click", (e) => {
-  if (!accountMenu.contains(e.target)) {
+  if (!accountMenu.contains(e.target) && !accountButton.contains(e.target)) {
     accountMenu.classList.remove("show");
   }
 });
 
-/* FIRESTORE */
-const popularContainer = document.getElementById("popularPosts");
+/* USER STATE */
+const currentUser = localStorage.getItem("currentUser");
 
-async function loadPopularPosts(){
-  const q = query(
-    collection(db, "posts"),
-    orderBy("likes", "desc"),
-    limit(10)
-  );
+const accountUser = document.getElementById("accountUser");
+const loginBtn = document.getElementById("loginBtn");
+const signupBtn = document.getElementById("signupBtn");
+const logoutBtn = document.getElementById("logoutBtn");
+const viewAccountBtn = document.getElementById("viewAccountBtn");
 
-  const snapshot = await getDocs(q);
-
-  snapshot.forEach(doc => {
-    const data = doc.data();
-
-    const card = document.createElement("div");
-    card.className = "popular-card";
-
-    card.innerHTML = `
-      <img src="${data.image}">
-      <div style="padding:1rem;">
-        <h3>${data.title}</h3>
-        <p>❤️ ${data.likes || 0}</p>
-      </div>
-    `;
-
-    popularContainer.appendChild(card);
-  });
+if(currentUser){
+  accountUser.textContent = currentUser;
+  loginBtn.style.display = "none";
+  signupBtn.style.display = "none";
+  logoutBtn.style.display = "block";
+  viewAccountBtn.style.display = "block";
 }
 
-loadPopularPosts();
+logoutBtn.addEventListener("click", () => {
+  localStorage.removeItem("currentUser");
+  location.reload();
+});
 
 </script>
 
