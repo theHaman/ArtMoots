@@ -70,7 +70,7 @@ button{
     <input id="email" placeholder="Email" required>
     <input id="password" type="password" placeholder="Password" required>
 
-    <button>Create Account</button>
+    <button type="submit">Create Account</button>
 
     <div class="switch" onclick="showLogin()">Already have an account?</div>
   </form>
@@ -82,7 +82,7 @@ button{
     <input id="loginEmail" placeholder="Email" required>
     <input id="loginPassword" type="password" placeholder="Password" required>
 
-    <button>Login</button>
+    <button type="submit">Login</button>
 
     <div class="switch" onclick="showSignup()">Create account</div>
   </form>
@@ -117,25 +117,25 @@ const app = initializeApp({
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+/* ELEMENTS */
+const signupForm = document.getElementById("signup");
+const loginForm = document.getElementById("login");
+
 /* UI SWITCH */
 window.showLogin = () => {
-  signup.classList.add("hidden");
-  login.classList.remove("hidden");
+  signupForm.classList.add("hidden");
+  loginForm.classList.remove("hidden");
 };
 
 window.showSignup = () => {
-  login.classList.add("hidden");
-  signup.classList.remove("hidden");
+  loginForm.classList.add("hidden");
+  signupForm.classList.remove("hidden");
 };
 
-/* ELEMENTS */
-const signup = document.getElementById("signup");
-const login = document.getElementById("login");
-
 /* =========================
-   SIGNUP (REAL FLOW)
+   SIGNUP
 ========================= */
-signup.addEventListener("submit", async (e) => {
+signupForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const name = document.getElementById("name").value;
@@ -155,10 +155,14 @@ signup.addEventListener("submit", async (e) => {
       uid: cred.user.uid,
       name,
       bio,
-      email
+      email,
+      pfp: "",
+      banner: "",
+      followers: 0,
+      following: 0
     });
 
-    // Firebase now holds session automatically
+    // Firebase handles session automatically
     window.location.href = "index.html";
 
   } catch (err) {
@@ -167,9 +171,9 @@ signup.addEventListener("submit", async (e) => {
 });
 
 /* =========================
-   LOGIN (REAL FIX)
+   LOGIN (FIXED CLEAN FLOW)
 ========================= */
-login.addEventListener("submit", async (e) => {
+loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const email = document.getElementById("loginEmail").value;
@@ -177,9 +181,9 @@ login.addEventListener("submit", async (e) => {
 
   try {
 
-    const cred = await signInWithEmailAndPassword(auth, email, password);
+    await signInWithEmailAndPassword(auth, email, password);
 
-    // IMPORTANT: no fake storage, Firebase handles session
+    // IMPORTANT: Firebase session is already active
     window.location.href = "index.html";
 
   } catch (err) {
@@ -188,7 +192,7 @@ login.addEventListener("submit", async (e) => {
 });
 
 /* =========================
-   SESSION LISTENER (CRITICAL)
+   SESSION CHECK
 ========================= */
 onAuthStateChanged(auth, async (user) => {
   if (!user) return;
@@ -197,7 +201,7 @@ onAuthStateChanged(auth, async (user) => {
   const snap = await getDoc(ref);
 
   if (snap.exists()) {
-    console.log("User loaded:", snap.data());
+    console.log("Logged in user:", snap.data());
   }
 });
 
