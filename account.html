@@ -32,9 +32,6 @@
   --bg:#f7f7f7;
   --text:#111;
   --muted:#666;
-  --primary:#111;
-  --error:#e74c3c;
-  --success:#2ecc71;
 
 }
 
@@ -111,22 +108,13 @@ body{
 }
 
 /* =========================
-   CONTAINER
-========================= */
-
-.auth-container{
-
-  width:100%;
-
-  max-width:620px;
-
-}
-
-/* =========================
    CARD
 ========================= */
 
 .card{
+
+  width:100%;
+  max-width:620px;
 
   background:white;
 
@@ -153,7 +141,7 @@ body{
 
 .brand h1{
 
-  font-size:2.4rem;
+  font-size:2.5rem;
 
   margin-bottom:0.5rem;
 
@@ -161,14 +149,12 @@ body{
 
 .brand p{
 
-  color:var(--muted);
-
-  line-height:1.7;
+  color:#666;
 
 }
 
 /* =========================
-   FORMS
+   FORM
 ========================= */
 
 form{
@@ -186,19 +172,17 @@ textarea{
 
   width:100%;
 
-  padding:1rem 1.1rem;
-
   border:none;
 
-  border-radius:16px;
-
   background:#f2f2f2;
+
+  padding:1rem;
+
+  border-radius:16px;
 
   font-size:1rem;
 
   font-family:inherit;
-
-  transition:0.2s;
 
 }
 
@@ -220,14 +204,8 @@ textarea{
 }
 
 /* =========================
-   PROFILE PICTURE
+   PROFILE
 ========================= */
-
-.profile-upload{
-
-  text-align:center;
-
-}
 
 .profile-preview{
 
@@ -238,18 +216,13 @@ textarea{
 
   overflow:hidden;
 
-  margin:0 auto 1rem;
-
-  position:relative;
+  margin:auto;
 
   cursor:pointer;
 
+  position:relative;
+
   background:#f2f2f2;
-
-  border:3px solid white;
-
-  box-shadow:
-    0 4px 12px rgba(0,0,0,0.08);
 
 }
 
@@ -262,22 +235,18 @@ textarea{
 
 }
 
-/* =========================
-   BANNER
-========================= */
-
 .banner-preview{
 
   width:100%;
   height:180px;
 
-  border-radius:22px;
+  border-radius:20px;
 
   overflow:hidden;
 
-  position:relative;
-
   cursor:pointer;
+
+  position:relative;
 
   background:#f2f2f2;
 
@@ -292,17 +261,13 @@ textarea{
 
 }
 
-/* =========================
-   OVERLAY
-========================= */
-
 .overlay{
 
   position:absolute;
 
   inset:0;
 
-  background:rgba(0,0,0,0.45);
+  background:rgba(0,0,0,0.4);
 
   display:flex;
 
@@ -324,18 +289,14 @@ textarea{
 
 }
 
-/* =========================
-   HIDDEN INPUT
-========================= */
-
-.hidden-file-input{
+.hidden-file{
 
   display:none;
 
 }
 
 /* =========================
-   BUTTONS
+   BUTTON
 ========================= */
 
 button{
@@ -365,14 +326,6 @@ button:hover{
   transform:translateY(-2px);
 
   background:#333;
-
-}
-
-button:disabled{
-
-  opacity:0.6;
-
-  cursor:not-allowed;
 
 }
 
@@ -414,7 +367,7 @@ button:disabled{
 
   font-weight:700;
 
-  margin-bottom:0.4rem;
+  margin-top:1rem;
 
 }
 
@@ -422,15 +375,11 @@ button:disabled{
 
   color:#666;
 
-  margin-bottom:1rem;
+  margin-top:0.5rem;
 
 }
 
-/* =========================
-   STATUS
-========================= */
-
-.status-message{
+.status{
 
   padding:1rem;
 
@@ -440,7 +389,7 @@ button:disabled{
 
 }
 
-.status-message.error{
+.error{
 
   background:#ffeaea;
 
@@ -448,25 +397,11 @@ button:disabled{
 
 }
 
-.status-message.success{
+.success{
 
-  background:#e8f8ee;
+  background:#eafaf0;
 
   color:#2ecc71;
-
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-
-@media(max-width:700px){
-
-  .card{
-
-    padding:1.5rem;
-
-  }
 
 }
 
@@ -479,188 +414,168 @@ button:disabled{
 <div class="background-circle circle1"></div>
 <div class="background-circle circle2"></div>
 
-<div class="auth-container">
+<div class="card">
 
-  <div class="card">
+  <div class="brand">
 
-    <!-- BRAND -->
+    <h1>
+      ArtMoots
+    </h1>
 
-    <div class="brand">
+    <p>
+      Create your artist account
+    </p>
 
-      <h1>
-        ArtMoots
-      </h1>
+  </div>
 
-      <p>
-        Create your artist profile and join the community.
-      </p>
+  <!-- SIGNUP -->
+
+  <form id="signupForm">
+
+    <!-- PFP -->
+
+    <div class="profile-preview"
+         id="profilePreview">
+
+      <img id="profilePreviewImg"
+           src="https://placehold.co/200x200?text=PFP">
+
+      <div class="overlay">
+        Upload PFP
+      </div>
 
     </div>
 
-    <!-- SIGN UP -->
+    <input type="file"
+           id="profilePictureInput"
+           class="hidden-file"
+           accept="image/*">
 
-    <form id="signupForm">
+    <!-- BANNER -->
 
-      <!-- PROFILE PICTURE -->
+    <div class="banner-preview"
+         id="bannerPreview">
 
-      <div class="profile-upload">
+      <img id="bannerPreviewImg"
+           src="https://placehold.co/1200x400?text=Banner">
 
-        <div class="profile-preview"
-             id="profilePreview">
-
-          <img id="profilePreviewImg"
-               src="https://placehold.co/200x200?text=Upload">
-
-          <div class="overlay">
-            Upload PFP
-          </div>
-
-        </div>
-
-        <input type="file"
-               id="profilePictureInput"
-               class="hidden-file-input"
-               accept="image/*">
-
+      <div class="overlay">
+        Upload Banner
       </div>
-
-      <!-- BANNER -->
-
-      <div class="banner-preview"
-           id="bannerPreview">
-
-        <img id="bannerPreviewImg"
-             src="https://placehold.co/1200x400?text=Upload+Banner">
-
-        <div class="overlay">
-          Upload Banner
-        </div>
-
-      </div>
-
-      <input type="file"
-             id="bannerInput"
-             class="hidden-file-input"
-             accept="image/*">
-
-      <!-- USERNAME -->
-
-      <input type="text"
-             id="signupUsername"
-             placeholder="@username"
-             required>
-
-      <!-- DISPLAY NAME -->
-
-      <input type="text"
-             id="signupName"
-             placeholder="Display Name"
-             required>
-
-      <!-- BIO -->
-
-      <textarea id="signupBio"
-                placeholder="Tell people about yourself..."></textarea>
-
-      <!-- EMAIL -->
-
-      <input type="email"
-             id="signupEmail"
-             placeholder="Email"
-             required>
-
-      <!-- PASSWORD -->
-
-      <input type="password"
-             id="signupPassword"
-             placeholder="Password"
-             required>
-
-      <div id="signupStatus"
-           class="status-message"></div>
-
-      <button type="submit"
-              id="signupBtn">
-
-        Create Account
-
-      </button>
-
-      <div class="toggle"
-           onclick="showLogin()">
-
-        Already have an account? Log In
-
-      </div>
-
-    </form>
-
-    <!-- LOGIN -->
-
-    <form id="loginForm"
-          style="display:none;">
-
-      <input type="email"
-             id="loginEmail"
-             placeholder="Email"
-             required>
-
-      <input type="password"
-             id="loginPassword"
-             placeholder="Password"
-             required>
-
-      <div id="loginStatus"
-           class="status-message"></div>
-
-      <button type="submit"
-              id="loginBtn">
-
-        Log In
-
-      </button>
-
-      <div class="toggle"
-           onclick="showSignup()">
-
-        Don't have an account? Sign Up
-
-      </div>
-
-    </form>
-
-    <!-- ACCOUNT INFO -->
-
-    <div id="accountInfo">
-
-      <div class="profile-preview"
-           style="margin:auto;">
-
-        <img id="profileImage"
-             src="https://placehold.co/200x200">
-
-      </div>
-
-      <div class="account-name"
-           id="accountName"></div>
-
-      <div class="account-email"
-           id="accountEmail"></div>
-
-      <button id="logoutBtn"
-              style="width:100%;margin-top:1rem;">
-
-        Logout
-
-      </button>
 
     </div>
+
+    <input type="file"
+           id="bannerInput"
+           class="hidden-file"
+           accept="image/*">
+
+    <!-- USERNAME -->
+
+    <input type="text"
+           id="signupName"
+           placeholder="Username"
+           required>
+
+    <!-- BIO -->
+
+    <textarea id="signupBio"
+              placeholder="Bio"></textarea>
+
+    <!-- EMAIL -->
+
+    <input type="email"
+           id="signupEmail"
+           placeholder="Email"
+           required>
+
+    <!-- PASSWORD -->
+
+    <input type="password"
+           id="signupPassword"
+           placeholder="Password"
+           required>
+
+    <div id="signupStatus"
+         class="status"></div>
+
+    <button type="submit">
+      Create Account
+    </button>
+
+    <div class="toggle"
+         onclick="showLogin()">
+
+      Already have an account? Login
+
+    </div>
+
+  </form>
+
+  <!-- LOGIN -->
+
+  <form id="loginForm"
+        style="display:none;">
+
+    <input type="email"
+           id="loginEmail"
+           placeholder="Email"
+           required>
+
+    <input type="password"
+           id="loginPassword"
+           placeholder="Password"
+           required>
+
+    <div id="loginStatus"
+         class="status"></div>
+
+    <button type="submit">
+      Log In
+    </button>
+
+    <div class="toggle"
+         onclick="showSignup()">
+
+      Don't have an account? Sign Up
+
+    </div>
+
+  </form>
+
+  <!-- ACCOUNT -->
+
+  <div id="accountInfo">
+
+    <div class="profile-preview">
+
+      <img id="accountPfp"
+           src="https://placehold.co/200x200">
+
+    </div>
+
+    <div class="account-name"
+         id="accountName"></div>
+
+    <div class="account-email"
+         id="accountEmail"></div>
+
+    <button id="logoutBtn"
+            style="margin-top:1.5rem;width:100%;">
+
+      Logout
+
+    </button>
 
   </div>
 
 </div>
 
 <script type="module">
+
+/* =========================
+   FIREBASE
+========================= */
 
 import { initializeApp }
 from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
@@ -695,21 +610,8 @@ import {
 }
 from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-import {
-
-  getStorage,
-
-  ref,
-
-  uploadBytes,
-
-  getDownloadURL
-
-}
-from "https://www.gstatic.com/firebasejs/11.0.1/firebase-storage.js";
-
 /* =========================
-   FIREBASE CONFIG
+   CONFIG
 ========================= */
 
 const firebaseConfig = {
@@ -737,9 +639,6 @@ const auth =
 const db =
   getFirestore(app);
 
-const storage =
-  getStorage(app);
-
 /* =========================
    ELEMENTS
 ========================= */
@@ -753,16 +652,17 @@ const loginForm =
 const accountInfo =
   document.getElementById("accountInfo");
 
-const logoutBtn =
-  document.getElementById("logoutBtn");
+/* =========================
+   PREVIEW VARIABLES
+========================= */
 
-const signupStatus =
-  document.getElementById("signupStatus");
+let selectedProfilePicture = "";
 
-const loginStatus =
-  document.getElementById("loginStatus");
+let selectedBanner = "";
 
-/* PROFILE */
+/* =========================
+   PROFILE PICTURE
+========================= */
 
 const profilePreview =
   document.getElementById("profilePreview");
@@ -773,7 +673,34 @@ const profilePictureInput =
 const profilePreviewImg =
   document.getElementById("profilePreviewImg");
 
-/* BANNER */
+profilePreview.addEventListener("click",()=>{
+
+  profilePictureInput.click();
+
+});
+
+profilePictureInput.addEventListener("change",e=>{
+
+  const file = e.target.files[0];
+
+  if(file){
+
+    fileToBase64(file)
+    .then(base64=>{
+
+      selectedProfilePicture = base64;
+
+      profilePreviewImg.src = base64;
+
+    });
+
+  }
+
+});
+
+/* =========================
+   BANNER
+========================= */
 
 const bannerPreview =
   document.getElementById("bannerPreview");
@@ -784,103 +711,48 @@ const bannerInput =
 const bannerPreviewImg =
   document.getElementById("bannerPreviewImg");
 
-/* STORE FILES */
-
-let selectedProfilePicture = null;
-
-let selectedBanner = null;
-
-/* =========================
-   PROFILE PREVIEW
-========================= */
-
-profilePreview.addEventListener("click", () => {
-
-  profilePictureInput.click();
-
-});
-
-profilePictureInput.addEventListener("change", e => {
-
-  const file = e.target.files[0];
-
-  if(file){
-
-    selectedProfilePicture = file;
-
-    const reader = new FileReader();
-
-    reader.onload = event => {
-
-      profilePreviewImg.src =
-        event.target.result;
-
-    };
-
-    reader.readAsDataURL(file);
-
-  }
-
-});
-
-/* =========================
-   BANNER PREVIEW
-========================= */
-
-bannerPreview.addEventListener("click", () => {
+bannerPreview.addEventListener("click",()=>{
 
   bannerInput.click();
 
 });
 
-bannerInput.addEventListener("change", e => {
+bannerInput.addEventListener("change",e=>{
 
   const file = e.target.files[0];
 
   if(file){
 
-    selectedBanner = file;
+    fileToBase64(file)
+    .then(base64=>{
 
-    const reader = new FileReader();
+      selectedBanner = base64;
 
-    reader.onload = event => {
+      bannerPreviewImg.src = base64;
 
-      bannerPreviewImg.src =
-        event.target.result;
-
-    };
-
-    reader.readAsDataURL(file);
+    });
 
   }
 
 });
 
 /* =========================
-   HELPERS
+   BASE64 FIX
 ========================= */
 
-async function uploadImage(path,file){
+function fileToBase64(file){
 
-  if(!file) return "";
+  return new Promise((resolve,reject)=>{
 
-  const storageRef =
-    ref(storage,path);
+    const reader = new FileReader();
 
-  await uploadBytes(storageRef,file);
+    reader.readAsDataURL(file);
 
-  return await getDownloadURL(storageRef);
+    reader.onload = () => resolve(reader.result);
 
-}
+    reader.onerror = error => reject(error);
 
-function showStatus(el,msg,type){
-
-  el.textContent = msg;
-
-  el.className =
-    `status-message ${type}`;
-
-  el.style.display = "block";
+  });
 
 }
 
@@ -891,14 +763,11 @@ function showStatus(el,msg,type){
 const params =
   new URLSearchParams(window.location.search);
 
-const mode =
-  params.get("mode");
-
 const returnPage =
   params.get("return") || "index.html";
 
 /* =========================
-   SWITCH FORMS
+   FORM TOGGLE
 ========================= */
 
 window.showLogin = function(){
@@ -917,18 +786,12 @@ window.showSignup = function(){
 
 }
 
-if(mode === "login"){
-
-  showLogin();
-
-}
-
 /* =========================
    AUTH STATE
 ========================= */
 
 onAuthStateChanged(auth,
-async user => {
+async user=>{
 
   if(user){
 
@@ -956,7 +819,7 @@ async user => {
 
       if(data.profilePicture){
 
-        document.getElementById("profileImage")
+        document.getElementById("accountPfp")
           .src =
           data.profilePicture;
 
@@ -972,39 +835,24 @@ async user => {
    SIGN UP
 ========================= */
 
-signupForm.addEventListener("submit", async e => {
+signupForm.addEventListener("submit",
+async e=>{
 
   e.preventDefault();
 
-  const name =
-    signupName.value.trim();
-
-  const bio =
-    signupBio.value.trim();
-
-  const email =
-    signupEmail.value.trim();
-
-  const password =
-    signupPassword.value;
-
-  if(!name){
-
-    alert("Enter username");
-    return;
-
-  }
-
-  if(password.length < 6){
-
-    alert("Password too short");
-    return;
-
-  }
-
   try{
 
-    /* CREATE AUTH ACCOUNT */
+    const name =
+      document.getElementById("signupName").value;
+
+    const bio =
+      document.getElementById("signupBio").value;
+
+    const email =
+      document.getElementById("signupEmail").value;
+
+    const password =
+      document.getElementById("signupPassword").value;
 
     const cred =
       await createUserWithEmailAndPassword(
@@ -1013,48 +861,31 @@ signupForm.addEventListener("submit", async e => {
         password
       );
 
-    const user =
-      cred.user;
-
-    /* PROFILE PICTURE */
-
-    let profilePictureURL = "";
-
-    if(selectedProfilePicture){
-
-      profilePictureURL =
-        await fileToBase64(
-          selectedProfilePicture
-        );
-
-    }
-
-    /* UPDATE AUTH PROFILE */
-
-    await updateProfile(user, {
+    await updateProfile(cred.user,{
 
       displayName:name
 
     });
 
-    /* SAVE USER TO FIRESTORE */
+    /* SAVE USER */
 
     await setDoc(
-      doc(db, "users", user.uid),
+      doc(db,"users",cred.user.uid),
       {
 
-        uid:user.uid,
+        uid:cred.user.uid,
 
         username:name,
 
-        email:email,
-
         bio:bio,
 
-        profilePicture:
-          profilePictureURL,
+        email:email,
 
-        banner:"",
+        profilePicture:
+          selectedProfilePicture,
+
+        banner:
+          selectedBanner,
 
         followers:0,
 
@@ -1066,16 +897,10 @@ signupForm.addEventListener("submit", async e => {
       }
     );
 
-    console.log("USER SAVED");
-
-    /* LOCAL STORAGE */
-
     localStorage.setItem(
       "currentUser",
       name
     );
-
-    /* REDIRECT */
 
     window.location.href =
       returnPage;
@@ -1086,17 +911,27 @@ signupForm.addEventListener("submit", async e => {
 
     console.error(error);
 
-    alert(error.message);
+    const status =
+      document.getElementById("signupStatus");
+
+    status.style.display = "block";
+
+    status.className =
+      "status error";
+
+    status.textContent =
+      error.message;
 
   }
 
 });
+
 /* =========================
    LOGIN
 ========================= */
 
 loginForm.addEventListener("submit",
-async e => {
+async e=>{
 
   e.preventDefault();
 
@@ -1114,28 +949,25 @@ async e => {
       password
     );
 
-    showStatus(
-      loginStatus,
-      "Login successful!",
-      "success"
-    );
-
-    setTimeout(() => {
-
-      window.location.href =
-        returnPage;
-
-    },1000);
+    window.location.href =
+      returnPage;
 
   }
 
   catch(error){
 
-    showStatus(
-      loginStatus,
-      error.message,
-      "error"
-    );
+    console.error(error);
+
+    const status =
+      document.getElementById("loginStatus");
+
+    status.style.display = "block";
+
+    status.className =
+      "status error";
+
+    status.textContent =
+      error.message;
 
   }
 
@@ -1145,8 +977,9 @@ async e => {
    LOGOUT
 ========================= */
 
-logoutBtn.addEventListener("click",
-async () => {
+document.getElementById("logoutBtn")
+.addEventListener("click",
+async()=>{
 
   await signOut(auth);
 
@@ -1154,8 +987,7 @@ async () => {
     "currentUser"
   );
 
-  window.location.href =
-    "index.html";
+  location.reload();
 
 });
 
