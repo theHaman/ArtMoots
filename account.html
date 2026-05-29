@@ -704,10 +704,25 @@ async e => {
    AUTH STATE
 ========================= */
 
-onAuthStateChanged(auth,
-async user => {
+onAuthStateChanged(auth, async user => {
 
-  if(user){
+  /* ONLY show profile page
+     if URL has ?mode=account
+  */
+
+  const params =
+    new URLSearchParams(window.location.search);
+
+  const mode =
+    params.get("mode");
+
+  if(user && mode === "account"){
+
+    signupForm.classList.add("hidden");
+
+    loginForm.classList.add("hidden");
+
+    accountView.style.display = "block";
 
     const userDoc =
       await getDoc(
@@ -726,7 +741,7 @@ async user => {
         .textContent = data.email;
 
       document.getElementById("viewBio")
-        .textContent = data.bio;
+        .textContent = data.bio || "";
 
       if(data.pfp){
 
@@ -744,15 +759,29 @@ async user => {
 
     }
 
-    /* IMPORTANT:
-       DO NOT FORCE ACCOUNT VIEW
-       AFTER SIGNUP
-    */
+  }
+
+  else{
+
+    /* NORMAL LOGIN/SIGNUP PAGE */
+
+    accountView.style.display = "none";
+
+    if(mode === "login"){
+
+      showLogin();
+
+    }
+
+    else{
+
+      showSignup();
+
+    }
 
   }
 
 });
-
 /* =========================
    LOGOUT
 ========================= */
