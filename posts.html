@@ -28,7 +28,6 @@
   --bg:#f7f7f7;
   --text:#111;
   --muted:#666;
-  --purple:#caa6ff;
 
 }
 
@@ -77,7 +76,9 @@ header{
 
 }
 
-/* LOGO */
+/* =========================
+   LOGO
+========================= */
 
 .logo{
 
@@ -86,21 +87,23 @@ header{
 
   background:#d9d9d9;
 
-  border-radius:2px;
+  border-radius:4px;
 
   flex-shrink:0;
 
 }
 
-/* SEARCH */
+/* =========================
+   SEARCH BAR
+========================= */
 
 .search-bar{
 
   flex:1;
 
-  height:42px;
+  height:46px;
 
-  border:1px solid #444;
+  border:1px solid #dcdcdc;
 
   border-radius:999px;
 
@@ -126,30 +129,44 @@ header{
 
   font-size:1rem;
 
+  font-family:inherit;
+
+}
+
+/* SEARCH ICON */
+
+.search-icon{
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
 }
 
 .search-icon img{
 
-  width:80px;
-  height:80px;
+  width:18px;
+
+  height:18px;
 
   object-fit:contain;
 
-}
-.icons img{
-  width:80px;
-  height:80px;
-  object-fit:contain;
+  display:block;
+
 }
 
-
-/* NAV */
+/* =========================
+   NAVIGATION
+========================= */
 
 nav{
 
   display:flex;
+
   align-items:center;
-  gap:1.5rem;
+
+  gap:1rem;
 
   margin-left:auto;
 
@@ -162,18 +179,45 @@ nav a{
   color:#111;
 
   font-size:0.95rem;
+
   font-weight:500;
 
 }
 
-.nav-circle{
+/* ICON BUTTONS */
 
-  width:16px;
-  height:16px;
+.icon{
 
-  background:#bfbfbf;
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
+
+  width:42px;
+
+  height:42px;
 
   border-radius:50%;
+
+  transition:0.2s;
+
+}
+
+.icon:hover{
+
+  background:#ececec;
+
+}
+
+.icon img{
+
+  width:22px;
+
+  height:22px;
+
+  object-fit:contain;
+
+  display:block;
 
 }
 
@@ -187,7 +231,7 @@ nav a{
 
   height:280px;
 
-  border-radius:0 0 18px 18px;
+  border-radius:0 0 20px 20px;
 
   background:
     linear-gradient(
@@ -199,7 +243,9 @@ nav a{
     );
 
   display:flex;
+
   align-items:center;
+
   justify-content:center;
 
   text-align:center;
@@ -376,6 +422,7 @@ main{
 .post-meta{
 
   display:flex;
+
   gap:1rem;
 
   margin-bottom:1rem;
@@ -424,19 +471,26 @@ main{
 </head>
 <body>
 
-<!-- HEADER -->
+<!-- =========================
+     HEADER
+========================= -->
 
 <header>
 
   <div class="header-container">
 
+    <!-- LOGO -->
+
     <div class="logo"></div>
+
+    <!-- SEARCH -->
 
     <div class="search-bar">
 
       <div class="search-icon">
 
-        <img src="img/search-icon-png-1.png">
+        <img src="img/search-icon-png-1.png"
+             alt="Search">
 
       </div>
 
@@ -444,31 +498,52 @@ main{
              placeholder="Search artwork, artists...">
 
     </div>
-      <nav>
-            <a href="posts.html">
-                  Gallery
-            </a>
-            <a href="#">
-                  About
-            </a>
-            <a href="account_info.html">
-                  <div class="Icons"></div>
-                        <img src="img/my-account-5.png">
-                  </div>
-            </a>
-                  <a href="#">
-                        <div class="Icons"></div>
-                              <img src="img/notif.png">
-                        </div>
-                  </a>
 
-      </nav>
+    <!-- NAVIGATION -->
+
+    <nav>
+
+      <a href="index.html">
+        Home
+      </a>
+
+      <a href="posts.html">
+        Gallery
+      </a>
+
+      <a href="#">
+        About
+      </a>
+
+      <!-- ACCOUNT ICON -->
+
+      <a href="account_info.html"
+         class="icon">
+
+        <img src="img/my-account-5.png"
+             alt="Account">
+
+      </a>
+
+      <!-- NOTIFICATION ICON -->
+
+      <a href="#"
+         class="icon">
+
+        <img src="img/notif.png"
+             alt="Notifications">
+
+      </a>
+
+    </nav>
 
   </div>
 
 </header>
 
-<!-- HERO -->
+<!-- =========================
+     HERO
+========================= -->
 
 <section class="hero">
 
@@ -486,7 +561,9 @@ main{
 
 </section>
 
-<!-- MAIN -->
+<!-- =========================
+     MAIN
+========================= -->
 
 <main>
 
@@ -527,13 +604,11 @@ main{
 
 </main>
 
-<!-- FIREBASE -->
+<!-- =========================
+     FIREBASE
+========================= -->
 
 <script type="module">
-
-/* =========================
-   FIREBASE IMPORTS
-========================= */
 
 import { initializeApp }
 from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
