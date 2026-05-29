@@ -1,128 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ArtMoots Auth</title>
 
-<title>ArtMoots - Account</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
-
-:root{
-  --bg:#f7f7f7;
-  --text:#111;
-  --muted:#666;
-}
-
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-
 body{
-  font-family:"Inter",sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  min-height:100vh;
+  font-family:Inter;
+  background:#f7f7f7;
   display:flex;
-  align-items:center;
   justify-content:center;
-  padding:2rem;
+  align-items:center;
+  height:100vh;
 }
 
 .card{
-  width:100%;
-  max-width:520px;
+  width:420px;
   background:white;
-  border-radius:28px;
   padding:2rem;
-  box-shadow:0 20px 40px rgba(0,0,0,0.08);
+  border-radius:20px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.08);
 }
 
-.title{
-  text-align:center;
-  margin-bottom:2rem;
-}
-
-form{
-  display:flex;
-  flex-direction:column;
-  gap:1rem;
-}
-
-input, textarea{
+input,textarea{
   width:100%;
-  border:none;
-  background:#f2f2f2;
   padding:1rem;
-  border-radius:16px;
-  font-family:inherit;
+  margin-top:0.7rem;
+  border:none;
+  background:#eee;
+  border-radius:12px;
 }
 
 button{
-  border:none;
-  background:#111;
-  color:white;
+  width:100%;
+  margin-top:1rem;
   padding:1rem;
-  border-radius:16px;
+  border:none;
+  border-radius:12px;
+  background:black;
+  color:white;
   font-weight:600;
   cursor:pointer;
 }
 
-.toggle{
+.hidden{display:none;}
+
+.switch{
+  margin-top:1rem;
   text-align:center;
-  color:#555;
   cursor:pointer;
+  color:#555;
 }
-
-.hidden{ display:none; }
-
 </style>
-
 </head>
 
 <body>
 
 <div class="card">
 
-  <div class="title">
-    <h1>ArtMoots</h1>
-    <p>Login or Create Account</p>
-  </div>
-
   <!-- SIGN UP -->
-  <form id="signupForm">
+  <form id="signup">
+    <h2>Create Account</h2>
 
-    <input type="text" id="signupName" placeholder="Username" required>
-    <textarea id="signupBio" placeholder="Bio"></textarea>
+    <input id="name" placeholder="Username" required>
+    <textarea id="bio" placeholder="Bio"></textarea>
+    <input id="email" placeholder="Email" required>
+    <input id="password" type="password" placeholder="Password" required>
 
-    <input type="email" id="signupEmail" placeholder="Email" required>
-    <input type="password" id="signupPassword" placeholder="Password" required>
+    <button>Create Account</button>
 
-    <button type="submit">Create Account</button>
-
-    <div class="toggle" onclick="showLogin()">
-      Already have an account? Log In
-    </div>
-
+    <div class="switch" onclick="showLogin()">Already have an account?</div>
   </form>
 
   <!-- LOGIN -->
-  <form id="loginForm" class="hidden">
+  <form id="login" class="hidden">
+    <h2>Login</h2>
 
-    <input type="email" id="loginEmail" placeholder="Email" required>
-    <input type="password" id="loginPassword" placeholder="Password" required>
+    <input id="loginEmail" placeholder="Email" required>
+    <input id="loginPassword" type="password" placeholder="Password" required>
 
-    <button type="submit">Log In</button>
+    <button>Login</button>
 
-    <div class="toggle" onclick="showSignup()">
-      Don't have an account? Sign Up
-    </div>
-
+    <div class="switch" onclick="showSignup()">Create account</div>
   </form>
 
 </div>
@@ -130,13 +92,12 @@ button{
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-
 import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  updateProfile,
-  onAuthStateChanged
+  onAuthStateChanged,
+  updateProfile
 } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
 import {
@@ -156,33 +117,34 @@ const app = initializeApp({
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-/* ELEMENTS */
-const signupForm = document.getElementById("signupForm");
-const loginForm = document.getElementById("loginForm");
-
-/* SWITCH UI */
+/* UI SWITCH */
 window.showLogin = () => {
-  signupForm.classList.add("hidden");
-  loginForm.classList.remove("hidden");
+  signup.classList.add("hidden");
+  login.classList.remove("hidden");
 };
 
 window.showSignup = () => {
-  loginForm.classList.add("hidden");
-  signupForm.classList.remove("hidden");
+  login.classList.add("hidden");
+  signup.classList.remove("hidden");
 };
 
+/* ELEMENTS */
+const signup = document.getElementById("signup");
+const login = document.getElementById("login");
+
 /* =========================
-   SIGN UP
+   SIGNUP (REAL FLOW)
 ========================= */
-signupForm.addEventListener("submit", async (e) => {
+signup.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const name = document.getElementById("signupName").value;
-  const bio = document.getElementById("signupBio").value;
-  const email = document.getElementById("signupEmail").value;
-  const password = document.getElementById("signupPassword").value;
+  const name = document.getElementById("name").value;
+  const bio = document.getElementById("bio").value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
   try {
+
     const cred = await createUserWithEmailAndPassword(auth, email, password);
 
     await updateProfile(cred.user, {
@@ -192,13 +154,11 @@ signupForm.addEventListener("submit", async (e) => {
     await setDoc(doc(db, "users", cred.user.uid), {
       uid: cred.user.uid,
       name,
-      email,
       bio,
-      followers: 0,
-      following: 0
+      email
     });
 
-    // IMPORTANT: use Firebase auth, not localStorage
+    // Firebase now holds session automatically
     window.location.href = "index.html";
 
   } catch (err) {
@@ -207,37 +167,37 @@ signupForm.addEventListener("submit", async (e) => {
 });
 
 /* =========================
-   LOGIN (FIXED PROPERLY)
+   LOGIN (REAL FIX)
 ========================= */
-loginForm.addEventListener("submit", async (e) => {
+login.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const email = document.getElementById("loginEmail").value;
   const password = document.getElementById("loginPassword").value;
 
   try {
+
     const cred = await signInWithEmailAndPassword(auth, email, password);
 
-    // DO NOT use fake localStorage user names anymore
-    localStorage.setItem("uid", cred.user.uid);
-
-    // force correct state reload
+    // IMPORTANT: no fake storage, Firebase handles session
     window.location.href = "index.html";
 
   } catch (err) {
-    alert("Login failed: " + err.message);
+    alert(err.message);
   }
 });
 
 /* =========================
-   GLOBAL AUTH CHECK
-   (THIS IS WHAT FIXES “NOTHING CHANGES”)
+   SESSION LISTENER (CRITICAL)
 ========================= */
 onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    localStorage.setItem("uid", user.uid);
-  } else {
-    localStorage.removeItem("uid");
+  if (!user) return;
+
+  const ref = doc(db, "users", user.uid);
+  const snap = await getDoc(ref);
+
+  if (snap.exists()) {
+    console.log("User loaded:", snap.data());
   }
 });
 
