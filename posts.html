@@ -4,23 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>ArtMoots - Posts</title>
+<title>ArtMoots</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-/* =========================
-   ROOT & GENERAL RESETS
-========================= */
+
 :root{
-  --bg:#f7f7f7;
+  --bg:#ffffff;
   --text:#111;
-  --muted:#666;
+  --purple:#b18eff;
 }
 
-* {
+*{
   margin:0;
   padding:0;
   box-sizing:border-box;
@@ -30,15 +28,13 @@ body{
   font-family:"Inter",sans-serif;
   background:var(--bg);
   color:var(--text);
-  overflow-x:hidden;
+  padding-bottom: 3rem;
 }
 
-/* =========================
-   HEADER
-========================= */
+/* HEADER */
 header{
   width:100%;
-  padding:1rem;
+  padding:1rem 2rem;
   display:flex;
   justify-content:center;
 }
@@ -47,103 +43,71 @@ header{
   width:100%;
   display:flex;
   align-items:center;
-  gap:1rem;
+  gap:1.5rem;
 }
 
 .logo{
   width:140px;
   height:42px;
   background:#d9d9d9;
-  border-radius:4px;
-  flex-shrink:0;
 }
 
-/* =========================
-   SEARCH BAR
-========================= */
 .search-bar{
   flex:1;
-  height:46px;
-  border:1px solid #dcdcdc;
+  height:42px;
+  border:1px solid #111;
   border-radius:999px;
   background:white;
   display:flex;
   align-items:center;
   padding:0 1rem;
-  gap:0.8rem;
 }
 
 .search-bar input{
   border:none;
   outline:none;
   width:100%;
-  background:transparent;
-  font-size:1rem;
-  font-family:inherit;
+  font-size: 1rem;
 }
 
-.search-icon{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.search-icon img{
-  width:18px;
-  height:18px;
-  object-fit:contain;
-  display:block;
-}
-
-/* =========================
-   NAVIGATION
-========================= */
+/* NAV */
 nav{
   display:flex;
   align-items:center;
-  gap:1rem;
+  gap:1.5rem;
   margin-left:auto;
 }
 
 nav a{
   text-decoration:none;
   color:#111;
-  font-size:0.95rem;
-  font-weight:500;
+  font-weight: 500;
 }
 
-.icon{
+/* ICON */
+.icon-button{
+  width:36px;
+  height:36px;
+  border-radius:50%;
   display:flex;
   align-items:center;
   justify-content:center;
-  width:42px;
-  height:42px;
-  border-radius:50%;
-  transition:0.2s;
-  cursor: pointer;
+  cursor:pointer;
 }
 
-.icon:hover{
-  background:#ececec;
+.icon-button img{
+  width:24px;
+  height:24px;
 }
 
-.icon img{
-  width:22px;
-  height:22px;
-  object-fit:contain;
-  display:block;
-}
-
-/* =========================
-   DROPDOWN MENU STYLE
-========================= */
+/* DROPDOWN */
 .account-wrapper{
   position:relative;
 }
 
 .account-menu{
   position:absolute;
-  top:50px;
+  top:45px;
   right:0;
   width:220px;
   background:white;
@@ -161,38 +125,38 @@ nav a{
 
 .account-user{
   padding:0.8rem 1rem;
+  font-size:0.9rem;
   color:#666;
   border-bottom:1px solid #eee;
-  font-size: 0.9rem;
+  margin-bottom:0.3rem;
 }
 
-.account-menu a, .account-menu button {
-  display: block;
-  width: 100%;
-  text-align: left;
-  background: none;
-  border: none;
-  padding: 0.6rem 1rem;
-  text-decoration: none;
-  color: #111;
-  border-radius: 8px;
-  cursor: pointer;
-  font-family: inherit;
-  font-size: 0.95rem;
+.account-menu a,
+.account-menu button{
+  width:100%;
+  border:none;
+  background:none;
+  text-align:left;
+  padding:0.8rem 1rem;
+  border-radius:10px;
+  cursor:pointer;
+  text-decoration:none;
+  color:#111;
 }
 
-.account-menu a:hover, .account-menu button:hover {
-  background: #f5f5f5;
+.account-menu a:hover,
+.account-menu button:hover{
+  background:#f3f3f3;
 }
 
-/* =========================
-   HERO
-========================= */
+/* HERO */
 .hero{
+  height:420px;
   margin:0 1rem;
-  height:280px;
-  border-radius:0 0 20px 20px;
-  background: linear-gradient(90deg, #dff5ff 0%, #f6f6f6 30%, #f6f6f6 70%, #dff5ff 100%);
+  border-radius: 0 0 24px 24px;
+  background: radial-gradient(circle at top right, #e3f5ff, transparent 40%),
+              radial-gradient(circle at top left, #e3f5ff, transparent 40%),
+              #ffffff;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -200,411 +164,317 @@ nav a{
 }
 
 .hero-content h1{
-  font-size:4rem;
-  line-height:0.95;
-  font-weight:500;
-  margin-bottom:1rem;
+  font-size: 3.5rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
 }
 
-.hero-content p{
-  color:#444;
-  font-size:1rem;
+.hero-content p {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 2rem;
 }
 
-/* =========================
-   MAIN
-========================= */
-main{
-  padding:2rem 1rem 5rem;
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
 }
 
-/* =========================
-   CREATE POST
-========================= */
-#createPost{
-  background:white;
-  padding:1.5rem;
-  border-radius:22px;
-  margin-bottom:2rem;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-  display: none; 
+.hero-btn{
+  padding: 0.8rem 1.5rem;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
 }
 
-#createPost h2{
-  margin-bottom:1rem;
+.hero-btn.black{
+  background: black;
+  color: white;
 }
 
-#createPost input,
-#createPost textarea{
-  width:100%;
-  border:none;
-  background:#f2f2f2;
-  padding:1rem;
-  border-radius:14px;
-  margin-bottom:1rem;
-  font-family:inherit;
-  outline: none;
+.hero-btn.purple{
+  background: var(--purple);
+  color: black;
 }
 
-#createPost textarea{
-  min-height:120px;
-  resize:vertical;
+/* CONTENT SECTIONS */
+.section-container {
+  padding: 2rem;
+  max-width: 100%;
+  margin: 0 auto;
 }
 
-#createPost button{
-  border:none;
-  background:black;
-  color:white;
-  padding:1rem 1.3rem;
-  border-radius:14px;
-  cursor:pointer;
-  font-weight:600;
+.section-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
 }
 
-/* =========================
-   POSTS MASONRY GRID
-========================= */
-.posts-container{
-  columns:3 320px;
-  column-gap:1rem;
+/* TOP ARTISTS GRID */
+.artists-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  margin-bottom: 3rem;
 }
 
-.post{
-  break-inside:avoid;
-  background:white;
-  border-radius:22px;
-  overflow:hidden;
-  margin-bottom:1rem;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.06);
-  transition:0.25s;
+.artist-card {
+  border: 1px solid #ccc;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
 }
 
-.post:hover{
-  transform:translateY(-4px);
+.artist-banner {
+  height: 140px;
+  background: #cccccc;
 }
 
-.post img{
-  width:100%;
-  display:block;
+.artist-info {
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  border-top: 1px solid #ccc;
 }
 
-.post-content{
-  padding:1rem;
+.artist-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #cccccc;
+  flex-shrink: 0;
 }
 
-.post-content h3{
-  margin-bottom:0.7rem;
+.artist-name-skeleton {
+  height: 10px;
+  background: #cccccc;
+  width: 80%;
+  border-radius: 4px;
 }
 
-.post-content p{
-  color:#666;
-  line-height:1.7;
-  margin-bottom:1rem;
+/* MOST POPULAR GRID */
+.popular-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
 }
 
-.post-meta{
-  display:flex;
-  gap:1rem;
-  margin-bottom:1rem;
-  color:#555;
+.popular-card {
+  height: 280px;
+  background: #cccccc;
+  border: 1px solid #ccc;
+  border-radius: 16px;
 }
 
-.post button{
-  border:none;
-  background:#111;
-  color:white;
-  padding:0.8rem 1rem;
-  border-radius:12px;
-  cursor:pointer;
-}
-
-/* =========================
-   RESPONSIVE DESIGN BOUNDS
-========================= */
-@media(max-width:700px){
-  nav{
-    display:none;
-  }
-  .hero-content h1{
-    font-size:2.7rem;
+/* Responsive Scaling down if viewport is smaller */
+@media (max-width: 1024px) {
+  .artists-grid, .popular-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
+
 </style>
 </head>
+
 <body>
 
 <header>
   <div class="header-container">
+
     <div class="logo"></div>
-    
+
     <div class="search-bar">
-      <div class="search-icon">
-        <img src="img/search-icon-png-1.png" alt="Search">
-      </div>
-      <input type="text" placeholder="Search artwork, artists...">
+      <input type="text" placeholder="Search...">
     </div>
 
     <nav>
-      <a href="index.html">Home</a>
       <a href="posts.html">Gallery</a>
       <a href="#">About</a>
 
       <div class="account-wrapper">
-        <div class="icon" id="accountButton">
-          <img src="img/my-account-5.png" alt="Account">
+
+        <div class="icon-button" id="accountButton">
+          <img src="img/my-account-5.png" alt="👤">
         </div>
 
         <div class="account-menu" id="accountMenu">
-          <div class="account-user" id="accountUser">Loading...</div>
-          <a href="account.html">My Profile</a> 
+
+          <div class="account-user" id="accountUser">
+            Not Logged In
+          </div>
+
           <a href="account.html?mode=login" id="loginBtn">Log In</a>
           <a href="account.html?mode=signup" id="signupBtn">Sign Up</a>
-          <button id="logoutBtn" style="display:none;">Logout</button>
+
+          <a href="account.html" id="viewAccountBtn" style="display:none;">
+             View Account
+          </a>
+
+          <button id="logoutBtn" style="display:none;">
+            Logout
+          </button>
+
         </div>
       </div>
 
-      <a href="#" class="icon">
-        <img src="img/notif.png" alt="Notifications">
-      </a>
     </nav>
   </div>
 </header>
 
 <section class="hero">
   <div class="hero-content">
-    <h1>Explore Art</h1>
-    <p>Discover artwork from the ArtMoots community.</p>
+    <h1>Welcome to ArtMoots</h1>
+    <p>Share Art, Meet Moots and Grow Together!</p>
+    <div class="hero-buttons">
+      <a href="#" class="hero-btn black">Want to know more?</a>
+      <a href="posts.html" class="hero-btn purple">Lets see some art!</a>
+    </div>
   </div>
 </section>
 
-<main>
-  <form id="createPost">
-    <h2>Create a Post</h2>
-    <input type="text" id="postTitle" placeholder="Title" required>
-    <textarea id="postDesc" placeholder="Description" required></textarea>
-    <input type="file" id="postImageFile" accept="image/*" required>
-    <button type="submit">Post Artwork</button>
-  </form>
+<main class="section-container">
+  
+  <h2 class="section-title">Top Artists</h2>
+  <div class="artists-grid">
+    <div class="artist-card">
+      <div class="artist-banner"></div>
+      <div class="artist-info">
+        <div class="artist-avatar"></div>
+        <div class="artist-name-skeleton"></div>
+      </div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-banner"></div>
+      <div class="artist-info">
+        <div class="artist-avatar"></div>
+        <div class="artist-name-skeleton"></div>
+      </div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-banner"></div>
+      <div class="artist-info">
+        <div class="artist-avatar"></div>
+        <div class="artist-name-skeleton"></div>
+      </div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-banner"></div>
+      <div class="artist-info">
+        <div class="artist-avatar"></div>
+        <div class="artist-name-skeleton"></div>
+      </div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-banner"></div>
+      <div class="artist-info">
+        <div class="artist-avatar"></div>
+        <div class="artist-name-skeleton"></div>
+      </div>
+    </div>
+  </div>
 
-  <div class="posts-container" id="postsContainer"></div>
+  <h2 class="section-title">Most Popular</h2>
+  <div class="popular-grid">
+    <div class="popular-card"></div>
+    <div class="popular-card"></div>
+    <div class="popular-card"></div>
+    <div class="popular-card"></div>
+    <div class="popular-card"></div>
+  </div>
+
 </main>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, query, orderBy, doc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-const firebaseConfig = {
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+import {
+  getFirestore,
+  doc,
+  getDoc
+} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+/* FIREBASE */
+const app = initializeApp({
   apiKey: "AIzaSyDMBb5n4Tyf9XLSHU_7CZ1obDlHjzrw258",
   authDomain: "database-artmoots.firebaseapp.com",
-  projectId: "database-artmoots",
-  storageBucket: "database-artmoots.firebasestorage.app",
-  messagingSenderId: "1056886155154",
-  appId: "1:1056886155154:web:0de8b27263c11571ea034b"
-};
+  projectId: "database-artmoots"
+});
 
-const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-/* DOM ELEMENTS */
-const createPostForm = document.getElementById("createPost");
-const postsContainer = document.getElementById("postsContainer");
-const postImageFile = document.getElementById("postImageFile");
+/* DROPDOWN */
+const accountButton = document.getElementById("accountButton");
+const accountMenu = document.getElementById("accountMenu");
 
+accountButton.addEventListener("click", (e) => {
+  e.stopPropagation();
+  accountMenu.classList.toggle("show");
+});
+
+document.addEventListener("click", (e) => {
+  if (!accountMenu.contains(e.target) && !accountButton.contains(e.target)) {
+    accountMenu.classList.remove("show");
+  }
+});
+
+/* ELEMENTS */
 const accountUser = document.getElementById("accountUser");
 const loginBtn = document.getElementById("loginBtn");
 const signupBtn = document.getElementById("signupBtn");
 const logoutBtn = document.getElementById("logoutBtn");
-
-let imageUrl = "";
+const viewAccountBtn = document.getElementById("viewAccountBtn");
 
 /* =========================
-   DROPDOWN CONTROLLER
+   REAL AUTH SYSTEM
 ========================= */
-document.getElementById("accountButton").onclick = (e) => {
-  e.stopPropagation();
-  document.getElementById("accountMenu").classList.toggle("show");
-};
-
-document.addEventListener("click", () => {
-  document.getElementById("accountMenu").classList.remove("show");
-});
-
-/* =========================================================
-   CANVAS SYSTEM: OPTIMIZE ARTWORK TO PREVENT SIZE CRASHES
-========================================================= */
-function resizeAndCompressArtwork(file, maxDimension, quality) {
-  return new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = function (event) {
-      const img = new Image();
-      img.src = event.target.result;
-      img.onload = function () {
-        const canvas = document.createElement("canvas");
-        let width = img.width;
-        let height = img.height;
-
-        if (width > height) {
-          if (width > maxDimension) {
-            height = Math.round((height * maxDimension) / width);
-            width = maxDimension;
-          }
-        } else {
-          if (height > maxDimension) {
-            width = Math.round((width * maxDimension) / height);
-            height = maxDimension;
-          }
-        }
-
-        canvas.width = width;
-        canvas.height = height;
-        const ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0, width, height);
-
-        const compressedBase64 = canvas.toDataURL("image/jpeg", quality);
-        resolve(compressedBase64);
-      };
-    };
-  });
-}
-
-postImageFile.addEventListener("change", async () => {
-  const file = postImageFile.files[0];
-  if(!file) return;
-  imageUrl = await resizeAndCompressArtwork(file, 1200, 0.8);
-});
-
-/* AUTH SESSION GATEKEEPER */
 onAuthStateChanged(auth, async (user) => {
-  if(user){
-    createPostForm.style.display = "block";
+
+  if (user) {
+
+    const ref = doc(db, "users", user.uid);
+    const snap = await getDoc(ref);
+
+  if (snap.exists()) {
+      accountUser.textContent = snap.data().name || "User";
+    } else {
+      accountUser.textContent = user.email;
+    }
+
+    // SHOW LOGGED IN UI
     loginBtn.style.display = "none";
     signupBtn.style.display = "none";
     logoutBtn.style.display = "block";
+    viewAccountBtn.style.display = "block";
 
-    // Fixed: Fetches 'name' from Firestore to show the correct registered username
-    const ref = doc(db, "users", user.uid);
-    const snap = await getDoc(ref);
-    if(snap.exists()){
-      accountUser.textContent = snap.data().name || "User";
-    } else {
-      accountUser.textContent = user.displayName || "User";
-    }
   } else {
-    createPostForm.style.display = "none";
+
+    accountUser.textContent = "Not Logged In";
+
     loginBtn.style.display = "block";
     signupBtn.style.display = "block";
     logoutBtn.style.display = "none";
-    accountUser.textContent = "Not logged in";
+    viewAccountBtn.style.display = "none";
   }
 });
 
-/* LOGOUT CALLER */
-logoutBtn.onclick = async () => {
+/* LOGOUT */
+logoutBtn.addEventListener("click", async () => {
   await signOut(auth);
   location.reload();
-};
-
-/* =========================
-   CREATE NEW ENTRY SUBMIT ROUTE
-========================= */
-createPostForm.addEventListener("submit", async e => {
-  e.preventDefault();
-
-  const title = document.getElementById("postTitle").value;
-  const desc = document.getElementById("postDesc").value;
-  const user = auth.currentUser;
-
-  if(!user){
-    alert("You must be signed in.");
-    return;
-  }
-
-  if(!imageUrl){
-    alert("Please upload or wait for your image to process.");
-    return;
-  }
-
-  try {
-    const userSnap = await getDoc(doc(db, "users", user.uid));
-    const activePosterName = userSnap.exists() ? (userSnap.data().name || "Anonymous Artist") : (user.displayName || "Anonymous Artist");
-
-    await addDoc(collection(db, "posts"), {
-      user: activePosterName,
-      title,
-      description: desc,
-      image: imageUrl,
-      likes: 0,
-      views: 0, 
-      createdAt: new Date()
-    });
-
-    createPostForm.reset();
-    imageUrl = "";
-    postsContainer.innerHTML = "";
-    
-    loadPosts();
-  } catch(err) {
-    alert("Error uploading post: " + err.message);
-  }
 });
 
-/* =========================
-   LIKE ACTION ROUTER
-========================= */
-window.likePost = async function(postId){
-  try {
-    const postRef = doc(db, "posts", postId);
-    await updateDoc(postRef, {
-      likes: increment(1)
-    });
-    location.reload();
-  } catch (err) {
-    console.error("Could not complete tracking transaction: ", err);
-  }
-};
-
-/* =========================
-   LOAD ASSET STREAMS
-========================= */
-async function loadPosts(){
-  try {
-    const q = query(
-      collection(db, "posts"),
-      orderBy("createdAt", "desc")
-    );
-
-    const snapshot = await getDocs(q);
-    postsContainer.innerHTML = ""; 
-
-    snapshot.forEach(postDoc => {
-      const data = postDoc.data();
-
-      const div = document.createElement("div");
-      div.className = "post";
-      div.innerHTML = `
-        <img src="${data.image}">
-        <div class="post-content">
-          <h3>${data.title}</h3>
-          <p>${data.description}</p>
-          <div class="post-meta">
-            <span>❤️ ${data.likes || 0}</span>
-            <span>👁 ${data.views || 0}</span>
-          </div>
-          <button onclick="likePost('${postDoc.id}')">Like</button>
-        </div>
-      `;
-
-      postsContainer.appendChild(div);
-    });
-  } catch (error) {
-    console.error("Error rendering post feeds: ", error);
-  }
-}
-
-loadPosts();
 </script>
 
 </body>
