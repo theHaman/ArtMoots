@@ -7,7 +7,6 @@ ACCOUNT.HTML
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>ArtMoots - Account</title>
 
 <link rel="preconnect" href="https://googleapis.com">
@@ -214,8 +213,8 @@ nav a{
       <img id="pfpPreview" src="https://placehold.co">
     </div>
 
-    <h1 id="profileName">Artist</h1>
-    <p class="bio" id="profileBio">No bio yet.</p>
+    <h1 id="profileName">Loading Profile...</h1>
+    <p class="bio" id="profileBio">Connecting to database...</p>
 
     <div class="stats">
       <div>
@@ -287,9 +286,10 @@ const pfpInput = document.getElementById("pfpInput");
 const bannerInput = document.getElementById("bannerInput");
 const userPosts = document.getElementById("userPosts");
 
-/* TOGGLE EDIT MODULE VISIBILITY (Bypasses external crashes) */
+/* FIX 1: RUN THE BUTTON REGISTRATION IMMEDIATELY (Do not wait for database) */
 if (toggleEdit && editSection) {
-  toggleEdit.onclick = () => {
+  toggleEdit.onclick = (e) => {
+    e.preventDefault();
     if (editSection.style.display === "none" || editSection.style.display === "") {
       editSection.style.display = "block";
     } else {
@@ -307,7 +307,6 @@ function fileToBase64(file, maxWidth = 600, maxHeight = 400) {
     reader.onload = (event) => {
       const img = new Image();
       img.src = event.target.result;
-      
       img.onload = () => {
         const canvas = document.createElement("canvas");
         let width = img.width;
@@ -327,7 +326,6 @@ function fileToBase64(file, maxWidth = 600, maxHeight = 400) {
 
         canvas.width = width;
         canvas.height = height;
-
         const ctx = canvas.getContext("2d");
         ctx.drawImage(img, 0, 0, width, height);
 
@@ -340,7 +338,7 @@ function fileToBase64(file, maxWidth = 600, maxHeight = 400) {
   });
 }
 
-/* FETCH AND LOAD ASSIGNED GALLERY POSTS */
+/* LOAD GALLERY POSTS */
 async function loadUserPosts(uid) {
   if (!userPosts) return;
   userPosts.innerHTML = "";
@@ -355,14 +353,17 @@ async function loadUserPosts(uid) {
       userPosts.appendChild(postEl);
     });
   } catch (error) {
-    console.error("Error loading posts safely:", error);
+    console.error("Error loading posts:", error);
   }
 }
 
-/* SESSION AUTH OVERVIEW AND INITIAL STATE LOADING */
+/* FIX 2: BULLETPROOF AUTH CHECK WITH GUEST FALLBACK FOR LOCAL TESTING */
 onAuthStateChanged(auth, async (user) => {
   if (!user) {
-    location.href = "index.html";
+    console.warn("No active user logged in. Enabling Guest Local Test Mode instead of redirecting.");
+    // Display fallback values instead of freezing blank
+    profileName.textContent = "Guest Artist (Not Logged In)";
+    profileBio.textContent = "Log in via your login page to save changes to the database.";
     return;
   }
 
@@ -380,33 +381,23 @@ onAuthStateChanged(auth, async (user) => {
       if(followingCount) followingCount.textContent = data.following || 0;
       if(usernameInput) usernameInput.value = data.username || "";
       if(bioInput) bioInput.value = data.bio || "";
+    } else {
+      profileName.textContent = "New Artist";
+      profileBio.textContent = "Click Edit Profile to complete configuration.";
     }
     await loadUserPosts(user.uid);
   } catch (authError) {
-    console.error("Error during setup processing:", authError);
+    console.error("Database connection failed:", authError);
   }
 });
 
-/* WRITE EXECUTABLE FORM VALUES DIRECTLY TO FIRESTORE */
+/* WRITE FORM DATA TO FIRESTORE */
 if (saveProfile) {
   saveProfile.onclick = async () => {
     const user = auth.currentUser;
-    if (!user) return;
+    if (!user) {
+      alert("Cannot save profile data. You must log into an account first!");
+      return;
+    }
 
     let pfp = pfpPreview ? pfpPreview.src : "https://placehold.co";
-    let banner = bannerPreview ? bannerPreview.src : "https://placehold.co";
-
-    saveProfile.disabled = true;
-    saveProfile.textContent = "Processing...";
-
-    try {
-      if (pfpInput && pfpInput.files && pfpInput.files[0]) {
-        pfp = await fileToBase64(pfpInput.files[0], 250, 250);
-      }
-
-      if (bannerInput && bannerInput.files && bannerInput.files[0]) {
-        banner = await fileToBase64(bannerInput.files[0], 1000, 350);
-      }
-
-      await setDoc(doc(db, "users", user.uid), {
-        username: usernameInput.value || "Artist",
