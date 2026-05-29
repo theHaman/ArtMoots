@@ -7,8 +7,6 @@
 
 <title>ArtMoots - Account</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
@@ -50,14 +48,6 @@ body{
   margin-bottom:2rem;
 }
 
-.title h1{
-  font-size:2.4rem;
-}
-
-.title p{
-  color:var(--muted);
-}
-
 form{
   display:flex;
   flex-direction:column;
@@ -74,21 +64,10 @@ textarea{
   font-family:inherit;
 }
 
-textarea{
-  min-height:100px;
-  resize:vertical;
-}
-
 .upload-box{
   background:#f2f2f2;
   border-radius:18px;
   padding:1rem;
-}
-
-.upload-box label{
-  font-weight:600;
-  display:block;
-  margin-bottom:0.5rem;
 }
 
 .preview{
@@ -119,14 +98,13 @@ button{
   color:white;
   padding:1rem;
   border-radius:16px;
-  cursor:pointer;
   font-weight:600;
+  cursor:pointer;
 }
 
 .toggle{
   text-align:center;
   color:#555;
-  margin-top:1rem;
   cursor:pointer;
 }
 
@@ -149,7 +127,6 @@ button{
   <form id="signupForm">
 
     <div class="upload-box">
-
       <label>Profile Picture</label>
 
       <div class="pfp-preview">
@@ -157,11 +134,9 @@ button{
       </div>
 
       <input type="file" id="pfpInput" accept="image/*">
-
     </div>
 
     <div class="upload-box">
-
       <label>Banner Image</label>
 
       <div class="preview">
@@ -169,7 +144,6 @@ button{
       </div>
 
       <input type="file" id="bannerInput" accept="image/*">
-
     </div>
 
     <input type="text" id="signupName" placeholder="Username" required>
@@ -204,6 +178,7 @@ button{
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -214,7 +189,8 @@ import {
 import {
   getFirestore,
   doc,
-  setDoc
+  setDoc,
+  getDoc
 } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
 /* FIREBASE */
@@ -237,7 +213,7 @@ const pfpPreview = document.getElementById("pfpPreview");
 const bannerPreview = document.getElementById("bannerPreview");
 
 /* =========================
-   HIGH QUALITY RESIZE (FIXED)
+   HIGH QUALITY RESIZE
 ========================= */
 
 function resizeImage(file, maxWidth, quality = 0.85) {
@@ -251,7 +227,6 @@ function resizeImage(file, maxWidth, quality = 0.85) {
         const canvas = document.createElement("canvas");
         const ctx = canvas.getContext("2d");
 
-        // 🔥 keep quality sharp
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = "high";
 
@@ -276,7 +251,7 @@ function resizeImage(file, maxWidth, quality = 0.85) {
 let pfpData = "";
 let bannerData = "";
 
-/* PROFILE PIC (BETTER QUALITY) */
+/* PREVIEW */
 pfpInput.addEventListener("change", async () => {
   const file = pfpInput.files[0];
   if (!file) return;
@@ -285,7 +260,6 @@ pfpInput.addEventListener("change", async () => {
   pfpPreview.src = pfpData;
 });
 
-/* BANNER (HIGH QUALITY) */
 bannerInput.addEventListener("change", async () => {
   const file = bannerInput.files[0];
   if (!file) return;
@@ -305,7 +279,10 @@ window.showSignup = () => {
   signupForm.classList.remove("hidden");
 };
 
-/* SIGN UP */
+/* =========================
+   SIGN UP
+========================= */
+
 signupForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -318,9 +295,7 @@ signupForm.addEventListener("submit", async (e) => {
 
     const cred = await createUserWithEmailAndPassword(auth, email, password);
 
-    await updateProfile(cred.user, {
-      displayName: name
-    });
+    await updateProfile(cred.user, { displayName: name });
 
     await setDoc(doc(db, "users", cred.user.uid), {
       uid: cred.user.uid,
@@ -341,7 +316,10 @@ signupForm.addEventListener("submit", async (e) => {
 
 });
 
-/* LOGIN */
+/* =========================
+   LOGIN (FIXED)
+========================= */
+
 loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -349,10 +327,23 @@ loginForm.addEventListener("submit", async (e) => {
   const password = document.getElementById("loginPassword").value;
 
   try {
-    await signInWithEmailAndPassword(auth, email, password);
+
+    const cred = await signInWithEmailAndPassword(auth, email, password);
+
+    const userRef = doc(db, "users", cred.user.uid);
+    const userSnap = await getDoc(userRef);
+
+    if (userSnap.exists()) {
+      const data = userSnap.data();
+
+      localStorage.setItem("currentUser", data.name);
+      localStorage.setItem("uid", cred.user.uid);
+    }
+
     window.location.href = "index.html";
+
   } catch (err) {
-    alert(err.message);
+    alert("Login failed: " + err.message);
   }
 
 });
