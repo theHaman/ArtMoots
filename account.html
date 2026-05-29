@@ -972,35 +972,39 @@ async user => {
    SIGN UP
 ========================= */
 
-signupForm.addEventListener("submit",
-async e => {
+signupForm.addEventListener("submit", async e => {
 
   e.preventDefault();
 
+  const name =
+    signupName.value.trim();
+
+  const bio =
+    signupBio.value.trim();
+
+  const email =
+    signupEmail.value.trim();
+
+  const password =
+    signupPassword.value;
+
+  if(!name){
+
+    alert("Enter username");
+    return;
+
+  }
+
+  if(password.length < 6){
+
+    alert("Password too short");
+    return;
+
+  }
+
   try{
 
-    const signupBtn =
-      document.getElementById("signupBtn");
-
-    signupBtn.disabled = true;
-
-    signupBtn.textContent =
-      "Creating Account...";
-
-    const username =
-      document.getElementById("signupUsername").value;
-
-    const name =
-      document.getElementById("signupName").value;
-
-    const bio =
-      document.getElementById("signupBio").value;
-
-    const email =
-      document.getElementById("signupEmail").value;
-
-    const password =
-      document.getElementById("signupPassword").value;
+    /* CREATE AUTH ACCOUNT */
 
     const cred =
       await createUserWithEmailAndPassword(
@@ -1009,98 +1013,84 @@ async e => {
         password
       );
 
-    let profilePictureURL = "";
+    const user =
+      cred.user;
 
-    let bannerURL = "";
+    /* PROFILE PICTURE */
+
+    let profilePictureURL = "";
 
     if(selectedProfilePicture){
 
       profilePictureURL =
-        await uploadImage(
-          `profilePictures/${cred.user.uid}`,
+        await fileToBase64(
           selectedProfilePicture
         );
 
     }
 
-    if(selectedBanner){
+    /* UPDATE AUTH PROFILE */
 
-      bannerURL =
-        await uploadImage(
-          `banners/${cred.user.uid}`,
-          selectedBanner
-        );
-
-    }
-
-    await updateProfile(cred.user,{
+    await updateProfile(user, {
 
       displayName:name
 
     });
 
+    /* SAVE USER TO FIRESTORE */
+
     await setDoc(
-      doc(db,"users",cred.user.uid),
+      doc(db, "users", user.uid),
       {
 
-        uid:cred.user.uid,
+        uid:user.uid,
 
-        username:username,
-
-        name:name,
-
-        bio:bio,
+        username:name,
 
         email:email,
+
+        bio:bio,
 
         profilePicture:
           profilePictureURL,
 
-        banner:
-          bannerURL,
+        banner:"",
 
         followers:0,
 
         following:0,
 
         createdAt:
-          new Date().toISOString()
+          new Date()
 
       }
     );
+
+    console.log("USER SAVED");
+
+    /* LOCAL STORAGE */
 
     localStorage.setItem(
       "currentUser",
       name
     );
 
-    showStatus(
-      signupStatus,
-      "Account created successfully!",
-      "success"
-    );
+    /* REDIRECT */
 
-    setTimeout(() => {
-
-      window.location.href =
-        returnPage;
-
-    },1500);
+    window.location.href =
+      returnPage;
 
   }
 
   catch(error){
 
-    showStatus(
-      signupStatus,
-      error.message,
-      "error"
-    );
+    console.error(error);
+
+    alert(error.message);
 
   }
 
 });
-
 /* =========================
    LOGIN
 ========================= */
