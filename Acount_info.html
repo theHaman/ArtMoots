@@ -5,746 +5,390 @@ ACCOUNT.HTML
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
-
-<title>ArtMoots - Account</title>
-
-<link rel="preconnect"
-      href="https://fonts.googleapis.com">
-
-<link rel="preconnect"
-      href="https://fonts.gstatic.com"
-      crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet">
-
-<style>
-
-:root{
-
-  --bg:#f7f7f7;
-  --text:#111;
-  --muted:#666;
-
-}
-
-*{
-
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-
-}
-
-body{
-
-  font-family:"Inter",sans-serif;
-
-  background:var(--bg);
-
-  color:var(--text);
-
-}
-
-/* HEADER */
-
-header{
-
-  padding:1rem;
-
-  background:white;
-
-}
-
-.header-container{
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:space-between;
-
-}
-
-nav{
-
-  display:flex;
-
-  gap:1rem;
-
-}
-
-nav a{
-
-  text-decoration:none;
-
-  color:#111;
-
-}
-
-/* PROFILE */
-
-.profile{
-
-  max-width:1100px;
-
-  margin:auto;
-
-  padding-bottom:4rem;
-
-}
-
-.banner{
-
-  height:300px;
-
-  background:#d7d7d7;
-
-  border-radius:0 0 30px 30px;
-
-  overflow:hidden;
-
-  position:relative;
-
-}
-
-.banner img{
-
-  width:100%;
-  height:100%;
-
-  object-fit:cover;
-
-}
-
-.profile-info{
-
-  padding:2rem;
-
-  position:relative;
-
-}
-
-.pfp{
-
-  width:140px;
-  height:140px;
-
-  border-radius:50%;
-
-  border:6px solid white;
-
-  overflow:hidden;
-
-  background:#ccc;
-
-  margin-top:-90px;
-
-}
-
-.pfp img{
-
-  width:100%;
-  height:100%;
-
-  object-fit:cover;
-
-}
-
-.profile-info h1{
-
-  margin-top:1rem;
-
-  font-size:2rem;
-
-}
-
-.bio{
-
-  color:#666;
-
-  margin-top:1rem;
-
-  max-width:600px;
-
-  line-height:1.7;
-
-}
-
-.stats{
-
-  display:flex;
-
-  gap:2rem;
-
-  margin-top:1.5rem;
-
-}
-
-.stat-number{
-
-  font-weight:700;
-
-  font-size:1.2rem;
-
-}
-
-.edit-btn{
-
-  margin-top:2rem;
-
-  border:none;
-
-  background:black;
-
-  color:white;
-
-  padding:1rem 1.3rem;
-
-  border-radius:14px;
-
-  cursor:pointer;
-
-}
-
-.edit-section{
-
-  margin-top:2rem;
-
-  background:white;
-
-  padding:1.5rem;
-
-  border-radius:24px;
-
-}
-
-.edit-section input,
-.edit-section textarea{
-
-  width:100%;
-
-  border:none;
-
-  background:#f2f2f2;
-
-  padding:1rem;
-
-  border-radius:14px;
-
-  margin-bottom:1rem;
-
-  font-family:inherit;
-
-}
-
-.edit-section textarea{
-
-  min-height:120px;
-
-  resize:vertical;
-
-}
-
-.save-btn{
-
-  border:none;
-
-  background:black;
-
-  color:white;
-
-  padding:1rem 1.2rem;
-
-  border-radius:14px;
-
-  cursor:pointer;
-
-}
-
-.user-posts{
-
-  margin-top:3rem;
-
-}
-
-.posts-grid{
-
-  columns:3 320px;
-
-  column-gap:1rem;
-
-}
-
-.post{
-
-  break-inside:avoid;
-
-  background:white;
-
-  border-radius:20px;
-
-  overflow:hidden;
-
-  margin-bottom:1rem;
-
-}
-
-.post img{
-
-  width:100%;
-
-  display:block;
-
-}
-
-.post-content{
-
-  padding:1rem;
-
-}
-
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>ArtMoots - Account</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root{
+      --bg:#f7f7f7;
+      --text:#111;
+      --muted:#666;
+    }
+    *{ margin:0; padding:0; box-sizing:border-box; }
+    body{
+      font-family:"Inter",sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+
+    /* HEADER */
+    header{ padding:1rem; background:white; }
+    .header-container{
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    nav{ display:flex; gap:1rem; }
+    nav a{ text-decoration:none; color:#111; }
+
+    /* PROFILE */
+    .profile{
+      max-width:1100px;
+      margin:auto;
+      padding-bottom:4rem;
+    }
+
+    .banner{
+      height:300px;
+      background:#d7d7d7;
+      border-radius:0 0 30px 30px;
+      overflow:hidden;
+      position:relative;
+    }
+    .banner img{ width:100%; height:100%; object-fit:cover; }
+
+    .profile-info{ padding:2rem; position:relative; }
+
+    .pfp{
+      width:140px; height:140px;
+      border-radius:50%;
+      border:6px solid white;
+      overflow:hidden;
+      background:#ccc;
+      margin-top:-90px;
+    }
+    .pfp img{ width:100%; height:100%; object-fit:cover; }
+
+    .profile-info h1{ margin-top:1rem; font-size:2rem; }
+    .bio{
+      color:#666;
+      margin-top:1rem;
+      max-width:600px;
+      line-height:1.7;
+    }
+
+    .stats{ display:flex; gap:2rem; margin-top:1.5rem; }
+    .stat-number{ font-weight:700; font-size:1.2rem; }
+
+    .edit-btn{
+      margin-top:2rem;
+      border:none;
+      background:black;
+      color:white;
+      padding:1rem 1.3rem;
+      border-radius:14px;
+      cursor:pointer;
+    }
+
+    .edit-section{
+      margin-top:2rem;
+      background:white;
+      padding:1.5rem;
+      border-radius:24px;
+    }
+
+    .edit-section input,
+    .edit-section textarea{
+      width:100%;
+      border:none;
+      background:#f2f2f2;
+      padding:1rem;
+      border-radius:14px;
+      margin-bottom:1rem;
+      font-family:inherit;
+    }
+
+    .edit-section textarea{
+      min-height:120px;
+      resize:vertical;
+    }
+
+    .save-btn{
+      border:none;
+      background:black;
+      color:white;
+      padding:1rem 1.2rem;
+      border-radius:14px;
+      cursor:pointer;
+    }
+
+    .user-posts{ margin-top:3rem; }
+    .posts-grid{ columns:3 320px; column-gap:1rem; }
+
+    .post{
+      break-inside:avoid;
+      background:white;
+      border-radius:20px;
+      overflow:hidden;
+      margin-bottom:1rem;
+    }
+
+    .post img{ width:100%; display:block; }
+    .post-content{ padding:1rem; }
+  </style>
 </head>
+
 <body>
 
 <header>
-
   <div class="header-container">
-
-    <h2>
-      ArtMoots
-    </h2>
-
+    <h2>ArtMoots</h2>
     <nav>
-
-      <a href="index.html">
-        Home
-      </a>
-
-      <a href="posts.html">
-        Gallery
-      </a>
-
+      <a href="index.html">Home</a>
+      <a href="posts.html">Gallery</a>
     </nav>
-
   </div>
-
 </header>
 
 <div class="profile">
 
   <!-- BANNER -->
-
   <div class="banner">
-
-    <img id="bannerPreview"
-         src="https://placehold.co/1200x300">
-
+    <img id="bannerPreview" src="https://placehold.co/1200x300" />
   </div>
 
   <!-- PROFILE INFO -->
-
   <div class="profile-info">
-
     <div class="pfp">
-
-      <img id="pfpPreview"
-           src="https://placehold.co/200">
-
+      <img id="pfpPreview" src="https://placehold.co/200" />
     </div>
 
-    <h1 id="profileName">
-      Artist
-    </h1>
-
-    <p class="bio"
-       id="profileBio">
-
-      No bio yet.
-
-    </p>
+    <h1 id="profileName">Artist</h1>
+    <p class="bio" id="profileBio">No bio yet.</p>
 
     <div class="stats">
-
       <div>
-
-        <div class="stat-number"
-             id="followersCount">
-          0
-        </div>
-
+        <div class="stat-number" id="followersCount">0</div>
         Followers
-
       </div>
-
       <div>
-
-        <div class="stat-number"
-             id="followingCount">
-          0
-        </div>
-
+        <div class="stat-number" id="followingCount">0</div>
         Following
-
       </div>
-
     </div>
 
-    <button class="edit-btn"
-            id="toggleEdit">
-
-      Edit Profile
-
-    </button>
+    <button class="edit-btn" id="toggleEdit">Edit Profile</button>
 
     <!-- EDIT PROFILE -->
+    <div class="edit-section" id="editSection" style="display:none;">
 
-    <div class="edit-section"
-         id="editSection"
-         style="display:none;">
+      <input type="text" id="usernameInput" placeholder="Username" />
+      <textarea id="bioInput" placeholder="Bio"></textarea>
 
-      <input type="text"
-             id="usernameInput"
-             placeholder="Username">
+      <label>Profile Picture</label>
+      <input type="file" id="pfpInput" accept="image/*" />
 
-      <textarea id="bioInput"
-                placeholder="Bio"></textarea>
+      <label>Banner Image</label>
+      <input type="file" id="bannerInput" accept="image/*" />
 
-      <label>
-        Profile Picture
-      </label>
+      <!-- optional: status text -->
+      <div id="saveStatus" style="margin: 0.5rem 0 1rem; color:#666;"></div>
 
-      <input type="file"
-             id="pfpInput"
-             accept="image/*">
-
-      <label>
-        Banner Image
-      </label>
-
-      <input type="file"
-             id="bannerInput"
-             accept="image/*">
-
-      <button class="save-btn"
-              id="saveProfile">
-
-        Save Profile
-
-      </button>
-
+      <button class="save-btn" id="saveProfile">Save Profile</button>
     </div>
 
     <!-- USER POSTS -->
-
     <div class="user-posts">
-
-      <h2>
-        My Artwork
-      </h2>
-
-      <div class="posts-grid"
-           id="userPosts">
-
-      </div>
-
+      <h2>My Artwork</h2>
+      <div class="posts-grid" id="userPosts"></div>
     </div>
 
   </div>
-
 </div>
 
 <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+  import {
+    getFirestore,
+    doc,
+    setDoc,
+    getDoc,
+    collection,
+    query,
+    where,
+    getDocs
+  } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+  // ✅ Storage (the fix)
+  import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-storage.js";
 
-import {
-  getAuth,
-  onAuthStateChanged
-}
-from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+  /* FIREBASE */
+  const firebaseConfig = {
+    apiKey: "AIzaSyDMBb5n4Tyf9XLSHU_7CZ1obDlHjzrw258",
+    authDomain: "database-artmoots.firebaseapp.com",
+    projectId: "database-artmoots",
+    storageBucket: "database-artmoots.firebasestorage.app",
+    messagingSenderId: "1056886155154",
+    appId: "1:1056886155154:web:0de8b27263c11571ea034b"
+  };
 
-import {
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
-  getFirestore,
+  // ✅ init storage
+  const storage = getStorage(app);
 
-  doc,
+  /* ELEMENTS */
+  const profileName = document.getElementById("profileName");
+  const profileBio = document.getElementById("profileBio");
+  const pfpPreview = document.getElementById("pfpPreview");
+  const bannerPreview = document.getElementById("bannerPreview");
+  const followersCount = document.getElementById("followersCount");
+  const followingCount = document.getElementById("followingCount");
 
-  setDoc,
+  const editSection = document.getElementById("editSection");
+  const toggleEdit = document.getElementById("toggleEdit");
+  const saveProfile = document.getElementById("saveProfile");
 
-  getDoc,
+  const usernameInput = document.getElementById("usernameInput");
+  const bioInput = document.getElementById("bioInput");
+  const pfpInput = document.getElementById("pfpInput");
+  const bannerInput = document.getElementById("bannerInput");
+  const userPosts = document.getElementById("userPosts");
 
-  collection,
+  const saveStatus = document.getElementById("saveStatus");
 
-  query,
+  /* TOGGLE EDIT */
+  toggleEdit.onclick = () => {
+    editSection.style.display = (editSection.style.display === "none") ? "block" : "none";
+  };
 
-  where,
+  /* IMAGE PREVIEW (does NOT save blob URLs) */
+  // We preview using base64 (your original approach), so Firestore won’t end up with blob: URLs.
+  function fileToBase64(file){
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.readAsDataURL(file);
+    });
+  }
 
-  getDocs
-
-}
-from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-
-/* FIREBASE */
-
-const firebaseConfig = {
-
-  apiKey: "AIzaSyDMBb5n4Tyf9XLSHU_7CZ1obDlHjzrw258",
-
-  authDomain: "database-artmoots.firebaseapp.com",
-
-  projectId: "database-artmoots",
-
-  storageBucket: "database-artmoots.firebasestorage.app",
-
-  messagingSenderId: "1056886155154",
-
-  appId: "1:1056886155154:web:0de8b27263c11571ea034b"
-
-};
-
-const app = initializeApp(firebaseConfig);
-
-const auth = getAuth(app);
-
-const db = getFirestore(app);
-
-/* ELEMENTS */
-
-const profileName =
-  document.getElementById("profileName");
-
-const profileBio =
-  document.getElementById("profileBio");
-
-const pfpPreview =
-  document.getElementById("pfpPreview");
-
-const bannerPreview =
-  document.getElementById("bannerPreview");
-
-const followersCount =
-  document.getElementById("followersCount");
-
-const followingCount =
-  document.getElementById("followingCount");
-
-const editSection =
-  document.getElementById("editSection");
-
-const toggleEdit =
-  document.getElementById("toggleEdit");
-
-const saveProfile =
-  document.getElementById("saveProfile");
-
-const usernameInput =
-  document.getElementById("usernameInput");
-
-const bioInput =
-  document.getElementById("bioInput");
-
-const pfpInput =
-  document.getElementById("pfpInput");
-
-const bannerInput =
-  document.getElementById("bannerInput");
-
-const userPosts =
-  document.getElementById("userPosts");
-
-/* TOGGLE EDIT */
-
-toggleEdit.onclick = () => {
-
-  editSection.style.display =
-    editSection.style.display === "none"
-    ? "block"
-    : "none";
-
-};
-
-/* IMAGE CONVERSION */
-
-function fileToBase64(file){
-
-  return new Promise(resolve => {
-
-    const reader = new FileReader();
-
-    reader.onload = () => {
-
-      resolve(reader.result);
-
-    };
-
-    reader.readAsDataURL(file);
-
+  pfpInput.addEventListener("change", async () => {
+    const file = pfpInput.files[0];
+    if (!file) return;
+    pfpPreview.src = await fileToBase64(file);
   });
 
-}
-
-/* LOAD USER */
-
-onAuthStateChanged(auth,
-async user => {
-
-  if(!user){
-
-    location.href = "index.html";
-
-    return;
-
-  }
-
-  const userRef =
-    doc(db,"users",user.uid);
-
-  const userSnap =
-    await getDoc(userRef);
-
-  if(userSnap.exists()){
-
-    const data =
-      userSnap.data();
-
-    profileName.textContent =
-      data.username || "Artist";
-
-    profileBio.textContent =
-      data.bio || "No bio yet.";
-
-    pfpPreview.src =
-      data.pfp || "https://placehold.co/200";
-
-    bannerPreview.src =
-      data.banner || "https://placehold.co/1200x300";
-
-    followersCount.textContent =
-      data.followers || 0;
-
-    followingCount.textContent =
-      data.following || 0;
-
-    usernameInput.value =
-      data.username || "";
-
-    bioInput.value =
-      data.bio || "";
-
-  }
-
-  loadUserPosts(user.uid);
-
-});
-
-/* SAVE PROFILE */
-
-saveProfile.onclick = async () => {
-
-  const user =
-    auth.currentUser;
-
-  if(!user) return;
-
-  let pfp =
-    pfpPreview.src;
-
-  let banner =
-    bannerPreview.src;
-
-  if(pfpInput.files[0]){
-
-    pfp =
-      await fileToBase64(
-        pfpInput.files[0]
-      );
-
-  }
-
-  if(bannerInput.files[0]){
-
-    banner =
-      await fileToBase64(
-        bannerInput.files[0]
-      );
-
-  }
-
-  await setDoc(doc(db,"users",user.uid),{
-
-    uid:user.uid,
-
-    username:
-      usernameInput.value,
-
-    bio:
-      bioInput.value,
-
-    pfp,
-
-    banner,
-
-    followers:0,
-
-    following:0
-
+  bannerInput.addEventListener("change", async () => {
+    const file = bannerInput.files[0];
+    if (!file) return;
+    bannerPreview.src = await fileToBase64(file);
   });
 
-  location.reload();
+  /* LOAD USER */
+  onAuthStateChanged(auth, async (user) => {
+    if(!user){
+      location.href = "index.html";
+      return;
+    }
 
-};
+    const userRef = doc(db, "users", user.uid);
+    const userSnap = await getDoc(userRef);
 
-/* USER POSTS */
+    if(userSnap.exists()){
+      const data = userSnap.data();
 
-async function loadUserPosts(uid){
+      profileName.textContent = data.username || "Artist";
+      profileBio.textContent = data.bio || "No bio yet.";
 
-  const q = query(
+      // These should be stable URLs (Storage download URLs)
+      pfpPreview.src = data.pfp || "https://placehold.co/200";
+      bannerPreview.src = data.banner || "https://placehold.co/1200x300";
 
-    collection(db,"posts"),
+      followersCount.textContent = data.followers || 0;
+      followingCount.textContent = data.following || 0;
 
-    where("uid","==",uid)
+      usernameInput.value = data.username || "";
+      bioInput.value = data.bio || "";
+    }
 
-  );
-
-  const snapshot =
-    await getDocs(q);
-
-  snapshot.forEach(postDoc => {
-
-    const data =
-      postDoc.data();
-
-    const div =
-      document.createElement("div");
-
-    div.className = "post";
-
-    div.innerHTML = `
-
-      <img src="${data.image}">
-
-      <div class="post-content">
-
-        <h3>
-          ${data.title}
-        </h3>
-
-      </div>
-
-    `;
-
-    userPosts.appendChild(div);
-
+    loadUserPosts(user.uid);
   });
 
-}
+  /* SAVE PROFILE (upload to Storage, store download URL in Firestore) */
+  saveProfile.onclick = async () => {
+    const user = auth.currentUser;
+    if(!user) return;
 
+    try{
+      saveStatus.textContent = "Saving...";
+
+      let pfpUrl = null;
+      let bannerUrl = null;
+
+      // Upload PFP if user selected a new file
+      if (pfpInput.files[0]) {
+        const file = pfpInput.files[0];
+        const pfpRef = ref(storage, `users/${user.uid}/pfp/${file.name}`);
+        await uploadBytes(pfpRef, file);
+        pfpUrl = await getDownloadURL(pfpRef);
+      }
+
+      // Upload Banner if user selected a new file
+      if (bannerInput.files[0]) {
+        const file = bannerInput.files[0];
+        const bannerRef = ref(storage, `users/${user.uid}/banner/${file.name}`);
+        await uploadBytes(bannerRef, file);
+        bannerUrl = await getDownloadURL(bannerRef);
+      }
+
+      // Keep existing URLs if user didn't select new files
+      // (We take them from the preview which currently holds the existing stored URLs)
+      if (!pfpUrl) pfpUrl = pfpPreview.src;
+      if (!bannerUrl) bannerUrl = bannerPreview.src;
+
+      await setDoc(doc(db, "users", user.uid), {
+        uid: user.uid,
+        username: usernameInput.value,
+        bio: bioInput.value,
+        pfp: pfpUrl,
+        banner: bannerUrl,
+        followers: 0,
+        following: 0
+      });
+
+      saveStatus.textContent = "Saved!";
+      location.reload();
+    }catch(err){
+      console.error("Save failed:", err);
+      saveStatus.textContent = "Save failed. Check console.";
+      alert("Save failed. Check browser console for details.");
+    }
+  };
+
+  /* USER POSTS */
+  async function loadUserPosts(uid){
+    userPosts.innerHTML = "";
+
+    const q = query(
+      collection(db, "posts"),
+      where("uid", "==", uid)
+    );
+
+    const snapshot = await getDocs(q);
+
+    snapshot.forEach((postDoc) => {
+      const data = postDoc.data();
+
+      const div = document.createElement("div");
+      div.className = "post";
+
+      div.innerHTML = `
+        <img src="${data.image}">
+        <div class="post-content">
+          <h3>${data.title}</h3>
+        </div>
+      `;
+
+      userPosts.appendChild(div);
+    });
+  }
 </script>
 
 </body>
