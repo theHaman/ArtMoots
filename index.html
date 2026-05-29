@@ -1,64 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
+<title>ArtMoots</title>
 
-<title>
-  ArtMoots
-</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link rel="preconnect"
-      href="https://fonts.googleapis.com">
-
-<link rel="preconnect"
-      href="https://fonts.gstatic.com"
-      crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 
-/* =========================
-   ROOT
-========================= */
-
 :root{
-
   --bg:#f7f7f7;
-
   --text:#111;
-
   --muted:#666;
-
   --purple:#caa6ff;
-
 }
 
 *{
-
   margin:0;
-
   padding:0;
-
   box-sizing:border-box;
-
 }
 
 body{
-
   font-family:"Inter",sans-serif;
-
   background:var(--bg);
-
   color:var(--text);
-
   overflow-x:hidden;
-
 }
 
 /* =========================
@@ -66,177 +38,108 @@ body{
 ========================= */
 
 header{
-
   width:100%;
-
   padding:1rem;
-
   display:flex;
-
   justify-content:center;
-
 }
 
 .header-container{
-
   width:100%;
-
   display:flex;
-
   align-items:center;
-
   gap:1rem;
-
 }
 
 /* LOGO */
 
 .logo{
-
-  font-size:1.5rem;
-
-  font-weight:700;
-
+  width:140px;
+  height:42px;
+  background:#d9d9d9;
+  border-radius:2px;
   flex-shrink:0;
-
 }
 
 /* SEARCH */
 
 .search-bar{
-
   flex:1;
-
   height:42px;
-
-  border:1px solid #ddd;
-
+  border:1px solid #444;
   border-radius:999px;
-
   background:white;
-
   display:flex;
-
   align-items:center;
-
   padding:0 1rem;
-
   gap:0.8rem;
-
 }
 
 .search-bar input{
-
   border:none;
-
   outline:none;
-
   width:100%;
-
   background:transparent;
-
   font-size:1rem;
-
-}
-
-.search-icon{
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:center;
-
 }
 
 .search-icon img{
-
   width:18px;
-
   height:18px;
-
   object-fit:contain;
-
 }
 
 /* NAV */
 
 nav{
-
   display:flex;
-
   align-items:center;
-
-  gap:1rem;
-
+  gap:1.5rem;
   margin-left:auto;
-
 }
 
 nav a{
-
   text-decoration:none;
-
   color:#111;
-
   font-size:0.95rem;
-
   font-weight:500;
-
 }
 
 /* ICONS */
 
-.icon{
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:center;
-
+.icon-button{
   width:42px;
-
   height:42px;
-
   border-radius:50%;
-
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
   transition:0.2s;
-
+  position:relative;
 }
 
-.icon:hover{
-
+.icon-button:hover{
   background:#ececec;
-
 }
 
-.icon img{
-
+.icon-button img{
   width:22px;
-
   height:22px;
-
   object-fit:contain;
-
 }
 
 /* =========================
-   ACCOUNT DROPDOWN
+   ACCOUNT MENU
 ========================= */
 
-.account-menu-container{
-
+.account-wrapper{
   position:relative;
-
 }
 
-.account-dropdown{
-
+.account-menu{
   position:absolute;
-
   top:55px;
-
   right:0;
 
   width:220px;
@@ -248,45 +151,55 @@ nav a{
   padding:0.6rem;
 
   box-shadow:
-    0 10px 30px rgba(0,0,0,0.12);
+    0 10px 30px rgba(0,0,0,0.08);
 
   display:none;
 
   flex-direction:column;
 
-  z-index:1000;
-
+  z-index:999;
 }
 
-.account-dropdown a{
+.account-menu.show{
+  display:flex;
+}
 
-  display:block;
+.account-menu a,
+.account-menu button{
 
-  text-decoration:none;
+  width:100%;
 
-  color:#111;
+  border:none;
+  background:none;
+
+  text-align:left;
 
   padding:0.9rem 1rem;
 
   border-radius:12px;
 
-  transition:0.2s;
+  text-decoration:none;
 
+  color:#111;
+
+  font-size:0.95rem;
+
+  cursor:pointer;
+
+  font-family:inherit;
 }
 
-.account-dropdown a:hover{
-
+.account-menu a:hover,
+.account-menu button:hover{
   background:#f3f3f3;
-
 }
 
-#loggedInMenu,
-#loggedOutMenu{
-
-  display:flex;
-
-  flex-direction:column;
-
+.account-user{
+  padding:0.9rem 1rem;
+  font-size:0.9rem;
+  color:#666;
+  border-bottom:1px solid #eee;
+  margin-bottom:0.3rem;
 }
 
 /* =========================
@@ -294,11 +207,8 @@ nav a{
 ========================= */
 
 .hero{
-
   margin:0 1rem;
-
-  height:520px;
-
+  height:380px;
   border-radius:0 0 18px 18px;
 
   background:
@@ -307,382 +217,293 @@ nav a{
       #dff5ff 0%,
       #f6f6f6 30%,
       #f6f6f6 70%,
-      #f7e8ff 100%
+      #dff5ff 100%
     );
 
   display:flex;
-
   align-items:center;
-
   justify-content:center;
-
   text-align:center;
-
-  overflow:hidden;
-
   position:relative;
-
-}
-
-/* HERO BACKGROUND */
-
-.hero::before{
-
-  content:"";
-
-  position:absolute;
-
-  width:500px;
-
-  height:500px;
-
-  background:rgba(255,255,255,0.45);
-
-  border-radius:50%;
-
-  top:-200px;
-
-  right:-100px;
-
-}
-
-.hero::after{
-
-  content:"";
-
-  position:absolute;
-
-  width:400px;
-
-  height:400px;
-
-  background:rgba(202,166,255,0.18);
-
-  border-radius:50%;
-
-  bottom:-150px;
-
-  left:-100px;
-
-}
-
-/* HERO CONTENT */
-
-.hero-content{
-
-  position:relative;
-
-  z-index:2;
-
-  max-width:900px;
-
-  padding:2rem;
-
 }
 
 .hero-content h1{
-
   font-size:5rem;
-
   line-height:0.95;
-
   font-weight:500;
-
   margin-bottom:1rem;
-
 }
 
 .hero-content p{
-
   color:#444;
-
-  font-size:1.1rem;
-
-  line-height:1.8;
-
-  margin-bottom:2rem;
-
+  font-size:1rem;
+  margin-bottom:1.8rem;
 }
-
-/* HERO BUTTONS */
 
 .hero-buttons{
-
   display:flex;
-
   justify-content:center;
-
   gap:1rem;
-
-  flex-wrap:wrap;
-
 }
 
-.primary-btn{
+.hero-btn{
+  text-decoration:none;
+  padding:1rem 1.4rem;
+  border-radius:14px;
+  font-weight:600;
+  transition:0.2s;
+}
 
-  background:#111;
+.hero-btn:hover{
+  transform:translateY(-2px);
+}
 
+.hero-btn.black{
+  background:black;
   color:white;
-
-  padding:1rem 1.5rem;
-
-  border-radius:999px;
-
-  text-decoration:none;
-
-  font-weight:600;
-
 }
 
-.secondary-btn{
-
-  background:white;
-
-  color:#111;
-
-  padding:1rem 1.5rem;
-
-  border-radius:999px;
-
-  text-decoration:none;
-
-  font-weight:600;
-
-  border:1px solid #ddd;
-
+.hero-btn.purple{
+  background:var(--purple);
+  color:black;
 }
 
 /* =========================
-   FEATURED SECTION
+   MAIN CONTENT
 ========================= */
 
-.featured{
+main{
+  padding:2rem 1rem 5rem;
+}
 
-  padding:5rem 1rem;
+/* SECTION */
 
+.section{
+  margin-top:2rem;
 }
 
 .section-title{
-
-  font-size:2rem;
-
-  margin-bottom:2rem;
-
+  font-size:1.4rem;
+  font-weight:700;
+  margin-bottom:1.5rem;
 }
 
-.featured-grid{
+/* HORIZONTAL SCROLL */
 
-  columns:3 320px;
-
-  column-gap:1rem;
-
+.horizontal-scroll{
+  display:flex;
+  gap:1rem;
+  overflow-x:auto;
+  padding-bottom:0.5rem;
+  scrollbar-width:none;
 }
 
-.feature-card{
+.horizontal-scroll::-webkit-scrollbar{
+  display:none;
+}
 
-  break-inside:avoid;
+/* =========================
+   ARTIST CARDS
+========================= */
 
-  background:white;
-
-  border-radius:22px;
-
+.artist-card{
+  min-width:260px;
+  border-radius:16px;
   overflow:hidden;
-
-  margin-bottom:1rem;
-
-  transition:0.25s;
-
+  background:white;
+  flex-shrink:0;
 }
 
-.feature-card:hover{
-
-  transform:translateY(-4px);
-
+.artist-image{
+  height:150px;
+  background:#d2d2d2;
 }
 
-.feature-card img{
-
-  width:100%;
-
-  display:block;
-
+.artist-info{
+  padding:1rem;
 }
 
-.feature-content{
-
-  padding:1.2rem;
-
+.artist-row{
+  display:flex;
+  align-items:center;
+  gap:0.8rem;
 }
 
-.feature-content h3{
+.artist-avatar{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  background:#c9c9c9;
+}
 
+.artist-lines{
+  flex:1;
+}
+
+.artist-line{
+  height:8px;
+  background:#d7d7d7;
+  border-radius:999px;
   margin-bottom:0.5rem;
-
 }
 
-.feature-content p{
+.artist-line.small{
+  width:70%;
+}
 
-  color:#666;
+/* =========================
+   POPULAR POSTS
+========================= */
 
-  line-height:1.7;
+.popular-card{
+  min-width:420px;
+  border-radius:18px;
+  overflow:hidden;
+  background:white;
+  flex-shrink:0;
+}
 
+.popular-card img{
+  width:100%;
+  height:280px;
+  object-fit:cover;
+  display:block;
+}
+
+.popular-info{
+  padding:1rem;
+}
+
+.popular-info h3{
+  margin-bottom:0.5rem;
 }
 
 /* =========================
    RESPONSIVE
 ========================= */
 
+@media(max-width:900px){
+
+  .hero-content h1{
+    font-size:3.5rem;
+  }
+
+}
+
 @media(max-width:700px){
 
   nav{
-
     display:none;
+  }
 
+  .logo{
+    width:90px;
   }
 
   .hero{
-
-    height:auto;
-
-    padding:6rem 1rem;
-
+    height:320px;
   }
 
   .hero-content h1{
+    font-size:2.7rem;
+  }
 
-    font-size:3rem;
+  .hero-buttons{
+    flex-direction:column;
+  }
 
+  .popular-card{
+    min-width:300px;
   }
 
 }
 
 </style>
-
 </head>
-
 <body>
 
-<!-- =========================
-     HEADER
-========================= -->
+<!-- HEADER -->
 
 <header>
 
   <div class="header-container">
 
-    <div class="logo">
-
-      ArtMoots
-
-    </div>
-
-    <!-- SEARCH -->
+    <div class="logo"></div>
 
     <div class="search-bar">
 
       <div class="search-icon">
-
-        <img src="img/search-icon-png-1.png"
-             alt="Search">
-
+        <img src="img/search-icon-png-1.png">
       </div>
 
-      <input type="text"
-             placeholder="Search artwork, artists...">
+      <input
+        type="text"
+        placeholder="Search artists, artwork, styles..."
+      >
 
     </div>
 
-    <!-- NAV -->
-
     <nav>
 
-      <a href="index.html">
-
-        Home
-
-      </a>
-
       <a href="posts.html">
-
         Gallery
-
       </a>
 
       <a href="#">
-
         About
-
       </a>
 
-      <!-- ACCOUNT -->
+      <!-- ACCOUNT DROPDOWN -->
 
-      <div class="account-menu-container">
+      <div class="account-wrapper">
 
-        <button class="icon"
-                id="accountButton">
+        <div class="icon-button"
+             id="accountButton">
 
-          <img src="img/my-account-5.png"
-               alt="Account">
+          <img src="img/my-account-5.png">
 
-        </button>
+        </div>
 
-        <div class="account-dropdown"
-             id="accountDropdown">
+        <div class="account-menu"
+             id="accountMenu">
 
-          <!-- LOGGED OUT -->
-
-          <div id="loggedOutMenu">
-
-            <a id="signInBtn"
-               href="#">
-
-              Log In
-
-            </a>
-
-            <a id="signUpBtn"
-               href="#">
-
-              Sign Up
-
-            </a>
-
+          <div class="account-user"
+               id="accountUser">
+            Not Logged In
           </div>
 
-          <!-- LOGGED IN -->
+          <a href="account.html?mode=account"
+             id="viewAccountBtn"
+             style="display:none;">
+             View Account
+          </a>
 
-          <div id="loggedInMenu"
-               style="display:none;">
+          <a href="account.html?mode=login"
+             id="loginBtn">
+             Log In
+          </a>
 
-            <a id="myAccountBtn"
-               href="#">
+          <a href="account.html?mode=signup"
+             id="signupBtn">
+             Sign Up
+          </a>
 
-              View Account
-
-            </a>
-
-            <a id="logoutBtn"
-               href="#">
-
-              Logout
-
-            </a>
-
-          </div>
+          <button id="logoutBtn"
+                  style="display:none;">
+            Logout
+          </button>
 
         </div>
 
       </div>
 
-      <!-- NOTIFICATIONS -->
+      <!-- NOTIFICATION -->
 
-      <a href="#"
-         class="icon">
+      <div class="icon-button">
 
-        <img src="img/notif.png"
-             alt="Notifications">
+        <img src="img/notif.png">
 
-      </a>
+      </div>
 
     </nav>
 
@@ -690,42 +511,34 @@ nav a{
 
 </header>
 
-<!-- =========================
-     HERO
-========================= -->
+<!-- HERO -->
 
 <section class="hero">
 
   <div class="hero-content">
 
     <h1>
-
-      Discover Art.<br>
-      Meet Artists.
-
+      Welcome to<br>
+      ArtMoots
     </h1>
 
     <p>
-
-      A creative platform where artists share
-      illustrations, paintings, concepts, animations,
-      and visual inspiration with the ArtMoots community.
-
+      Share Art, Meet Moots and Grow Together!
     </p>
 
     <div class="hero-buttons">
 
+      <a href="#"
+         class="hero-btn black">
+
+         Want to know more?
+
+      </a>
+
       <a href="posts.html"
-         class="primary-btn">
+         class="hero-btn purple">
 
-        Explore Gallery
-
-      </a>
-
-      <a href="account.html?mode=signup"
-         class="secondary-btn">
-
-        Join Community
+         Lets see some art!
 
       </a>
 
@@ -735,206 +548,179 @@ nav a{
 
 </section>
 
-<!-- =========================
-     FEATURED
-========================= -->
+<!-- MAIN -->
 
-<section class="featured">
+<main>
 
-  <h2 class="section-title">
+  <!-- TOP ARTISTS -->
 
-    Featured Artwork
+  <section class="section">
 
-  </h2>
+    <h2 class="section-title">
+      Top Artists
+    </h2>
 
-  <div class="featured-grid">
+    <div class="horizontal-scroll">
 
-    <!-- CARD -->
+      <div class="artist-card">
 
-    <div class="feature-card">
+        <div class="artist-image"></div>
 
-      <img src="https://picsum.photos/500/700?1">
+        <div class="artist-info">
 
-      <div class="feature-content">
+          <div class="artist-row">
 
-        <h3>
+            <div class="artist-avatar"></div>
 
-          Dreamscape
+            <div class="artist-lines">
 
-        </h3>
+              <div class="artist-line"></div>
 
-        <p>
+              <div class="artist-line small"></div>
 
-          Atmospheric concept art inspired by surreal
-          fantasy worlds and cinematic lighting.
+            </div>
 
-        </p>
+          </div>
 
-      </div>
-
-    </div>
-
-    <!-- CARD -->
-
-    <div class="feature-card">
-
-      <img src="https://picsum.photos/500/600?2">
-
-      <div class="feature-content">
-
-        <h3>
-
-          Character Design
-
-        </h3>
-
-        <p>
-
-          Stylized digital portrait work exploring
-          emotion, storytelling, and color.
-
-        </p>
+        </div>
 
       </div>
 
     </div>
 
-    <!-- CARD -->
+  </section>
 
-    <div class="feature-card">
+  <!-- MOST POPULAR -->
 
-      <img src="https://picsum.photos/500/800?3">
+  <section class="section">
 
-      <div class="feature-content">
+    <h2 class="section-title">
+      Most Popular
+    </h2>
 
-        <h3>
-
-          Neon City
-
-        </h3>
-
-        <p>
-
-          Futuristic cyberpunk environment with glowing
-          lights and urban atmosphere.
-
-        </p>
-
-      </div>
+    <div class="horizontal-scroll"
+         id="popularPosts">
 
     </div>
 
-  </div>
+  </section>
 
-</section>
+</main>
 
-<!-- =========================
-     ACCOUNT MENU SCRIPT
-========================= -->
+<!-- FIREBASE -->
 
-<script>
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  query,
+  orderBy,
+  limit
+}
+from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+/* FIREBASE CONFIG */
+
+const firebaseConfig = {
+
+  apiKey: "AIzaSyDMBb5n4Tyf9XLSHU_7CZ1obDlHjzrw258",
+
+  authDomain: "database-artmoots.firebaseapp.com",
+
+  projectId: "database-artmoots",
+
+  storageBucket: "database-artmoots.firebasestorage.app",
+
+  messagingSenderId: "1056886155154",
+
+  appId: "1:1056886155154:web:0de8b27263c11571ea034b"
+
+};
+
+const app = initializeApp(firebaseConfig);
+
+const db = getFirestore(app);
 
 /* =========================
-   ACCOUNT MENU SYSTEM
+   ACCOUNT MENU
 ========================= */
 
 const currentUser =
   localStorage.getItem("currentUser");
 
-/* ELEMENTS */
+const accountButton =
+  document.getElementById("accountButton");
 
-const myAccountBtn =
-  document.getElementById("myAccountBtn");
+const accountMenu =
+  document.getElementById("accountMenu");
+
+const accountUser =
+  document.getElementById("accountUser");
+
+const loginBtn =
+  document.getElementById("loginBtn");
+
+const signupBtn =
+  document.getElementById("signupBtn");
 
 const logoutBtn =
   document.getElementById("logoutBtn");
 
-const signInBtn =
-  document.getElementById("signInBtn");
-
-const signUpBtn =
-  document.getElementById("signUpBtn");
-
-const accountButton =
-  document.getElementById("accountButton");
-
-const accountDropdown =
-  document.getElementById("accountDropdown");
-
-const loggedOutMenu =
-  document.getElementById("loggedOutMenu");
-
-const loggedInMenu =
-  document.getElementById("loggedInMenu");
-
-/* USER STATE */
-
-if(currentUser){
-
-  loggedOutMenu.style.display =
-    "none";
-
-  loggedInMenu.style.display =
-    "flex";
-
-  myAccountBtn.href =
-    "account_info.html";
-
-}
-
-else{
-
-  loggedOutMenu.style.display =
-    "flex";
-
-  loggedInMenu.style.display =
-    "none";
-
-  const returnURL =
-    window.location.href;
-
-  signInBtn.href =
-    `account.html?mode=login&return=${encodeURIComponent(returnURL)}`;
-
-  signUpBtn.href =
-    `account.html?mode=signup&return=${encodeURIComponent(returnURL)}`;
-
-}
+const viewAccountBtn =
+  document.getElementById("viewAccountBtn");
 
 /* TOGGLE MENU */
 
 accountButton.addEventListener("click", () => {
 
-  if(accountDropdown.style.display === "flex"){
-
-    accountDropdown.style.display =
-      "none";
-
-  }
-
-  else{
-
-    accountDropdown.style.display =
-      "flex";
-
-  }
+  accountMenu.classList.toggle("show");
 
 });
 
-/* CLOSE MENU */
+/* CLOSE WHEN CLICK OUTSIDE */
 
-document.addEventListener("click", e => {
+document.addEventListener("click", (e) => {
 
   if(
-    !e.target.closest(".account-menu-container")
+    !accountButton.contains(e.target) &&
+    !accountMenu.contains(e.target)
   ){
-
-    accountDropdown.style.display =
-      "none";
-
+    accountMenu.classList.remove("show");
   }
 
 });
+
+/* USER STATE */
+
+if(currentUser){
+
+  accountUser.textContent =
+    currentUser;
+
+  loginBtn.style.display =
+    "none";
+
+  signupBtn.style.display =
+    "none";
+
+  logoutBtn.style.display =
+    "block";
+
+  viewAccountBtn.style.display =
+    "block";
+
+}
+else{
+
+  accountUser.textContent =
+    "Not Logged In";
+
+}
 
 /* LOGOUT */
 
@@ -945,6 +731,53 @@ logoutBtn.addEventListener("click", () => {
   location.reload();
 
 });
+
+/* =========================
+   LOAD MOST POPULAR POSTS
+========================= */
+
+const popularContainer =
+  document.getElementById("popularPosts");
+
+async function loadPopularPosts(){
+
+  const q = query(
+    collection(db, "posts"),
+    orderBy("likes", "desc"),
+    limit(10)
+  );
+
+  const snapshot = await getDocs(q);
+
+  snapshot.forEach(doc => {
+
+    const data = doc.data();
+
+    const card = document.createElement("div");
+
+    card.className = "popular-card";
+
+    card.innerHTML = `
+
+      <img src="${data.image}">
+
+      <div class="popular-info">
+
+        <h3>${data.title}</h3>
+
+        <p>❤️ ${data.likes || 0}</p>
+
+      </div>
+
+    `;
+
+    popularContainer.appendChild(card);
+
+  });
+
+}
+
+loadPopularPosts();
 
 </script>
 
