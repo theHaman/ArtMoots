@@ -2,36 +2,53 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
 <title>ArtMoots</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect"
+      href="https://fonts.googleapis.com">
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet">
 
 <style>
 
+/* =========================
+   ROOT
+========================= */
+
 :root{
+
   --bg:#f7f7f7;
   --text:#111;
   --muted:#666;
-  --purple:#caa6ff;
+
 }
 
 *{
+
   margin:0;
   padding:0;
   box-sizing:border-box;
+
 }
 
 body{
+
   font-family:"Inter",sans-serif;
+
   background:var(--bg);
+
   color:var(--text);
 
   overflow-x:hidden;
+
 }
 
 /* =========================
@@ -39,71 +56,43 @@ body{
 ========================= */
 
 header{
+
   width:100%;
 
   padding:1rem;
 
   display:flex;
+
   justify-content:center;
+
 }
 
 .header-container{
+
   width:100%;
 
   display:flex;
+
   align-items:center;
+
   gap:1rem;
+
 }
 
-/* LOGO */
+/* =========================
+   LOGO
+========================= */
 
 .logo{
-  width:140px;
-  height:42px;
 
-  background:#d9d9d9;
+  font-size:1.5rem;
 
-  border-radius:2px;
+  font-weight:700;
 
   flex-shrink:0;
+
 }
 
-/* SEARCH */
-
-.search-bar{
-  flex:1;
-
-  height:42px;
-
-  border:1px solid #444;
-
-  border-radius:999px;
-
-  background:white;
-
-  display:flex;
-  align-items:center;
-
-  padding:0 1rem;
-
-  gap:0.8rem;
-}
-
-.search-bar input{
-  border:none;
-  outline:none;
-  width:100%;
-
-  background:transparent;
-
-  font-size:1rem;
-}
-
-.search-icon img{
-  width:80px;
-  height:80px;
-  object-fit:contain;
-}
 /* =========================
    SEARCH BAR
 ========================= */
@@ -121,6 +110,7 @@ header{
   background:white;
 
   display:flex;
+
   align-items:center;
 
   padding:0 1rem;
@@ -132,6 +122,7 @@ header{
 .search-bar input{
 
   border:none;
+
   outline:none;
 
   width:100%;
@@ -151,6 +142,7 @@ header{
   display:flex;
 
   align-items:center;
+
   justify-content:center;
 
 }
@@ -195,20 +187,29 @@ nav a{
 
 }
 
-/* ICON BUTTONS */
+/* =========================
+   ICONS
+========================= */
 
 .icon{
 
   display:flex;
 
   align-items:center;
+
   justify-content:center;
 
   width:42px;
 
   height:42px;
 
+  border:none;
+
+  background:none;
+
   border-radius:50%;
+
+  cursor:pointer;
 
   transition:0.2s;
 
@@ -233,290 +234,338 @@ nav a{
 }
 
 /* =========================
+   ACCOUNT DROPDOWN
+========================= */
+
+.account-menu-container{
+
+  position:relative;
+
+}
+
+.account-dropdown{
+
+  position:absolute;
+
+  top:55px;
+
+  right:0;
+
+  width:220px;
+
+  background:white;
+
+  border-radius:18px;
+
+  padding:0.6rem;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.12);
+
+  display:none;
+
+  flex-direction:column;
+
+  z-index:1000;
+
+}
+
+.account-dropdown a{
+
+  display:block;
+
+  text-decoration:none;
+
+  color:#111;
+
+  padding:0.9rem 1rem;
+
+  border-radius:12px;
+
+  transition:0.2s;
+
+}
+
+.account-dropdown a:hover{
+
+  background:#f3f3f3;
+
+}
+
+#loggedInMenu,
+#loggedOutMenu{
+
+  display:flex;
+
+  flex-direction:column;
+
+}
+
+/* =========================
    HERO
 ========================= */
 
 .hero{
+
   margin:0 1rem;
 
-  height:380px;
+  height:520px;
 
-  border-radius:0 0 18px 18px;
+  border-radius:0 0 24px 24px;
 
   background:
     linear-gradient(
-      90deg,
+      135deg,
       #dff5ff 0%,
-      #f6f6f6 30%,
-      #f6f6f6 70%,
-      #dff5ff 100%
+      #ffffff 40%,
+      #f7e8ff 100%
     );
 
   display:flex;
+
   align-items:center;
+
   justify-content:center;
+
+  position:relative;
+
+  overflow:hidden;
+
+}
+
+/* BACKGROUND CIRCLES */
+
+.hero::before{
+
+  content:"";
+
+  position:absolute;
+
+  width:600px;
+
+  height:600px;
+
+  background:rgba(255,255,255,0.5);
+
+  border-radius:50%;
+
+  top:-200px;
+
+  right:-150px;
+
+}
+
+.hero::after{
+
+  content:"";
+
+  position:absolute;
+
+  width:500px;
+
+  height:500px;
+
+  background:rgba(202,166,255,0.15);
+
+  border-radius:50%;
+
+  bottom:-250px;
+
+  left:-150px;
+
+}
+
+/* HERO CONTENT */
+
+.hero-content{
+
+  position:relative;
+
+  z-index:2;
 
   text-align:center;
 
-  position:relative;
+  max-width:900px;
+
+  padding:2rem;
+
 }
 
 .hero-content h1{
+
   font-size:5rem;
 
   line-height:0.95;
 
-  font-weight:500;
+  font-weight:600;
 
-  margin-bottom:1rem;
+  margin-bottom:1.5rem;
+
 }
 
 .hero-content p{
-  color:#444;
 
-  font-size:1rem;
+  font-size:1.15rem;
 
-  margin-bottom:1.8rem;
+  color:#555;
+
+  line-height:1.8;
+
+  margin-bottom:2rem;
+
 }
+
+/* HERO BUTTONS */
 
 .hero-buttons{
+
   display:flex;
+
   justify-content:center;
+
   gap:1rem;
+
+  flex-wrap:wrap;
+
 }
 
-.hero-btn{
-  text-decoration:none;
+.primary-btn{
 
-  padding:1rem 1.4rem;
+  background:#111;
 
-  border-radius:14px;
-
-  font-weight:600;
-
-  transition:0.2s;
-}
-
-.hero-btn:hover{
-  transform:translateY(-2px);
-}
-
-.hero-btn.black{
-  background:black;
   color:white;
-}
 
-.hero-btn.purple{
-  background:var(--purple);
-  color:black;
-}
-
-/* =========================
-   MAIN CONTENT
-========================= */
-
-main{
-  padding:2rem 1rem 5rem;
-}
-
-/* SECTION */
-
-.section{
-  margin-top:2rem;
-}
-
-.section-title{
-  font-size:1.4rem;
-  font-weight:700;
-
-  margin-bottom:1.5rem;
-}
-
-/* HORIZONTAL SCROLL */
-
-.horizontal-scroll{
-  display:flex;
-  gap:1rem;
-
-  overflow-x:auto;
-
-  padding-bottom:0.5rem;
-
-  scrollbar-width:none;
-}
-
-.horizontal-scroll::-webkit-scrollbar{
-  display:none;
-}
-
-/* =========================
-   ARTIST CARDS
-========================= */
-
-.artist-card{
-  min-width:260px;
-
-  border-radius:16px;
-
-  overflow:hidden;
-
-  background:white;
-
-  flex-shrink:0;
-}
-
-.artist-image{
-  height:150px;
-
-  background:#d2d2d2;
-}
-
-.artist-info{
-  padding:1rem;
-}
-
-.artist-row{
-  display:flex;
-  align-items:center;
-  gap:0.8rem;
-}
-
-.artist-avatar{
-  width:40px;
-  height:40px;
-
-  border-radius:50%;
-
-  background:#c9c9c9;
-}
-
-.artist-lines{
-  flex:1;
-}
-
-.artist-line{
-  height:8px;
-
-  background:#d7d7d7;
+  padding:1rem 1.5rem;
 
   border-radius:999px;
 
-  margin-bottom:0.5rem;
+  text-decoration:none;
+
+  font-weight:600;
+
 }
 
-.artist-line.small{
-  width:70%;
-}
-
-/* =========================
-   POPULAR POSTS
-========================= */
-
-.popular-card{
-
-  min-width:420px;
-
-  border-radius:18px;
-
-  overflow:hidden;
+.secondary-btn{
 
   background:white;
 
-  flex-shrink:0;
+  color:#111;
+
+  padding:1rem 1.5rem;
+
+  border-radius:999px;
+
+  text-decoration:none;
+
+  font-weight:600;
+
+  border:1px solid #ddd;
 
 }
 
-.popular-card img{
+/* =========================
+   FEATURED SECTION
+========================= */
+
+.featured{
+
+  padding:5rem 1rem;
+
+}
+
+.section-title{
+
+  font-size:2rem;
+
+  margin-bottom:2rem;
+
+}
+
+.featured-grid{
+
+  columns:3 320px;
+
+  column-gap:1rem;
+
+}
+
+.feature-card{
+
+  break-inside:avoid;
+
+  background:white;
+
+  border-radius:24px;
+
+  overflow:hidden;
+
+  margin-bottom:1rem;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.06);
+
+  transition:0.25s;
+
+}
+
+.feature-card:hover{
+
+  transform:translateY(-5px);
+
+}
+
+.feature-card img{
 
   width:100%;
-  height:280px;
-
-  object-fit:cover;
 
   display:block;
 
 }
 
-.popular-info{
+.feature-content{
 
-  padding:1rem;
-
-}
-
-.popular-info h3{
-
-  margin-bottom:0.5rem;
+  padding:1.2rem;
 
 }
 
-/* =========================
-   FLOATING BUTTON
-========================= */
+.feature-content h3{
 
-.floating-button{
-  position:fixed;
+  margin-bottom:0.6rem;
 
-  right:18px;
-  bottom:18px;
-
-  width:48px;
-  height:48px;
-
-  border-radius:50%;
-
-  background:#4a4a4a;
-
-  color:white;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  font-size:1.2rem;
-
-  box-shadow:
-    0 10px 20px rgba(0,0,0,0.15);
-
-  cursor:pointer;
 }
 
+.feature-content p{
+
+  color:#666;
+
+  line-height:1.7;
+
+}
 
 /* =========================
    RESPONSIVE
 ========================= */
 
-@media(max-width:900px){
-
-  .hero-content h1{
-    font-size:3.5rem;
-  }
-
-}
-
-@media(max-width:700px){
+@media(max-width:800px){
 
   nav{
-    display:none;
-  }
 
-  .logo{
-    width:90px;
+    display:none;
+
   }
 
   .hero{
-    height:320px;
+
+    height:auto;
+
+    padding:6rem 1rem;
+
   }
 
   .hero-content h1{
-    font-size:2.7rem;
-  }
 
-  .hero-buttons{
-    flex-direction:column;
-  }
+    font-size:3rem;
 
-  .popular-card{
-    min-width:300px;
   }
 
 }
@@ -525,15 +574,17 @@ main{
 </head>
 <body>
 
-<!-- HEADER -->
+<!-- =========================
+     HEADER
+========================= -->
 
 <header>
 
   <div class="header-container">
 
-    <!-- LOGO -->
-
-    <div class="logo"></div>
+    <div class="logo">
+      ArtMoots
+    </div>
 
     <!-- SEARCH -->
 
@@ -551,9 +602,13 @@ main{
 
     </div>
 
-    <!-- NAVIGATION -->
+    <!-- NAV -->
 
     <nav>
+
+      <a href="index.html">
+        Home
+      </a>
 
       <a href="posts.html">
         Gallery
@@ -563,17 +618,67 @@ main{
         About
       </a>
 
-      <!-- ACCOUNT ICON -->
+      <!-- ACCOUNT MENU -->
 
-      <a href="account_info.html"
-         class="icon">
+      <div class="account-menu-container">
 
-        <img src="img/my-account-5.png"
-             alt="Account">
+        <button class="icon"
+                id="accountButton">
 
-      </a>
+          <img src="img/my-account-5.png"
+               alt="Account">
 
-      <!-- NOTIFICATION ICON -->
+        </button>
+
+        <div class="account-dropdown"
+             id="accountDropdown">
+
+          <!-- LOGGED OUT -->
+
+          <div id="loggedOutMenu">
+
+            <a id="signInBtn"
+               href="#">
+
+              Log In
+
+            </a>
+
+            <a id="signUpBtn"
+               href="#">
+
+              Sign Up
+
+            </a>
+
+          </div>
+
+          <!-- LOGGED IN -->
+
+          <div id="loggedInMenu"
+               style="display:none;">
+
+            <a id="myAccountBtn"
+               href="#">
+
+              View Account
+
+            </a>
+
+            <a id="logoutBtn"
+               href="#">
+
+              Logout
+
+            </a>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- NOTIFICATION -->
 
       <a href="#"
          class="icon">
@@ -589,34 +694,39 @@ main{
 
 </header>
 
-<!-- HERO -->
+<!-- =========================
+     HERO
+========================= -->
 
 <section class="hero">
 
   <div class="hero-content">
 
     <h1>
-      Welcome to<br>
-      ArtMoots
+      Discover.<br>
+      Create.<br>
+      Inspire.
     </h1>
 
     <p>
-      Share Art, Meet Moots and Grow Together!
+      ArtMoots is a modern social platform for artists,
+      illustrators, designers, and creators to share
+      artwork, build communities, and discover inspiration.
     </p>
 
     <div class="hero-buttons">
 
-      <a href="#"
-         class="hero-btn black">
+      <a href="posts.html"
+         class="primary-btn">
 
-         Want to know more?
+        Explore Gallery
 
       </a>
 
-      <a href="posts.html"
-         class="hero-btn purple">
+      <a href="account.html?mode=signup"
+         class="secondary-btn">
 
-         Lets see some art!
+        Join ArtMoots
 
       </a>
 
@@ -626,197 +736,195 @@ main{
 
 </section>
 
-<!-- MAIN -->
+<!-- =========================
+     FEATURED
+========================= -->
 
-<main>
+<section class="featured">
 
-  <!-- TOP ARTISTS -->
+  <h2 class="section-title">
+    Featured Artwork
+  </h2>
 
-  <section class="section">
+  <div class="featured-grid">
 
-    <h2 class="section-title">
-      Top Artists
-    </h2>
+    <div class="feature-card">
 
-    <div class="horizontal-scroll">
+      <img src="https://picsum.photos/500/700?1">
 
-      <div class="artist-card">
+      <div class="feature-content">
 
-        <div class="artist-image"></div>
+        <h3>
+          Dreamscape
+        </h3>
 
-        <div class="artist-info">
-
-          <div class="artist-row">
-
-            <div class="artist-avatar"></div>
-
-            <div class="artist-lines">
-
-              <div class="artist-line"></div>
-
-              <div class="artist-line small"></div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      <div class="artist-card">
-
-        <div class="artist-image"></div>
-
-        <div class="artist-info">
-
-          <div class="artist-row">
-
-            <div class="artist-avatar"></div>
-
-            <div class="artist-lines">
-
-              <div class="artist-line"></div>
-
-              <div class="artist-line small"></div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      <div class="artist-card">
-
-        <div class="artist-image"></div>
-
-        <div class="artist-info">
-
-          <div class="artist-row">
-
-            <div class="artist-avatar"></div>
-
-            <div class="artist-lines">
-
-              <div class="artist-line"></div>
-
-              <div class="artist-line small"></div>
-
-            </div>
-
-          </div>
-
-        </div>
+        <p>
+          A surreal environment concept created with
+          soft atmospheric lighting.
+        </p>
 
       </div>
 
     </div>
 
-  </section>
+    <div class="feature-card">
 
-  <!-- MOST POPULAR -->
+      <img src="https://picsum.photos/500/600?2">
 
-  <section class="section">
+      <div class="feature-content">
 
-    <h2 class="section-title">
-      Most Popular
-    </h2>
+        <h3>
+          Character Study
+        </h3>
 
-    <div class="horizontal-scroll"
-         id="popularPosts">
-
-    </div>
-
-  </section>
-
-</main>
-
-
-<!-- FIREBASE -->
-
-<script type="module">
-
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-
-import {
-  getFirestore,
-  collection,
-  getDocs,
-  query,
-  orderBy,
-  limit
-}
-from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-
-/* FIREBASE CONFIG */
-
-const firebaseConfig = {
-
-  apiKey: "AIzaSyDMBb5n4Tyf9XLSHU_7CZ1obDlHjzrw258",
-
-  authDomain: "database-artmoots.firebaseapp.com",
-
-  projectId: "database-artmoots",
-
-  storageBucket: "database-artmoots.firebasestorage.app",
-
-  messagingSenderId: "1056886155154",
-
-  appId: "1:1056886155154:web:0de8b27263c11571ea034b"
-
-};
-
-const app = initializeApp(firebaseConfig);
-
-const db = getFirestore(app);
-
-/* LOAD MOST POPULAR POSTS */
-
-const popularContainer =
-  document.getElementById("popularPosts");
-
-async function loadPopularPosts(){
-
-  const q = query(
-    collection(db, "posts"),
-    orderBy("likes", "desc"),
-    limit(10)
-  );
-
-  const snapshot = await getDocs(q);
-
-  snapshot.forEach(doc => {
-
-    const data = doc.data();
-
-    const card = document.createElement("div");
-
-    card.className = "popular-card";
-
-    card.innerHTML = `
-
-      <img src="${data.image}">
-
-      <div class="popular-info">
-
-        <h3>${data.title}</h3>
-
-        <p>❤️ ${data.likes || 0}</p>
+        <p>
+          Stylized digital portrait exploring color
+          harmony and expression.
+        </p>
 
       </div>
 
-    `;
+    </div>
 
-    popularContainer.appendChild(card);
+    <div class="feature-card">
 
-  });
+      <img src="https://picsum.photos/500/800?3">
+
+      <div class="feature-content">
+
+        <h3>
+          Neon City
+        </h3>
+
+        <p>
+          Futuristic cyberpunk inspired environment art.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- =========================
+     ACCOUNT MENU SCRIPT
+========================= -->
+
+<script>
+
+/* =========================
+   ACCOUNT MENU SYSTEM
+========================= */
+
+const currentUser =
+  localStorage.getItem("currentUser");
+
+/* ELEMENTS */
+
+const myAccountBtn =
+  document.getElementById("myAccountBtn");
+
+const logoutBtn =
+  document.getElementById("logoutBtn");
+
+const signInBtn =
+  document.getElementById("signInBtn");
+
+const signUpBtn =
+  document.getElementById("signUpBtn");
+
+const accountButton =
+  document.getElementById("accountButton");
+
+const accountDropdown =
+  document.getElementById("accountDropdown");
+
+const loggedOutMenu =
+  document.getElementById("loggedOutMenu");
+
+const loggedInMenu =
+  document.getElementById("loggedInMenu");
+
+/* USER STATE */
+
+if(currentUser){
+
+  loggedOutMenu.style.display =
+    "none";
+
+  loggedInMenu.style.display =
+    "flex";
+
+  myAccountBtn.href =
+    "account_info.html";
 
 }
 
-loadPopularPosts();
+else{
+
+  loggedOutMenu.style.display =
+    "flex";
+
+  loggedInMenu.style.display =
+    "none";
+
+  const returnURL =
+    window.location.href;
+
+  signInBtn.href =
+    `account.html?mode=login&return=${encodeURIComponent(returnURL)}`;
+
+  signUpBtn.href =
+    `account.html?mode=signup&return=${encodeURIComponent(returnURL)}`;
+
+}
+
+/* TOGGLE DROPDOWN */
+
+accountButton.addEventListener("click", () => {
+
+  if(accountDropdown.style.display === "flex"){
+
+    accountDropdown.style.display =
+      "none";
+
+  }
+
+  else{
+
+    accountDropdown.style.display =
+      "flex";
+
+  }
+
+});
+
+/* CLOSE DROPDOWN */
+
+document.addEventListener("click", e => {
+
+  if(
+    !e.target.closest(".account-menu-container")
+  ){
+
+    accountDropdown.style.display =
+      "none";
+
+  }
+
+});
+
+/* LOGOUT */
+
+logoutBtn.addEventListener("click", () => {
+
+  localStorage.removeItem("currentUser");
+
+  location.reload();
+
+});
 
 </script>
 
