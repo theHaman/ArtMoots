@@ -459,293 +459,132 @@ nav a{
 </div>
 
 <script type="module">
-
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-
-import {
-  getAuth,
-  onAuthStateChanged
-}
-from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-
-import {
-
-  getFirestore,
-
-  doc,
-
-  setDoc,
-
-  getDoc,
-
-  collection,
-
-  query,
-
-  where,
-
-  getDocs
-
-}
-from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
 /* FIREBASE */
-
 const firebaseConfig = {
-
   apiKey: "AIzaSyDMBb5n4Tyf9XLSHU_7CZ1obDlHjzrw258",
-
   authDomain: "database-artmoots.firebaseapp.com",
-
   projectId: "database-artmoots",
-
   storageBucket: "database-artmoots.firebasestorage.app",
-
   messagingSenderId: "1056886155154",
-
   appId: "1:1056886155154:web:0de8b27263c11571ea034b"
-
 };
 
 const app = initializeApp(firebaseConfig);
-
 const auth = getAuth(app);
-
 const db = getFirestore(app);
 
 /* ELEMENTS */
-
-const profileName =
-  document.getElementById("profileName");
-
-const profileBio =
-  document.getElementById("profileBio");
-
-const pfpPreview =
-  document.getElementById("pfpPreview");
-
-const bannerPreview =
-  document.getElementById("bannerPreview");
-
-const followersCount =
-  document.getElementById("followersCount");
-
-const followingCount =
-  document.getElementById("followingCount");
-
-const editSection =
-  document.getElementById("editSection");
-
-const toggleEdit =
-  document.getElementById("toggleEdit");
-
-const saveProfile =
-  document.getElementById("saveProfile");
-
-const usernameInput =
-  document.getElementById("usernameInput");
-
-const bioInput =
-  document.getElementById("bioInput");
-
-const pfpInput =
-  document.getElementById("pfpInput");
-
-const bannerInput =
-  document.getElementById("bannerInput");
-
-const userPosts =
-  document.getElementById("userPosts");
+const profileName = document.getElementById("profileName");
+const profileBio = document.getElementById("profileBio");
+const pfpPreview = document.getElementById("pfpPreview");
+const bannerPreview = document.getElementById("bannerPreview");
+const followersCount = document.getElementById("followersCount");
+const followingCount = document.getElementById("followingCount");
+const editSection = document.getElementById("editSection");
+const toggleEdit = document.getElementById("toggleEdit");
+const saveProfile = document.getElementById("saveProfile");
+const usernameInput = document.getElementById("usernameInput");
+const bioInput = document.getElementById("bioInput");
+const pfpInput = document.getElementById("pfpInput");
+const bannerInput = document.getElementById("bannerInput");
+const userPosts = document.getElementById("userPosts");
 
 /* TOGGLE EDIT */
-
 toggleEdit.onclick = () => {
-
-  editSection.style.display =
-    editSection.style.display === "none"
-    ? "block"
-    : "none";
-
+  editSection.style.display = editSection.style.display === "none" ? "block" : "none";
 };
 
-/* IMAGE CONVERSION */
-
-function fileToBase64(file){
-
-  return new Promise(resolve => {
-
+/* IMAGE CONVERSION (Base64 FileReader) */
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
     const reader = new FileReader();
-
-    reader.onload = () => {
-
-      resolve(reader.result);
-
-    };
-
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
     reader.readAsDataURL(file);
-
   });
+}
 
+/* LOAD USER POSTS FUNCTION */
+async function loadUserPosts(uid) {
+  userPosts.innerHTML = "";
+  try {
+    const q = query(collection(db, "posts"), where("userId", "==", uid));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      const postEl = document.createElement("div");
+      postEl.className = "post";
+      postEl.innerHTML = `<img src="${data.imageUrl || 'https://placehold.co'}" alt="Artwork">`;
+      userPosts.appendChild(postEl);
+    });
+  } catch (error) {
+    console.error("Error loading posts:", error);
+  }
 }
 
 /* LOAD USER */
-
-onAuthStateChanged(auth,
-async user => {
-
+onAuthStateChanged(auth, async user => {
   if(!user){
-
     location.href = "index.html";
-
     return;
-
   }
 
-  const userRef =
-    doc(db,"users",user.uid);
-
-  const userSnap =
-    await getDoc(userRef);
+  const userRef = doc(db, "users", user.uid);
+  const userSnap = await getDoc(userRef);
 
   if(userSnap.exists()){
-
-    const data =
-      userSnap.data();
-
-    profileName.textContent =
-      data.username || "Artist";
-
-    profileBio.textContent =
-      data.bio || "No bio yet.";
-
-    pfpPreview.src =
-      data.pfp || "https://placehold.co/200";
-
-    bannerPreview.src =
-      data.banner || "https://placehold.co/1200x300";
-
-    followersCount.textContent =
-      data.followers || 0;
-
-    followingCount.textContent =
-      data.following || 0;
-
-    usernameInput.value =
-      data.username || "";
-
-    bioInput.value =
-      data.bio || "";
-
+    const data = userSnap.data();
+    profileName.textContent = data.username || "Artist";
+    profileBio.textContent = data.bio || "No bio yet.";
+    pfpPreview.src = data.pfp || "https://placehold.co";
+    bannerPreview.src = data.banner || "https://placehold.co";
+    followersCount.textContent = data.followers || 0;
+    followingCount.textContent = data.following || 0;
+    usernameInput.value = data.username || "";
+    bioInput.value = data.bio || "";
   }
 
   loadUserPosts(user.uid);
-
 });
 
 /* SAVE PROFILE */
-
 saveProfile.onclick = async () => {
-
-  const user =
-    auth.currentUser;
-
+  const user = auth.currentUser;
   if(!user) return;
 
-  let pfp =
-    pfpPreview.src;
+  // Keep existing Base64 strings as fallback if no new files are uploaded
+  let pfp = pfpPreview.src;
+  let banner = bannerPreview.src;
 
-  let banner =
-    bannerPreview.src;
+  try {
+    if(pfpInput.files && pfpInput.files[0]){
+      pfp = await fileToBase64(pfpInput.files[0]);
+    }
 
-  if(pfpInput.files[0]){
+    if(bannerInput.files && bannerInput.files[0]){
+      banner = await fileToBase64(bannerInput.files[0]);
+    }
 
-    pfp =
-      await fileToBase64(
-        pfpInput.files[0]
-      );
+    await setDoc(doc(db, "users", user.uid), {
+      username: usernameInput.value,
+      bio: bioInput.value,
+      pfp: pfp,
+      banner: banner
+    }, { merge: true });
 
+    alert("Profile saved successfully!");
+    location.reload();
+  } catch(err) {
+    console.error("Error saving profile: ", err);
+    alert("Failed to save. If the image file is too large, Firestore will reject it.");
   }
-
-  if(bannerInput.files[0]){
-
-    banner =
-      await fileToBase64(
-        bannerInput.files[0]
-      );
-
-  }
-
-  await setDoc(doc(db,"users",user.uid),{
-
-    uid:user.uid,
-
-    username:
-      usernameInput.value,
-
-    bio:
-      bioInput.value,
-
-    pfp,
-
-    banner,
-
-    followers:0,
-
-    following:0
-
-  });
-
-  location.reload();
-
 };
-
-/* USER POSTS */
-
-async function loadUserPosts(uid){
-
-  const q = query(
-
-    collection(db,"posts"),
-
-    where("uid","==",uid)
-
-  );
-
-  const snapshot =
-    await getDocs(q);
-
-  snapshot.forEach(postDoc => {
-
-    const data =
-      postDoc.data();
-
-    const div =
-      document.createElement("div");
-
-    div.className = "post";
-
-    div.innerHTML = `
-
-      <img src="${data.image}">
-
-      <div class="post-content">
-
-        <h3>
-          ${data.title}
-        </h3>
-
-      </div>
-
-    `;
-
-    userPosts.appendChild(div);
-
-  });
-
-}
-
 </script>
+
 
 </body>
 </html>
