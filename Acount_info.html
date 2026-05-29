@@ -17,7 +17,12 @@
   --text:#111;
 }
 
-*{margin:0;padding:0;box-sizing:border-box;}
+/* RESET */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
 body{
   font-family:"Inter",sans-serif;
@@ -25,7 +30,10 @@ body{
   color:var(--text);
 }
 
-/* HEADER (MATCH HOME) */
+/* =========================
+   HEADER (MATCH HOME PAGE)
+========================= */
+
 header{
   width:100%;
   padding:1rem;
@@ -47,7 +55,6 @@ header{
   border-radius:2px;
 }
 
-/* NAV */
 nav{
   display:flex;
   align-items:center;
@@ -77,8 +84,13 @@ nav a{
   height:20px;
 }
 
-/* DROPDOWN */
-.account-wrapper{position:relative;}
+/* =========================
+   DROPDOWN
+========================= */
+
+.account-wrapper{
+  position:relative;
+}
 
 .account-menu{
   position:absolute;
@@ -94,42 +106,26 @@ nav a{
   z-index:999;
 }
 
-.account-menu.show{display:flex;}
+.account-menu.show{
+  display:flex;
+}
 
 .account-user{
   padding:0.8rem 1rem;
   color:#666;
   border-bottom:1px solid #eee;
-  margin-bottom:0.3rem;
 }
 
-.account-menu a,
-.account-menu button{
-  width:100%;
-  border:none;
-  background:none;
-  text-align:left;
-  padding:0.8rem 1rem;
-  border-radius:10px;
-  cursor:pointer;
-}
-
-.account-menu a:hover,
-.account-menu button:hover{
-  background:#f3f3f3;
-}
-
-/* PROFILE */
-.profile{
-  max-width:1100px;
-  margin:auto;
-}
+/* =========================
+   PROFILE LAYOUT FIX
+========================= */
 
 .banner{
   height:300px;
+  background:#ddd;
   border-radius:0 0 30px 30px;
   overflow:hidden;
-  background:#ddd;
+  position:relative;
 }
 
 .banner img{
@@ -138,14 +134,19 @@ nav a{
   object-fit:cover;
 }
 
+/* FIXED PFP OVERLAY */
 .pfp{
   width:140px;
   height:140px;
   border-radius:50%;
   border:6px solid white;
-  margin-top:-90px;
   overflow:hidden;
   background:#ccc;
+
+  position:absolute;
+  left:2rem;
+  bottom:-70px;
+  z-index:2;
 }
 
 .pfp img{
@@ -155,18 +156,21 @@ nav a{
 }
 
 .profile-info{
+  max-width:1100px;
+  margin:auto;
   padding:2rem;
+  padding-top:90px;
 }
 
 .profile-info h1{
   font-size:2rem;
-  margin-top:1rem;
 }
 
 .bio{
   margin-top:1rem;
   color:#666;
   max-width:600px;
+  line-height:1.6;
 }
 
 .stats{
@@ -179,6 +183,7 @@ nav a{
   font-weight:700;
 }
 
+/* BUTTONS */
 .edit-btn{
   margin-top:2rem;
   padding:1rem;
@@ -189,6 +194,7 @@ nav a{
   cursor:pointer;
 }
 
+/* EDIT SECTION */
 .edit-section{
   display:none;
   margin-top:2rem;
@@ -212,6 +218,7 @@ nav a{
 
 <body>
 
+<!-- HEADER -->
 <header>
   <div class="header-container">
 
@@ -233,6 +240,7 @@ nav a{
 
           <a href="account.html?mode=login" id="loginBtn">Log In</a>
           <a href="account.html?mode=signup" id="signupBtn">Sign Up</a>
+
           <button id="logoutBtn" style="display:none;">Logout</button>
 
         </div>
@@ -243,47 +251,43 @@ nav a{
   </div>
 </header>
 
-<div class="profile">
+<!-- PROFILE -->
+<div class="banner">
+  <img id="bannerPreview" src="https://placehold.co/1200x300">
+  <div class="pfp">
+    <img id="pfpPreview" src="https://placehold.co/200">
+  </div>
+</div>
 
-  <div class="banner">
-    <img id="bannerPreview">
+<div class="profile-info">
+
+  <h1 id="profileName">Loading...</h1>
+  <p class="bio" id="profileBio"></p>
+
+  <div class="stats">
+    <div>
+      <div class="stat-number" id="followersCount">0</div>
+      Followers
+    </div>
+    <div>
+      <div class="stat-number" id="followingCount">0</div>
+      Following
+    </div>
   </div>
 
-  <div class="profile-info">
+  <button class="edit-btn" id="toggleEdit">Edit Profile</button>
 
-    <div class="pfp">
-      <img id="pfpPreview">
-    </div>
-
-    <h1 id="profileName">Loading...</h1>
-    <p class="bio" id="profileBio"></p>
-
-    <div class="stats">
-      <div>
-        <div class="stat-number" id="followersCount">0</div>
-        Followers
-      </div>
-      <div>
-        <div class="stat-number" id="followingCount">0</div>
-        Following
-      </div>
-    </div>
-
-    <button class="edit-btn" id="toggleEdit">Edit Profile</button>
-
-    <div class="edit-section" id="editSection">
-      <input id="usernameInput">
-      <textarea id="bioInput"></textarea>
-      <button id="saveProfile">Save</button>
-    </div>
-
+  <div class="edit-section" id="editSection">
+    <input id="usernameInput">
+    <textarea id="bioInput"></textarea>
   </div>
+
 </div>
 
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
 const app = initializeApp({
@@ -295,7 +299,7 @@ const app = initializeApp({
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-/* UI */
+/* ELEMENTS */
 const profileName = document.getElementById("profileName");
 const profileBio = document.getElementById("profileBio");
 const pfp = document.getElementById("pfpPreview");
@@ -316,11 +320,18 @@ document.addEventListener("click", ()=>{
   document.getElementById("accountMenu").classList.remove("show");
 });
 
-/* AUTH LOAD (THIS FIXES EVERYTHING) */
+/* EDIT BUTTON */
+document.getElementById("toggleEdit").onclick = ()=>{
+  const box = document.getElementById("editSection");
+  box.style.display = box.style.display === "block" ? "none" : "block";
+};
+
+/* LOAD USER */
 onAuthStateChanged(auth, async (user)=>{
 
   if(!user){
     profileName.textContent = "Not logged in";
+    profileBio.textContent = "";
     return;
   }
 
@@ -330,27 +341,22 @@ onAuthStateChanged(auth, async (user)=>{
   if(snap.exists()){
     const data = snap.data();
 
-    profileName.textContent = data.username;
-    profileBio.textContent = data.bio;
+    profileName.textContent = data.username || "Artist";
+    profileBio.textContent = data.bio || "No bio yet";
 
-    pfp.src = data.pfp;
-    banner.src = data.banner;
+    pfp.src = data.pfp || "https://placehold.co/200";
+    banner.src = data.banner || "https://placehold.co/1200x300";
 
-    accountUser.textContent = data.username;
-
-  } else {
-    profileName.textContent = "No profile found";
+    accountUser.textContent = data.username || "User";
   }
 
   loginBtn.style.display="none";
   signupBtn.style.display="none";
   logoutBtn.style.display="block";
-
 });
 
 /* LOGOUT */
 logoutBtn.onclick = async ()=>{
-  const { signOut } = await import("https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js");
   await signOut(auth);
   location.reload();
 };
