@@ -42,8 +42,8 @@ header{
   padding:1rem 2rem;
   display:flex;
   justify-content:center;
-  background: white; /* Clean background for the nav bar */
-  border-bottom: 1px solid #f0f0f0;
+  background: #ffffff;
+  border-bottom: 1px solid #eee;
 }
 
 .header-container{
@@ -96,7 +96,6 @@ nav a{
   text-decoration:none;
   color:#111;
   font-weight: 500;
-  font-size: 1rem;
 }
 
 /* ICON BUTTON (Matched to Home) */
@@ -159,7 +158,6 @@ nav a{
   text-decoration:none;
   color:#111;
   font-family: inherit;
-  font-size: 0.95rem;
 }
 
 .account-menu a:hover,
@@ -324,6 +322,7 @@ main{
     </div>
 
     <nav>
+      <a href="index.html">Home</a>
       <a href="posts.html">Gallery</a>
       <a href="#">About</a>
 
@@ -396,9 +395,9 @@ const logoutBtn = document.getElementById("logoutBtn");
 
 let imageUrl = "";
 
-/* ====================================
+/* =======================================
    DROPDOWN CONTROLLER (Matched to Home)
-==================================== */
+======================================= */
 accountButton.addEventListener("click", (e) => {
   e.stopPropagation();
   accountMenu.classList.toggle("show");
