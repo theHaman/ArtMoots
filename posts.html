@@ -2,313 +2,814 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
 <title>ArtMoots - Posts</title>
+
+<link rel="preconnect"
+      href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet">
+
 <style>
-:root {
-  --bg: #f9f9f9;
-  --text: #333;
-  --accent: #111;
-  --border: #ddd;
-  --max-width: 1200px;
+
+/* =========================
+   ROOT
+========================= */
+
+:root{
+
+  --bg:#f7f7f7;
+  --text:#111;
+  --muted:#666;
+  --purple:#caa6ff;
+
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
+*{
 
-body {
-  font-family: "Segoe UI", Arial, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+
 }
 
-header {
-  background: white;
-  border-bottom: 1px solid var(--border);
-  padding: 1rem 0;
+body{
+
+  font-family:"Inter",sans-serif;
+
+  background:var(--bg);
+
+  color:var(--text);
+
+  overflow-x:hidden;
+
 }
 
-.header-container {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 1rem;
+/* =========================
+   HEADER
+========================= */
+
+header{
+
+  width:100%;
+
+  padding:1rem;
+
+  display:flex;
+  justify-content:center;
+
 }
 
-.logo {
-  font-size: 1.4rem;
-  font-weight: bold;
-  letter-spacing: 0.5px;
+.header-container{
+
+  width:100%;
+
+  display:flex;
+  align-items:center;
+  gap:1rem;
+
 }
 
-nav a, #userDisplay {
-  margin-left: 1rem;
-  text-decoration: none;
-  color: var(--text);
-  font-weight: 500;
-  padding: 0.4rem 0.6rem;
-  border-radius: 4px;
+/* LOGO */
+
+.logo{
+
+  width:140px;
+  height:42px;
+
+  background:#d9d9d9;
+
+  border-radius:2px;
+
+  flex-shrink:0;
+
 }
 
-nav a:hover { background: #eee; }
+/* SEARCH */
 
-main {
-  flex: 1;
-  max-width: var(--max-width);
-  margin: 2rem auto;
-  padding: 0 1rem;
-  display: grid;
-  grid-template-columns: 300px 1fr; /* ✅ form on left, posts on right */
-  gap: 2rem;
+.search-bar{
+
+  flex:1;
+
+  height:42px;
+
+  border:1px solid #444;
+
+  border-radius:999px;
+
+  background:white;
+
+  display:flex;
+  align-items:center;
+
+  padding:0 1rem;
+
+  gap:0.8rem;
+
 }
 
-/* Create Post Form */
-#createPost {
-  background: white;
-  padding: 1rem;
-  border-radius: 6px;
-  border: 1px solid var(--border);
-  display: none;
-  flex-direction: column;
-  gap: 0.5rem;
-  height: fit-content;
+.search-bar input{
+
+  border:none;
+  outline:none;
+
+  width:100%;
+
+  background:transparent;
+
+  font-size:1rem;
+
 }
 
-#createPost h2 { margin-bottom: 0.5rem; }
+.search-icon img{
 
-input, textarea {
-  padding: 0.5rem;
-  border-radius: 4px;
-  border: 1px solid var(--border);
-  width: 100%;
+  width:20px;
+  height:20px;
+
+  object-fit:contain;
+
 }
 
-button {
-  background: var(--accent);
-  color: white;
-  border: none;
-  padding: 0.5rem;
-  border-radius: 4px;
-  cursor: pointer;
+/* NAV */
+
+nav{
+
+  display:flex;
+  align-items:center;
+  gap:1.5rem;
+
+  margin-left:auto;
+
 }
 
-button:hover { background: #222; }
+nav a{
 
-/* Posts Grid */
-.posts-container {
-  display: grid;
-  grid-auto-flow: row;              /* ensures items fill left to right, then down */
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* adjust width */
-  gap: 1rem;
+  text-decoration:none;
+
+  color:#111;
+
+  font-size:0.95rem;
+  font-weight:500;
+
 }
 
-.post {
-  background: white;
-  border-radius: 6px;
-  border: 1px solid var(--border);
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+.nav-circle{
+
+  width:16px;
+  height:16px;
+
+  background:#bfbfbf;
+
+  border-radius:50%;
+
 }
 
-.post img {
-  width: 100%;   /* scales to the post width */
-  height: auto;  /* maintain aspect ratio */
-  border-radius: 4px;
-  margin-top: 0.3rem;
+/* =========================
+   HERO
+========================= */
+
+.hero{
+
+  margin:0 1rem;
+
+  height:280px;
+
+  border-radius:0 0 18px 18px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #dff5ff 0%,
+      #f6f6f6 30%,
+      #f6f6f6 70%,
+      #dff5ff 100%
+    );
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  text-align:center;
+
 }
 
+.hero-content h1{
 
-.post h3 {
-  margin-bottom: 0.3rem;
+  font-size:4rem;
+
+  line-height:0.95;
+
+  font-weight:500;
+
+  margin-bottom:1rem;
+
 }
 
-.post small {
-  margin-top: 0.3rem;
-  color: #777;
+.hero-content p{
+
+  color:#444;
+
+  font-size:1rem;
+
 }
 
-/* Responsive */
-@media (max-width: 400px) {
-  main {
-    grid-template-columns: 1fr;
+/* =========================
+   MAIN
+========================= */
+
+main{
+
+  padding:2rem 1rem 5rem;
+
+}
+
+/* =========================
+   CREATE POST
+========================= */
+
+#createPost{
+
+  background:white;
+
+  padding:1.5rem;
+
+  border-radius:22px;
+
+  margin-bottom:2rem;
+
+  box-shadow:
+    0 10px 20px rgba(0,0,0,0.05);
+
+}
+
+#createPost h2{
+
+  margin-bottom:1rem;
+
+}
+
+#createPost input,
+#createPost textarea{
+
+  width:100%;
+
+  border:none;
+
+  background:#f2f2f2;
+
+  padding:1rem;
+
+  border-radius:14px;
+
+  margin-bottom:1rem;
+
+  font-family:inherit;
+
+}
+
+#createPost textarea{
+
+  min-height:120px;
+
+  resize:vertical;
+
+}
+
+#createPost button{
+
+  border:none;
+
+  background:black;
+
+  color:white;
+
+  padding:1rem 1.3rem;
+
+  border-radius:14px;
+
+  cursor:pointer;
+
+  font-weight:600;
+
+}
+
+/* =========================
+   POSTS
+========================= */
+
+.posts-container{
+
+  columns:3 320px;
+
+  column-gap:1rem;
+
+}
+
+.post{
+
+  break-inside:avoid;
+
+  background:white;
+
+  border-radius:22px;
+
+  overflow:hidden;
+
+  margin-bottom:1rem;
+
+  box-shadow:
+    0 10px 25px rgba(0,0,0,0.06);
+
+  transition:0.25s;
+
+}
+
+.post:hover{
+
+  transform:translateY(-4px);
+
+}
+
+.post img{
+
+  width:100%;
+
+  display:block;
+
+}
+
+.post-content{
+
+  padding:1rem;
+
+}
+
+.post-content h3{
+
+  margin-bottom:0.7rem;
+
+}
+
+.post-content p{
+
+  color:#666;
+
+  line-height:1.7;
+
+  margin-bottom:1rem;
+
+}
+
+.post-meta{
+
+  display:flex;
+  gap:1rem;
+
+  margin-bottom:1rem;
+
+  color:#555;
+
+}
+
+.post button{
+
+  border:none;
+
+  background:#111;
+
+  color:white;
+
+  padding:0.8rem 1rem;
+
+  border-radius:12px;
+
+  cursor:pointer;
+
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:700px){
+
+  nav{
+
+    display:none;
+
   }
+
+  .hero-content h1{
+
+    font-size:2.7rem;
+
+  }
+
 }
+
 </style>
 </head>
 <body>
 
+<!-- HEADER -->
+
 <header>
+
   <div class="header-container">
-    <div class="logo">ArtMoots</div>
+
+    <div class="logo"></div>
+
+    <div class="search-bar">
+
+      <div class="search-icon">
+
+        <img src="img/search-icon-png-1.png">
+
+      </div>
+
+      <input type="text"
+             placeholder="Search artwork, artists...">
+
+    </div>
+
     <nav>
-      <a href="index.html">Home</a>
-      <a href="posts.html">Posts</a>
-      <a href="moots.html">Moots</a>
-      <a href="help.html">Help</a>
-      <span id="userDisplay"></span>
-      <a class="btn" id="myAccountBtn" href="#" style="display:none;">My Account</a>
-      <a class="btn" id="signInBtn" href="#">Sign In</a>
-      <a class="btn" id="signUpBtn" href="#">Sign Up</a>
-      <a class="btn" id="logoutBtn" href="#" style="display:none;">Logout</a>
+
+      <a href="index.html">
+        Home
+      </a>
+
+      <a href="posts.html">
+        Gallery
+      </a>
+
+      <a href="#">
+        About
+      </a>
+
+      <div class="nav-circle"></div>
+      <div class="nav-circle"></div>
+
     </nav>
+
   </div>
+
 </header>
 
+<!-- HERO -->
+
+<section class="hero">
+
+  <div class="hero-content">
+
+    <h1>
+      Explore Art
+    </h1>
+
+    <p>
+      Discover artwork from the ArtMoots community.
+    </p>
+
+  </div>
+
+</section>
+
+<!-- MAIN -->
+
 <main>
-  <!-- Left: Create Post Form -->
+
+  <!-- CREATE POST -->
+
   <form id="createPost">
-    <h2>Create a Post</h2>
-    <input type="text" id="postTitle" placeholder="Title" required>
-    <textarea id="postDesc" placeholder="Description" required></textarea>
-    <input type="file" id="postImageFile" accept="image/*" required>
-    <button type="submit">Post</button>
+
+    <h2>
+      Create a Post
+    </h2>
+
+    <input type="text"
+           id="postTitle"
+           placeholder="Title"
+           required>
+
+    <textarea id="postDesc"
+              placeholder="Description"
+              required></textarea>
+
+    <input type="file"
+           id="postImageFile"
+           accept="image/*"
+           required>
+
+    <button type="submit">
+      Post Artwork
+    </button>
+
   </form>
 
-  <!-- Right: Posts Grid -->
-  <div class="posts-section">
-    <h2>All Posts</h2>
-    <div class="posts-container" id="postsContainer"></div>
+  <!-- POSTS -->
+
+  <div class="posts-container"
+       id="postsContainer">
+
   </div>
+
 </main>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  query,
-  orderBy,
-  onSnapshot,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+<!-- FIREBASE -->
 
-// Firebase config
+<script type="module">
+
+/* =========================
+   FIREBASE IMPORTS
+========================= */
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+
+import {
+  getAuth,
+  onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+import {
+
+  getFirestore,
+
+  collection,
+
+  addDoc,
+
+  getDocs,
+
+  query,
+
+  orderBy,
+
+  doc,
+
+  updateDoc,
+
+  increment
+
+}
+from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+/* =========================
+   FIREBASE CONFIG
+========================= */
+
 const firebaseConfig = {
+
   apiKey: "AIzaSyDMBb5n4Tyf9XLSHU_7CZ1obDlHjzrw258",
+
   authDomain: "database-artmoots.firebaseapp.com",
+
   projectId: "database-artmoots",
+
   storageBucket: "database-artmoots.firebasestorage.app",
+
   messagingSenderId: "1056886155154",
-  appId: "1:1056886155154:web:0de8b27263c11571ea034b",
-  measurementId: "G-YX4MMZS1JB"
+
+  appId: "1:1056886155154:web:0de8b27263c11571ea034b"
+
 };
 
 const app = initializeApp(firebaseConfig);
+
 const auth = getAuth(app);
+
 const db = getFirestore(app);
 
-const userDisplay = document.getElementById("userDisplay");
-const myAccountBtn = document.getElementById("myAccountBtn");
-const logoutBtn = document.getElementById("logoutBtn");
-const signInBtn = document.getElementById("signInBtn");
-const signUpBtn = document.getElementById("signUpBtn");
+/* =========================
+   GLOBALS
+========================= */
 
-onAuthStateChanged(auth, user => {
-  if (user) {
-    userDisplay.textContent = user.displayName || "Anonymous";
-    myAccountBtn.style.display = "inline-block";
-    logoutBtn.style.display = "inline-block";
-    signInBtn.style.display = "none";
-    signUpBtn.style.display = "none";
-    myAccountBtn.href = "account.html?mode=account";
-    document.getElementById("createPost").style.display = "flex";
-  } else {
-    userDisplay.textContent = "";
-    myAccountBtn.style.display = "none";
-    logoutBtn.style.display = "none";
-    signInBtn.style.display = "inline-block";
-    signUpBtn.style.display = "inline-block";
+const createPostForm =
+  document.getElementById("createPost");
 
-    const returnURL = window.location.href;
-    signInBtn.href = `account.html?mode=login&return=${encodeURIComponent(returnURL)}`;
-    signUpBtn.href = `account.html?mode=signup&return=${encodeURIComponent(returnURL)}`;
-  }
-});
+const postsContainer =
+  document.getElementById("postsContainer");
 
-logoutBtn.addEventListener("click", () => signOut(auth));
+const postImageFile =
+  document.getElementById("postImageFile");
 
 let imageUrl = "";
-const postImageFile = document.getElementById("postImageFile");
+
+/* =========================
+   IMAGE UPLOAD
+========================= */
 
 postImageFile.addEventListener("change", () => {
+
   const file = postImageFile.files[0];
-  if (!file) return;
+
+  if(!file) return;
+
   const reader = new FileReader();
-  reader.onload = () => { imageUrl = reader.result; };
+
+  reader.onload = () => {
+
+    imageUrl = reader.result;
+
+  };
+
   reader.readAsDataURL(file);
+
 });
 
-const createPostForm = document.getElementById("createPost");
-const postsContainer = document.getElementById("postsContainer");
+/* =========================
+   AUTH
+========================= */
 
-createPostForm.addEventListener("submit", async e => {
+onAuthStateChanged(auth, user => {
+
+  if(user){
+
+    createPostForm.style.display = "block";
+
+  }
+
+  else{
+
+    createPostForm.style.display = "none";
+
+  }
+
+});
+
+/* =========================
+   CREATE POST
+========================= */
+
+createPostForm.addEventListener("submit",
+async e => {
+
   e.preventDefault();
-  const title = document.getElementById("postTitle").value;
-  const desc = document.getElementById("postDesc").value;
+
+  const title =
+    document.getElementById("postTitle").value;
+
+  const desc =
+    document.getElementById("postDesc").value;
+
   const user = auth.currentUser;
 
-  if (!user) return alert("You must be signed in to post.");
-  if (!imageUrl) return alert("Please wait for the image to load.");
+  if(!user){
 
-await addDoc(collection(db, "posts"), {
-  user: user.displayName || "Anonymous",
-  title,
-  description: desc,
-  image: imageUrl,
-  likes: 0,
-  views: 0,
-  createdAt: new Date()
-});
+    alert("You must be signed in.");
+
+    return;
+
+  }
+
+  if(!imageUrl){
+
+    alert("Wait for image upload.");
+
+    return;
+
+  }
+
+  await addDoc(collection(db,"posts"), {
+
+    user:
+      user.displayName || "Anonymous",
+
+    title,
+
+    description:desc,
+
+    image:imageUrl,
+
+    likes:0,
+
+    views:0,
+
+    createdAt:new Date()
+
+  });
 
   createPostForm.reset();
+
   imageUrl = "";
+
   postsContainer.innerHTML = "";
+
   loadPosts();
+
 });
 
-function loadPosts() {
+/* =========================
+   LIKE SYSTEM
+========================= */
+
+window.likePost = async function(postId){
+
+  const postRef =
+    doc(db,"posts",postId);
+
+  await updateDoc(postRef,{
+
+    likes:increment(1)
+
+  });
+
+  location.reload();
+
+}
+
+/* =========================
+   LOAD POSTS
+========================= */
+
+async function loadPosts(){
+
   const q = query(
-    collection(db, "posts"),
-    orderBy("createdAt", "desc")
+
+    collection(db,"posts"),
+
+    orderBy("createdAt","desc")
+
   );
 
-  onSnapshot(q, snapshot => {
+  const snapshot =
+    await getDocs(q);
 
-    postsContainer.innerHTML = "";
+  snapshot.forEach(async postDoc => {
 
-    snapshot.forEach(doc => {
-      const data = doc.data();
+    const data =
+      postDoc.data();
 
-      const div = document.createElement("div");
-      div.className = "post";
+    /* ADD VIEW */
 
-      div.innerHTML = `
-        <h3>${data.title || "Untitled"}</h3>
+    const postRef =
+      doc(db,"posts",postDoc.id);
 
-        ${data.image
-          ? `<img src="${data.image}" alt="Post Image">`
-          : ""}
+    await updateDoc(postRef,{
 
-        <p>${data.description || ""}</p>
+      views:increment(1)
 
-        <small>by ${data.user || "Anonymous"}</small>
-      `;
-
-      postsContainer.appendChild(div);
     });
+
+    /* CREATE CARD */
+
+    const div =
+      document.createElement("div");
+
+    div.className = "post";
+
+    div.innerHTML = `
+
+      <img src="${data.image}">
+
+      <div class="post-content">
+
+        <h3>
+          ${data.title}
+        </h3>
+
+        <p>
+          ${data.description}
+        </p>
+
+        <div class="post-meta">
+
+          <span>
+            ❤️ ${data.likes || 0}
+          </span>
+
+          <span>
+            👁 ${data.views || 0}
+          </span>
+
+        </div>
+
+        <button onclick="likePost('${postDoc.id}')">
+
+          Like
+
+        </button>
+
+      </div>
+
+    `;
+
+    postsContainer.appendChild(div);
+
   });
+
 }
 
 loadPosts();
+
 </script>
+
 </body>
 </html>
