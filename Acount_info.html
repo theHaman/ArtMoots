@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>ArtMoots - Account</title>
 
@@ -15,15 +15,9 @@
 :root{
   --bg:#f7f7f7;
   --text:#111;
-  --purple:#caa6ff;
 }
 
-/* RESET */
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
+*{margin:0;padding:0;box-sizing:border-box;}
 
 body{
   font-family:"Inter",sans-serif;
@@ -31,16 +25,12 @@ body{
   color:var(--text);
 }
 
-/* =========================
-   HEADER (MATCH HOME PAGE)
-========================= */
-
+/* HEADER (MATCH HOME) */
 header{
   width:100%;
   padding:1rem;
   display:flex;
   justify-content:center;
-  background:transparent;
 }
 
 .header-container{
@@ -68,11 +58,10 @@ nav{
 nav a{
   text-decoration:none;
   color:#111;
-  font-size:0.95rem;
   font-weight:500;
 }
 
-/* ICONS (MATCH HOME) */
+/* ICONS */
 .icon-button{
   width:36px;
   height:36px;
@@ -81,49 +70,34 @@ nav a{
   align-items:center;
   justify-content:center;
   cursor:pointer;
-  position:relative;
-}
-
-.icon-button:hover{
-  background:#ececec;
 }
 
 .icon-button img{
   width:20px;
   height:20px;
-  object-fit:contain;
 }
 
-/* ACCOUNT DROPDOWN */
-.account-wrapper{
-  position:relative;
-}
+/* DROPDOWN */
+.account-wrapper{position:relative;}
 
 .account-menu{
   position:absolute;
   top:50px;
   right:0;
-
   width:220px;
   background:white;
   border-radius:14px;
   padding:0.6rem;
-
   box-shadow:0 10px 30px rgba(0,0,0,0.08);
-
   display:none;
   flex-direction:column;
-
   z-index:999;
 }
 
-.account-menu.show{
-  display:flex;
-}
+.account-menu.show{display:flex;}
 
 .account-user{
   padding:0.8rem 1rem;
-  font-size:0.9rem;
   color:#666;
   border-bottom:1px solid #eee;
   margin-bottom:0.3rem;
@@ -137,11 +111,7 @@ nav a{
   text-align:left;
   padding:0.8rem 1rem;
   border-radius:10px;
-  text-decoration:none;
-  color:#111;
-  font-size:0.95rem;
   cursor:pointer;
-  font-family:inherit;
 }
 
 .account-menu a:hover,
@@ -149,24 +119,36 @@ nav a{
   background:#f3f3f3;
 }
 
-/* =========================
-   PROFILE
-========================= */
-
+/* PROFILE */
 .profile{
   max-width:1100px;
   margin:auto;
-  padding-bottom:4rem;
 }
 
 .banner{
   height:300px;
-  background:#d7d7d7;
   border-radius:0 0 30px 30px;
   overflow:hidden;
+  background:#ddd;
 }
 
 .banner img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.pfp{
+  width:140px;
+  height:140px;
+  border-radius:50%;
+  border:6px solid white;
+  margin-top:-90px;
+  overflow:hidden;
+  background:#ccc;
+}
+
+.pfp img{
   width:100%;
   height:100%;
   object-fit:cover;
@@ -176,32 +158,15 @@ nav a{
   padding:2rem;
 }
 
-.pfp{
-  width:140px;
-  height:140px;
-  border-radius:50%;
-  border:6px solid white;
-  overflow:hidden;
-  background:#ccc;
-  margin-top:-90px;
-}
-
-.pfp img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
 .profile-info h1{
-  margin-top:1rem;
   font-size:2rem;
+  margin-top:1rem;
 }
 
 .bio{
-  color:#666;
   margin-top:1rem;
+  color:#666;
   max-width:600px;
-  line-height:1.7;
 }
 
 .stats{
@@ -212,81 +177,34 @@ nav a{
 
 .stat-number{
   font-weight:700;
-  font-size:1.2rem;
 }
 
-/* BUTTONS */
 .edit-btn{
   margin-top:2rem;
+  padding:1rem;
   border:none;
   background:black;
   color:white;
-  padding:1rem 1.3rem;
   border-radius:14px;
   cursor:pointer;
 }
 
-.save-btn{
-  border:none;
-  background:black;
-  color:white;
-  padding:1rem 1.2rem;
-  border-radius:14px;
-  cursor:pointer;
-}
-
-/* EDIT SECTION */
 .edit-section{
+  display:none;
   margin-top:2rem;
   background:white;
   padding:1.5rem;
-  border-radius:24px;
+  border-radius:20px;
 }
 
 .edit-section input,
 .edit-section textarea{
   width:100%;
+  padding:1rem;
+  margin-bottom:1rem;
   border:none;
   background:#f2f2f2;
-  padding:1rem;
-  border-radius:14px;
-  margin-bottom:1rem;
-  font-family:inherit;
-}
-
-/* POSTS */
-.user-posts{
-  margin-top:3rem;
-}
-
-.posts-grid{
-  columns:3 320px;
-  column-gap:1rem;
-}
-
-.post{
-  break-inside:avoid;
-  background:white;
-  border-radius:20px;
-  overflow:hidden;
-  margin-bottom:1rem;
-}
-
-.post img{
-  width:100%;
-  display:block;
-}
-
-.post-content{
-  padding:1rem;
-}
-
-.loading, .no-posts{
-  text-align:center;
-  padding:2rem;
-  color:#666;
-  background:white;
-  border-radius:20px;
+  border-radius:12px;
 }
 
 </style>
@@ -294,7 +212,6 @@ nav a{
 
 <body>
 
-<!-- HEADER (MATCH HOME) -->
 <header>
   <div class="header-container">
 
@@ -304,7 +221,6 @@ nav a{
       <a href="index.html">Home</a>
       <a href="posts.html">Gallery</a>
 
-      <!-- ACCOUNT -->
       <div class="account-wrapper">
 
         <div class="icon-button" id="accountButton">
@@ -313,33 +229,30 @@ nav a{
 
         <div class="account-menu" id="accountMenu">
 
-          <div class="account-user" id="accountUser">
-            Not Logged In
-          </div>
+          <div class="account-user" id="accountUser">Loading...</div>
 
           <a href="account.html?mode=login" id="loginBtn">Log In</a>
           <a href="account.html?mode=signup" id="signupBtn">Sign Up</a>
-
           <button id="logoutBtn" style="display:none;">Logout</button>
 
         </div>
+
       </div>
 
     </nav>
   </div>
 </header>
 
-<!-- PROFILE -->
 <div class="profile">
 
   <div class="banner">
-    <img id="bannerPreview" src="https://placehold.co/1200x300">
+    <img id="bannerPreview">
   </div>
 
   <div class="profile-info">
 
     <div class="pfp">
-      <img id="pfpPreview" src="https://placehold.co/200">
+      <img id="pfpPreview">
     </div>
 
     <h1 id="profileName">Loading...</h1>
@@ -358,49 +271,90 @@ nav a{
 
     <button class="edit-btn" id="toggleEdit">Edit Profile</button>
 
-    <div class="edit-section" id="editSection" style="display:none;">
+    <div class="edit-section" id="editSection">
       <input id="usernameInput">
       <textarea id="bioInput"></textarea>
-
-      <button class="save-btn" id="saveProfile">Save Profile</button>
+      <button id="saveProfile">Save</button>
     </div>
 
   </div>
 </div>
 
-<script>
-/* DROPDOWN */
-const accountButton = document.getElementById("accountButton");
-const accountMenu = document.getElementById("accountMenu");
+<script type="module">
 
-accountButton.addEventListener("click",(e)=>{
-  e.stopPropagation();
-  accountMenu.classList.toggle("show");
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+const app = initializeApp({
+  apiKey: "AIzaSyDMBb5n4Tyf9XLSHU_7CZ1obDlHjzrw258",
+  authDomain: "database-artmoots.firebaseapp.com",
+  projectId: "database-artmoots"
 });
 
-document.addEventListener("click",()=>{
-  accountMenu.classList.remove("show");
-});
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-/* LOGIN STATE */
-const currentUser = localStorage.getItem("currentUser");
+/* UI */
+const profileName = document.getElementById("profileName");
+const profileBio = document.getElementById("profileBio");
+const pfp = document.getElementById("pfpPreview");
+const banner = document.getElementById("bannerPreview");
 
 const accountUser = document.getElementById("accountUser");
 const loginBtn = document.getElementById("loginBtn");
 const signupBtn = document.getElementById("signupBtn");
 const logoutBtn = document.getElementById("logoutBtn");
 
-if(currentUser){
-  accountUser.textContent = currentUser;
+/* DROPDOWN */
+document.getElementById("accountButton").onclick = (e)=>{
+  e.stopPropagation();
+  document.getElementById("accountMenu").classList.toggle("show");
+};
+
+document.addEventListener("click", ()=>{
+  document.getElementById("accountMenu").classList.remove("show");
+});
+
+/* AUTH LOAD (THIS FIXES EVERYTHING) */
+onAuthStateChanged(auth, async (user)=>{
+
+  if(!user){
+    profileName.textContent = "Not logged in";
+    return;
+  }
+
+  const ref = doc(db, "users", user.uid);
+  const snap = await getDoc(ref);
+
+  if(snap.exists()){
+    const data = snap.data();
+
+    profileName.textContent = data.username;
+    profileBio.textContent = data.bio;
+
+    pfp.src = data.pfp;
+    banner.src = data.banner;
+
+    accountUser.textContent = data.username;
+
+  } else {
+    profileName.textContent = "No profile found";
+  }
+
   loginBtn.style.display="none";
   signupBtn.style.display="none";
   logoutBtn.style.display="block";
-}
 
-logoutBtn.onclick = ()=>{
-  localStorage.removeItem("currentUser");
+});
+
+/* LOGOUT */
+logoutBtn.onclick = async ()=>{
+  const { signOut } = await import("https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js");
+  await signOut(auth);
   location.reload();
 };
+
 </script>
 
 </body>
