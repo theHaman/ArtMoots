@@ -1,171 +1,345 @@
-<!-- =========================================================
-ACCOUNT.HTML (FIXED VERSION)
-========================================================= -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>ArtMoots - Account</title>
+<title>ArtMoots - Account</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <style>
-    /* Your existing styles remain the same */
-    :root{
-      --bg:#f7f7f7;
-      --text:#111;
-      --muted:#666;
-    }
-    *{ margin:0; padding:0; box-sizing:border-box; }
-    body{
-      font-family:"Inter",sans-serif;
-      background:var(--bg);
-      color:var(--text);
-    }
+<style>
 
-    header{ padding:1rem; background:white; }
-    .header-container{
-      display:flex; align-items:center; justify-content:space-between;
-    }
-    nav{ display:flex; gap:1rem; }
-    nav a{ text-decoration:none; color:#111; }
+:root{
+  --bg:#f7f7f7;
+  --text:#111;
+  --purple:#caa6ff;
+}
 
-    .profile{
-      max-width:1100px;
-      margin:auto;
-      padding-bottom:4rem;
-    }
+/* RESET */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
-    .banner{
-      height:300px;
-      background:#d7d7d7;
-      border-radius:0 0 30px 30px;
-      overflow:hidden;
-      position:relative;
-    }
-    .banner img{ width:100%; height:100%; object-fit:cover; }
+body{
+  font-family:"Inter",sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
 
-    .profile-info{ padding:2rem; position:relative; }
+/* =========================
+   HEADER (MATCH HOME PAGE)
+========================= */
 
-    .pfp{
-      width:140px; height:140px;
-      border-radius:50%;
-      border:6px solid white;
-      overflow:hidden;
-      background:#ccc;
-      margin-top:-90px;
-    }
-    .pfp img{ width:100%; height:100%; object-fit:cover; }
+header{
+  width:100%;
+  padding:1rem;
+  display:flex;
+  justify-content:center;
+  background:transparent;
+}
 
-    .profile-info h1{ margin-top:1rem; font-size:2rem; }
-    .bio{
-      color:#666;
-      margin-top:1rem;
-      max-width:600px;
-      line-height:1.7;
-    }
+.header-container{
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:1rem;
+}
 
-    .stats{ display:flex; gap:2rem; margin-top:1.5rem; }
-    .stat-number{ font-weight:700; font-size:1.2rem; }
+.logo{
+  width:140px;
+  height:42px;
+  background:#d9d9d9;
+  border-radius:2px;
+}
 
-    .edit-btn{
-      margin-top:2rem;
-      border:none;
-      background:black;
-      color:white;
-      padding:1rem 1.3rem;
-      border-radius:14px;
-      cursor:pointer;
-    }
+/* NAV */
+nav{
+  display:flex;
+  align-items:center;
+  gap:1.5rem;
+  margin-left:auto;
+}
 
-    .edit-section{
-      margin-top:2rem;
-      background:white;
-      padding:1.5rem;
-      border-radius:24px;
-    }
+nav a{
+  text-decoration:none;
+  color:#111;
+  font-size:0.95rem;
+  font-weight:500;
+}
 
-    .edit-section input,
-    .edit-section textarea{
-      width:100%;
-      border:none;
-      background:#f2f2f2;
-      padding:1rem;
-      border-radius:14px;
-      margin-bottom:1rem;
-      font-family:inherit;
-    }
+/* ICONS (MATCH HOME) */
+.icon-button{
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  position:relative;
+}
 
-    .edit-section textarea{
-      min-height:120px;
-      resize:vertical;
-    }
+.icon-button:hover{
+  background:#ececec;
+}
 
-    .save-btn{
-      border:none;
-      background:black;
-      color:white;
-      padding:1rem 1.2rem;
-      border-radius:14px;
-      cursor:pointer;
-    }
+.icon-button img{
+  width:20px;
+  height:20px;
+  object-fit:contain;
+}
 
-    .user-posts{ margin-top:3rem; }
-    .posts-grid{ columns:3 320px; column-gap:1rem; }
+/* ACCOUNT DROPDOWN */
+.account-wrapper{
+  position:relative;
+}
 
-    .post{
-      break-inside:avoid;
-      background:white;
-      border-radius:20px;
-      overflow:hidden;
-      margin-bottom:1rem;
-    }
+.account-menu{
+  position:absolute;
+  top:50px;
+  right:0;
 
-    .post img{ width:100%; display:block; }
-    .post-content{ padding:1rem; }
-    
-    .loading {
-      text-align: center;
-      padding: 2rem;
-      color: #666;
-    }
-    
-    .no-posts {
-      text-align: center;
-      padding: 2rem;
-      color: #666;
-      background: white;
-      border-radius: 20px;
-    }
-  </style>
+  width:220px;
+  background:white;
+  border-radius:14px;
+  padding:0.6rem;
+
+  box-shadow:0 10px 30px rgba(0,0,0,0.08);
+
+  display:none;
+  flex-direction:column;
+
+  z-index:999;
+}
+
+.account-menu.show{
+  display:flex;
+}
+
+.account-user{
+  padding:0.8rem 1rem;
+  font-size:0.9rem;
+  color:#666;
+  border-bottom:1px solid #eee;
+  margin-bottom:0.3rem;
+}
+
+.account-menu a,
+.account-menu button{
+  width:100%;
+  border:none;
+  background:none;
+  text-align:left;
+  padding:0.8rem 1rem;
+  border-radius:10px;
+  text-decoration:none;
+  color:#111;
+  font-size:0.95rem;
+  cursor:pointer;
+  font-family:inherit;
+}
+
+.account-menu a:hover,
+.account-menu button:hover{
+  background:#f3f3f3;
+}
+
+/* =========================
+   PROFILE
+========================= */
+
+.profile{
+  max-width:1100px;
+  margin:auto;
+  padding-bottom:4rem;
+}
+
+.banner{
+  height:300px;
+  background:#d7d7d7;
+  border-radius:0 0 30px 30px;
+  overflow:hidden;
+}
+
+.banner img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.profile-info{
+  padding:2rem;
+}
+
+.pfp{
+  width:140px;
+  height:140px;
+  border-radius:50%;
+  border:6px solid white;
+  overflow:hidden;
+  background:#ccc;
+  margin-top:-90px;
+}
+
+.pfp img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.profile-info h1{
+  margin-top:1rem;
+  font-size:2rem;
+}
+
+.bio{
+  color:#666;
+  margin-top:1rem;
+  max-width:600px;
+  line-height:1.7;
+}
+
+.stats{
+  display:flex;
+  gap:2rem;
+  margin-top:1.5rem;
+}
+
+.stat-number{
+  font-weight:700;
+  font-size:1.2rem;
+}
+
+/* BUTTONS */
+.edit-btn{
+  margin-top:2rem;
+  border:none;
+  background:black;
+  color:white;
+  padding:1rem 1.3rem;
+  border-radius:14px;
+  cursor:pointer;
+}
+
+.save-btn{
+  border:none;
+  background:black;
+  color:white;
+  padding:1rem 1.2rem;
+  border-radius:14px;
+  cursor:pointer;
+}
+
+/* EDIT SECTION */
+.edit-section{
+  margin-top:2rem;
+  background:white;
+  padding:1.5rem;
+  border-radius:24px;
+}
+
+.edit-section input,
+.edit-section textarea{
+  width:100%;
+  border:none;
+  background:#f2f2f2;
+  padding:1rem;
+  border-radius:14px;
+  margin-bottom:1rem;
+  font-family:inherit;
+}
+
+/* POSTS */
+.user-posts{
+  margin-top:3rem;
+}
+
+.posts-grid{
+  columns:3 320px;
+  column-gap:1rem;
+}
+
+.post{
+  break-inside:avoid;
+  background:white;
+  border-radius:20px;
+  overflow:hidden;
+  margin-bottom:1rem;
+}
+
+.post img{
+  width:100%;
+  display:block;
+}
+
+.post-content{
+  padding:1rem;
+}
+
+.loading, .no-posts{
+  text-align:center;
+  padding:2rem;
+  color:#666;
+  background:white;
+  border-radius:20px;
+}
+
+</style>
 </head>
 
 <body>
 
+<!-- HEADER (MATCH HOME) -->
 <header>
   <div class="header-container">
-    <h2>ArtMoots</h2>
+
+    <div class="logo"></div>
+
     <nav>
       <a href="index.html">Home</a>
       <a href="posts.html">Gallery</a>
+
+      <!-- ACCOUNT -->
+      <div class="account-wrapper">
+
+        <div class="icon-button" id="accountButton">
+          <img src="img/my-account-5.png">
+        </div>
+
+        <div class="account-menu" id="accountMenu">
+
+          <div class="account-user" id="accountUser">
+            Not Logged In
+          </div>
+
+          <a href="account.html?mode=login" id="loginBtn">Log In</a>
+          <a href="account.html?mode=signup" id="signupBtn">Sign Up</a>
+
+          <button id="logoutBtn" style="display:none;">Logout</button>
+
+        </div>
+      </div>
+
     </nav>
   </div>
 </header>
 
+<!-- PROFILE -->
 <div class="profile">
 
   <div class="banner">
-    <img id="bannerPreview" src="https://placehold.co/1200x300" />
+    <img id="bannerPreview" src="https://placehold.co/1200x300">
   </div>
 
   <div class="profile-info">
+
     <div class="pfp">
-      <img id="pfpPreview" src="https://placehold.co/200" />
+      <img id="pfpPreview" src="https://placehold.co/200">
     </div>
 
     <h1 id="profileName">Loading...</h1>
@@ -185,283 +359,48 @@ ACCOUNT.HTML (FIXED VERSION)
     <button class="edit-btn" id="toggleEdit">Edit Profile</button>
 
     <div class="edit-section" id="editSection" style="display:none;">
-      <input type="text" id="usernameInput" placeholder="Username" />
-      <textarea id="bioInput" placeholder="Bio"></textarea>
-
-      <label>Profile Picture</label>
-      <input type="file" id="pfpInput" accept="image/*" />
-
-      <label>Banner Image</label>
-      <input type="file" id="bannerInput" accept="image/*" />
-
-      <div id="saveStatus" style="margin: 0.5rem 0 1rem; color:#666;"></div>
+      <input id="usernameInput">
+      <textarea id="bioInput"></textarea>
 
       <button class="save-btn" id="saveProfile">Save Profile</button>
-    </div>
-
-    <div class="user-posts">
-      <h2>My Artwork</h2>
-      <div class="posts-grid" id="userPosts">
-        <div class="loading">Loading your artwork...</div>
-      </div>
     </div>
 
   </div>
 </div>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-  import {
-    getFirestore,
-    doc,
-    setDoc,
-    getDoc,
-    collection,
-    query,
-    where,
-    getDocs,
-    orderBy
-  } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-  import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-storage.js";
+<script>
+/* DROPDOWN */
+const accountButton = document.getElementById("accountButton");
+const accountMenu = document.getElementById("accountMenu");
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDMBb5n4Tyf9XLSHU_7CZ1obDlHjzrw258",
-    authDomain: "database-artmoots.firebaseapp.com",
-    projectId: "database-artmoots",
-    storageBucket: "database-artmoots.firebasestorage.app",
-    messagingSenderId: "1056886155154",
-    appId: "1:1056886155154:web:0de8b27263c11571ea034b"
-  };
+accountButton.addEventListener("click",(e)=>{
+  e.stopPropagation();
+  accountMenu.classList.toggle("show");
+});
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
-  const storage = getStorage(app);
+document.addEventListener("click",()=>{
+  accountMenu.classList.remove("show");
+});
 
-  /* ELEMENTS */
-  const profileName = document.getElementById("profileName");
-  const profileBio = document.getElementById("profileBio");
-  const pfpPreview = document.getElementById("pfpPreview");
-  const bannerPreview = document.getElementById("bannerPreview");
-  const followersCount = document.getElementById("followersCount");
-  const followingCount = document.getElementById("followingCount");
+/* LOGIN STATE */
+const currentUser = localStorage.getItem("currentUser");
 
-  const editSection = document.getElementById("editSection");
-  const toggleEdit = document.getElementById("toggleEdit");
-  const saveProfile = document.getElementById("saveProfile");
+const accountUser = document.getElementById("accountUser");
+const loginBtn = document.getElementById("loginBtn");
+const signupBtn = document.getElementById("signupBtn");
+const logoutBtn = document.getElementById("logoutBtn");
 
-  const usernameInput = document.getElementById("usernameInput");
-  const bioInput = document.getElementById("bioInput");
-  const pfpInput = document.getElementById("pfpInput");
-  const bannerInput = document.getElementById("bannerInput");
-  const userPosts = document.getElementById("userPosts");
+if(currentUser){
+  accountUser.textContent = currentUser;
+  loginBtn.style.display="none";
+  signupBtn.style.display="none";
+  logoutBtn.style.display="block";
+}
 
-  const saveStatus = document.getElementById("saveStatus");
-
-  /* TOGGLE EDIT */
-  toggleEdit.onclick = () => {
-    editSection.style.display = (editSection.style.display === "none") ? "block" : "none";
-  };
-
-  function fileToBase64(file) {
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.readAsDataURL(file);
-    });
-  }
-
-  pfpInput.addEventListener("change", async () => {
-    const file = pfpInput.files[0];
-    if (!file) return;
-    pfpPreview.src = await fileToBase64(file);
-  });
-
-  bannerInput.addEventListener("change", async () => {
-    const file = bannerInput.files[0];
-    if (!file) return;
-    bannerPreview.src = await fileToBase64(file);
-  });
-
-  /* FIXED: LOAD USER WITH BETTER ERROR HANDLING */
-  onAuthStateChanged(auth, async (user) => {
-    if (!user) {
-      console.log("No user logged in, redirecting...");
-      location.href = "index.html";
-      return;
-    }
-
-    console.log("User logged in:", user.uid);
-
-    try {
-      const userRef = doc(db, "users", user.uid);
-      const userSnap = await getDoc(userRef);
-
-      if (userSnap.exists()) {
-        const data = userSnap.data();
-        console.log("User data loaded:", data);
-
-        profileName.textContent = data.username || "Artist";
-        profileBio.textContent = data.bio || "No bio yet.";
-
-        // Set image URLs
-        if (data.pfp && data.pfp !== "https://placehold.co/200") {
-          pfpPreview.src = data.pfp;
-        }
-        if (data.banner && data.banner !== "https://placehold.co/1200x300") {
-          bannerPreview.src = data.banner;
-        }
-
-        followersCount.textContent = data.followers || 0;
-        followingCount.textContent = data.following || 0;
-
-        usernameInput.value = data.username || "";
-        bioInput.value = data.bio || "";
-      } else {
-        console.log("Creating new user document...");
-        // Create initial user document
-        await setDoc(userRef, {
-          uid: user.uid,
-          username: user.email?.split('@')[0] || "Artist",
-          bio: "No bio yet.",
-          pfp: "https://placehold.co/200",
-          banner: "https://placehold.co/1200x300",
-          followers: 0,
-          following: 0
-        });
-        // Reload to show new data
-        location.reload();
-      }
-
-      // Load user posts
-      await loadUserPosts(user.uid);
-      
-    } catch (error) {
-      console.error("Error loading user data:", error);
-      profileName.textContent = "Error loading profile";
-    }
-  });
-
-  /* FIXED: SAVE PROFILE */
-  saveProfile.onclick = async () => {
-    const user = auth.currentUser;
-    if (!user) {
-      alert("You must be logged in to save profile changes");
-      return;
-    }
-
-    try {
-      saveStatus.textContent = "Saving...";
-      saveStatus.style.color = "#666";
-
-      let pfpUrl = null;
-      let bannerUrl = null;
-
-      // Upload PFP if user selected a new file
-      if (pfpInput.files[0]) {
-        const file = pfpInput.files[0];
-        const timestamp = Date.now();
-        const pfpRef = ref(storage, `users/${user.uid}/pfp_${timestamp}.jpg`);
-        await uploadBytes(pfpRef, file);
-        pfpUrl = await getDownloadURL(pfpRef);
-        console.log("PFP uploaded:", pfpUrl);
-      }
-
-      // Upload Banner if user selected a new file
-      if (bannerInput.files[0]) {
-        const file = bannerInput.files[0];
-        const timestamp = Date.now();
-        const bannerRef = ref(storage, `users/${user.uid}/banner_${timestamp}.jpg`);
-        await uploadBytes(bannerRef, file);
-        bannerUrl = await getDownloadURL(bannerRef);
-        console.log("Banner uploaded:", bannerUrl);
-      }
-
-      // Get current user data to preserve existing values
-      const userRef = doc(db, "users", user.uid);
-      const userSnap = await getDoc(userRef);
-      const currentData = userSnap.exists() ? userSnap.data() : {};
-
-      // Update user document
-      await setDoc(userRef, {
-        uid: user.uid,
-        username: usernameInput.value || currentData.username || "Artist",
-        bio: bioInput.value || currentData.bio || "No bio yet.",
-        pfp: pfpUrl || currentData.pfp || "https://placehold.co/200",
-        banner: bannerUrl || currentData.banner || "https://placehold.co/1200x300",
-        followers: currentData.followers || 0,
-        following: currentData.following || 0
-      });
-
-      saveStatus.textContent = "Saved! Redirecting...";
-      saveStatus.style.color = "green";
-      
-      // Reload page after short delay to show updated data
-      setTimeout(() => {
-        location.reload();
-      }, 1000);
-      
-    } catch (err) {
-      console.error("Save failed:", err);
-      saveStatus.textContent = "Save failed: " + err.message;
-      saveStatus.style.color = "red";
-      alert("Save failed: " + err.message);
-    }
-  };
-
-  /* FIXED: LOAD USER POSTS WITH BETTER DEBUGGING */
-  async function loadUserPosts(uid) {
-    if (!uid) {
-      console.error("No UID provided to loadUserPosts");
-      userPosts.innerHTML = '<div class="no-posts">Error: No user ID found</div>';
-      return;
-    }
-
-    try {
-      userPosts.innerHTML = '<div class="loading">Loading your artwork...</div>';
-      console.log("Loading posts for user:", uid);
-
-      // Create query to find posts by user ID
-      const q = query(
-        collection(db, "posts"),
-        where("userId", "==", uid), // Make sure this matches your field name in posts
-        orderBy("timestamp", "desc")
-      );
-
-      const querySnapshot = await getDocs(q);
-      console.log(`Found ${querySnapshot.size} posts for user ${uid}`);
-
-      if (querySnapshot.empty) {
-        userPosts.innerHTML = '<div class="no-posts">No artwork yet. Create your first post!</div>';
-        return;
-      }
-
-      userPosts.innerHTML = "";
-
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        console.log("Post data:", data);
-
-        const postDiv = document.createElement("div");
-        postDiv.className = "post";
-
-        postDiv.innerHTML = `
-          <img src="${data.imageUrl || data.image || 'https://placehold.co/400'}" alt="${data.title || 'Artwork'}">
-          <div class="post-content">
-            <h3>${data.title || 'Untitled'}</h3>
-            ${data.description ? `<p style="color:#666; margin-top:0.5rem;">${data.description.substring(0, 100)}</p>` : ''}
-          </div>
-        `;
-
-        userPosts.appendChild(postDiv);
-      });
-      
-    } catch (error) {
-      console.error("Error loading posts:", error);
-      userPosts.innerHTML = `<div class="no-posts">Error loading posts: ${error.message}</div>`;
-    }
-  }
+logoutBtn.onclick = ()=>{
+  localStorage.removeItem("currentUser");
+  location.reload();
+};
 </script>
 
 </body>
