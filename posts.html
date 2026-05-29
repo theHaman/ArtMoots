@@ -356,9 +356,9 @@ main{
 
         <div class="account-menu" id="accountMenu">
           <div class="account-user" id="accountUser">Loading...</div>
-          <a href="account_info.html">My Profile</a> 
-          <a href="account_info.html?mode=login" id="loginBtn">Log In</a>
-          <a href="account_info.html?mode=signup" id="signupBtn">Sign Up</a>
+          <a href="account.html">My Profile</a> 
+          <a href="account.html?mode=login" id="loginBtn">Log In</a>
+          <a href="account.html?mode=signup" id="signupBtn">Sign Up</a>
           <button id="logoutBtn" style="display:none;">Logout</button>
         </div>
       </div>
@@ -420,7 +420,7 @@ const logoutBtn = document.getElementById("logoutBtn");
 let imageUrl = "";
 
 /* =========================
-   DROPDOWN CONTROLLERS FIXED
+   DROPDOWN CONTROLLER
 ========================= */
 document.getElementById("accountButton").onclick = (e) => {
   e.stopPropagation();
@@ -484,7 +484,7 @@ onAuthStateChanged(auth, async (user) => {
     signupBtn.style.display = "none";
     logoutBtn.style.display = "block";
 
-    // Fetch details to name the dropdown greeting area
+    // Fixed: Fetches 'name' from Firestore to show the correct registered username
     const ref = doc(db, "users", user.uid);
     const snap = await getDoc(ref);
     if(snap.exists()){
@@ -528,7 +528,6 @@ createPostForm.addEventListener("submit", async e => {
   }
 
   try {
-    // Look up the accurate custom profile name from users setup
     const userSnap = await getDoc(doc(db, "users", user.uid));
     const activePosterName = userSnap.exists() ? (userSnap.data().name || "Anonymous Artist") : (user.displayName || "Anonymous Artist");
 
