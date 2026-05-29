@@ -120,6 +120,7 @@ nav a{
   height:42px;
   border-radius:50%;
   transition:0.2s;
+  cursor: pointer;
 }
 
 .icon:hover{
@@ -131,6 +132,57 @@ nav a{
   height:22px;
   object-fit:contain;
   display:block;
+}
+
+/* =========================
+   DROPDOWN MENU STYLE
+========================= */
+.account-wrapper{
+  position:relative;
+}
+
+.account-menu{
+  position:absolute;
+  top:50px;
+  right:0;
+  width:220px;
+  background:white;
+  border-radius:14px;
+  padding:0.6rem;
+  box-shadow:0 10px 30px rgba(0,0,0,0.08);
+  display:none;
+  flex-direction:column;
+  z-index:999;
+}
+
+.account-menu.show{
+  display:flex;
+}
+
+.account-user{
+  padding:0.8rem 1rem;
+  color:#666;
+  border-bottom:1px solid #eee;
+  font-size: 0.9rem;
+}
+
+.account-menu a, .account-menu button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 0.6rem 1rem;
+  text-decoration: none;
+  color: #111;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+.account-menu a:hover, .account-menu button:hover {
+  background: #f5f5f5;
 }
 
 /* =========================
@@ -175,7 +227,7 @@ main{
   border-radius:22px;
   margin-bottom:2rem;
   box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-  display: none; /* Controlled dynamically by Auth status */
+  display: none; 
 }
 
 #createPost h2{
@@ -210,7 +262,7 @@ main{
 }
 
 /* =========================
-   POSTS MASONRY GRID Layout
+   POSTS MASONRY GRID
 ========================= */
 .posts-container{
   columns:3 320px;
@@ -297,9 +349,20 @@ main{
       <a href="posts.html">Gallery</a>
       <a href="#">About</a>
 
-      <a href="account_info.html" class="icon">
-        <img src="img/my-account-5.png" alt="Account">
-      </a>
+      <div class="account-wrapper">
+        <div class="icon" id="accountButton">
+          <img src="img/my-account-5.png" alt="Account">
+        </div>
+
+        <div class="account-menu" id="accountMenu">
+          <div class="account-user" id="accountUser">Loading...</div>
+          <a href="account_info.html">My Profile</a> 
+          <a href="account_info.html?mode=login" id="loginBtn">Log In</a>
+          <a href="account_info.html?mode=signup" id="signupBtn">Sign Up</a>
+          <button id="logoutBtn" style="display:none;">Logout</button>
+        </div>
+      </div>
+
       <a href="#" class="icon">
         <img src="img/notif.png" alt="Notifications">
       </a>
@@ -328,8 +391,8 @@ main{
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, query, orderBy, doc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+import { getFirestore, collection, addDoc, getDocs, query, orderBy, doc, getDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDMBb5n4Tyf9XLSHU_7CZ1obDlHjzrw258",
@@ -349,7 +412,24 @@ const createPostForm = document.getElementById("createPost");
 const postsContainer = document.getElementById("postsContainer");
 const postImageFile = document.getElementById("postImageFile");
 
+const accountUser = document.getElementById("accountUser");
+const loginBtn = document.getElementById("loginBtn");
+const signupBtn = document.getElementById("signupBtn");
+const logoutBtn = document.getElementById("logoutBtn");
+
 let imageUrl = "";
+
+/* =========================
+   DROPDOWN CONTROLLERS FIXED
+========================= */
+document.getElementById("accountButton").onclick = (e) => {
+  e.stopPropagation();
+  document.getElementById("accountMenu").classList.toggle("show");
+};
+
+document.addEventListener("click", () => {
+  document.getElementById("accountMenu").classList.remove("show");
+});
 
 /* =========================================================
    CANVAS SYSTEM: OPTIMIZE ARTWORK TO PREVENT SIZE CRASHES
@@ -383,7 +463,6 @@ function resizeAndCompressArtwork(file, maxDimension, quality) {
         const ctx = canvas.getContext("2d");
         ctx.drawImage(img, 0, 0, width, height);
 
-        // Convert file type to standard jpeg layout to minimize document size strings
         const compressedBase64 = canvas.toDataURL("image/jpeg", quality);
         resolve(compressedBase64);
       };
@@ -391,22 +470,42 @@ function resizeAndCompressArtwork(file, maxDimension, quality) {
   });
 }
 
-/* FILE ACCESS WATCHER */
 postImageFile.addEventListener("change", async () => {
   const file = postImageFile.files[0];
   if(!file) return;
-  // Compress image to maximum 1200px bounds at 80% resolution quality
   imageUrl = await resizeAndCompressArtwork(file, 1200, 0.8);
 });
 
 /* AUTH SESSION GATEKEEPER */
-onAuthStateChanged(auth, user => {
+onAuthStateChanged(auth, async (user) => {
   if(user){
     createPostForm.style.display = "block";
+    loginBtn.style.display = "none";
+    signupBtn.style.display = "none";
+    logoutBtn.style.display = "block";
+
+    // Fetch details to name the dropdown greeting area
+    const ref = doc(db, "users", user.uid);
+    const snap = await getDoc(ref);
+    if(snap.exists()){
+      accountUser.textContent = snap.data().name || "User";
+    } else {
+      accountUser.textContent = user.displayName || "User";
+    }
   } else {
     createPostForm.style.display = "none";
+    loginBtn.style.display = "block";
+    signupBtn.style.display = "block";
+    logoutBtn.style.display = "none";
+    accountUser.textContent = "Not logged in";
   }
 });
+
+/* LOGOUT CALLER */
+logoutBtn.onclick = async () => {
+  await signOut(auth);
+  location.reload();
+};
 
 /* =========================
    CREATE NEW ENTRY SUBMIT ROUTE
@@ -429,13 +528,17 @@ createPostForm.addEventListener("submit", async e => {
   }
 
   try {
+    // Look up the accurate custom profile name from users setup
+    const userSnap = await getDoc(doc(db, "users", user.uid));
+    const activePosterName = userSnap.exists() ? (userSnap.data().name || "Anonymous Artist") : (user.displayName || "Anonymous Artist");
+
     await addDoc(collection(db, "posts"), {
-      user: user.displayName || "Anonymous Artist",
+      user: activePosterName,
       title,
       description: desc,
       image: imageUrl,
       likes: 0,
-      views: 0, // Views initialization marker
+      views: 0, 
       createdAt: new Date()
     });
 
@@ -443,7 +546,6 @@ createPostForm.addEventListener("submit", async e => {
     imageUrl = "";
     postsContainer.innerHTML = "";
     
-    // Refresh safe array reads
     loadPosts();
   } catch(err) {
     alert("Error uploading post: " + err.message);
@@ -459,8 +561,6 @@ window.likePost = async function(postId){
     await updateDoc(postRef, {
       likes: increment(1)
     });
-    
-    // Smooth dynamic state interface reload
     location.reload();
   } catch (err) {
     console.error("Could not complete tracking transaction: ", err);
@@ -468,7 +568,7 @@ window.likePost = async function(postId){
 };
 
 /* =========================
-   LOAD ASSET STREAMS (INFINITE LOOP REMOVED)
+   LOAD ASSET STREAMS
 ========================= */
 async function loadPosts(){
   try {
@@ -478,16 +578,10 @@ async function loadPosts(){
     );
 
     const snapshot = await getDocs(q);
-    postsContainer.innerHTML = ""; // Hard clear target area prior to loop execution
+    postsContainer.innerHTML = ""; 
 
     snapshot.forEach(postDoc => {
       const data = postDoc.data();
-
-      /* CRITICAL BUG FIXED: 
-         Removed the 'await updateDoc(postRef, { views: increment(1) })' loop 
-         from here. Writing data inside your display feed function created 
-         deadlocks and crashing write blocks.
-      */
 
       const div = document.createElement("div");
       div.className = "post";
@@ -511,7 +605,6 @@ async function loadPosts(){
   }
 }
 
-// Global page load feed run
 loadPosts();
 </script>
 
