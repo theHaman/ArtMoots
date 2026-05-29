@@ -146,6 +146,7 @@ nav a{
   background:#d9d9d9;
   overflow:hidden;
   position:relative;
+  border-radius: 0 0 20px 20px;
 }
 
 .banner img{
@@ -232,7 +233,7 @@ nav a{
 }
 
 /* =========================
-   ART GALLERY GRID
+   ART GALLERY MASONRY GRID
 ========================= */
 .gallery-section {
   margin-top: 3rem;
@@ -245,26 +246,33 @@ nav a{
   margin-bottom: 1.5rem;
 }
 
-/* Columns container matching image layout structure */
+/* Dynamic masonry layout that looks clean with varying image heights */
 .art-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 0.5rem;
+  columns: 4 250px;
+  column-gap: 0.8rem;
 }
 
 .art-item {
+  break-inside: avoid;
   background: var(--placeholder-blue);
-  border-radius: 4px;
+  border-radius: 8px;
+  margin-bottom: 0.8rem;
+  overflow: hidden;
+  border: 1px solid #eee;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.02);
 }
 
-/* Alternating height configurations mimicking irregular grid layout columns */
-.art-grid div:nth-child(7n+1) { height: 260px; }
-.art-grid div:nth-child(7n+2) { height: 320px; }
-.art-grid div:nth-child(7n+3) { height: 220px; }
-.art-grid div:nth-child(7n+4) { height: 290px; }
-.art-grid div:nth-child(7n+5) { height: 210px; }
-.art-grid div:nth-child(7n+6) { height: 270px; }
-.art-grid div:nth-child(7n+0) { height: 310px; }
+.art-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.no-posts-msg {
+  color: #666;
+  font-style: italic;
+  font-size: 1rem;
+}
 
 </style>
 </head>
@@ -319,22 +327,8 @@ nav a{
 <section class="gallery-section">
   <h2 class="gallery-title">Art</h2>
   
-  <div class="art-grid">
-    <div class="art-item"></div>
-    <div class="art-item"></div>
-    <div class="art-item"></div>
-    <div class="art-item"></div>
-    <div class="art-item"></div>
-    <div class="art-item"></div>
-    <div class="art-item"></div>
-    
-    <div class="art-item"></div>
-    <div class="art-item"></div>
-    <div class="art-item"></div>
-    <div class="art-item"></div>
-    <div class="art-item"></div>
-    <div class="art-item"></div>
-    <div class="art-item"></div>
+  <div class="art-grid" id="userArtGrid">
+    <p class="no-posts-msg">Loading artwork...</p>
   </div>
 </section>
 
@@ -342,7 +336,7 @@ nav a{
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+import { getFirestore, doc, getDoc, collection, getDocs, query, where, orderBy } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
 const app = initializeApp({
   apiKey: "AIzaSyDMBb5n4Tyf9XLSHU_7CZ1obDlHjzrw258",
@@ -359,6 +353,7 @@ const profileBio = document.getElementById("profileBio");
 const joinedDate = document.getElementById("joinedDate");
 const pfp = document.getElementById("pfpPreview");
 const banner = document.getElementById("bannerPreview");
+const userArtGrid = document.getElementById("userArtGrid");
 
 const accountUser = document.getElementById("accountUser");
 const loginBtn = document.getElementById("loginBtn");
@@ -380,20 +375,55 @@ document.getElementById("toggleEdit").onclick = ()=>{
   box.style.display = box.style.display === "block" ? "none" : "block";
 };
 
+/* =========================================================
+   QUERY AND RENDER LOGGED-IN USER'S POSTS
+========================================================= */
+async function loadUserPosts(artistName) {
+  try {
+    // Queries the global 'posts' collection where author match user name
+    const q = query(
+      collection(db, "posts"),
+      where("user", "==", artistName),
+      orderBy("createdAt", "desc")
+    );
+    
+    const snapshot = await getDocs(q);
+    userArtGrid.innerHTML = ""; // Wipe placeholder loading text
+
+    if (snapshot.empty) {
+      userArtGrid.innerHTML = `<p class="no-posts-msg">You haven't posted any artwork yet!</p>`;
+      return;
+    }
+
+    snapshot.forEach(postDoc => {
+      const postData = postDoc.data();
+      
+      const card = document.createElement("div");
+      card.className = "art-item";
+      card.innerHTML = `<img src="${postData.image}" alt="${postData.title || 'Artwork'}">`;
+      
+      userArtGrid.appendChild(card);
+    });
+  } catch (error) {
+    console.error("Error fetching user artwork: ", error);
+    userArtGrid.innerHTML = `<p class="no-posts-msg">Error loading posts.</p>`;
+  }
+}
+
 /* SYNC LOGGED PROFILE WITH USER COLLECTION DATA */
 onAuthStateChanged(auth, async (user)=>{
   if(!user){
     profileName.textContent = "Not logged in";
     profileBio.textContent = "";
     joinedDate.textContent = "Joined 00/00/00";
+    userArtGrid.innerHTML = `<p class="no-posts-msg">Please log in to view your posts.</p>`;
     return;
   }
 
-  // Fetch the authentic creation timestamp metadata from the logged-in User profile
+  // Fetch the creation timestamp metadata from the logged-in User profile
   if (user.metadata && user.metadata.creationTime) {
     const creationDate = new Date(user.metadata.creationTime);
     
-    // Format timestamp into MM/DD/YY string structure
     const mm = String(creationDate.getMonth() + 1).padStart(2, '0');
     const dd = String(creationDate.getDate()).padStart(2, '0');
     const yy = String(creationDate.getFullYear()).slice(-2);
@@ -406,8 +436,9 @@ onAuthStateChanged(auth, async (user)=>{
 
   if(snap.exists()){
     const data = snap.data();
+    const currentArtistName = data.name || "Artist#00000";
 
-    profileName.textContent = data.name || "Artist#00000";
+    profileName.textContent = currentArtistName;
     if(data.bio) {
       profileBio.textContent = data.bio;
     }
@@ -415,7 +446,13 @@ onAuthStateChanged(auth, async (user)=>{
     if(data.pfp) pfp.src = data.pfp;
     if(data.banner) banner.src = data.banner;
 
-    accountUser.textContent = data.name || "User";
+    accountUser.textContent = currentArtistName;
+    
+    // Kick off the specific post queries using the logged name string
+    loadUserPosts(currentArtistName);
+  } else {
+    // Fallback if firestore profile doc doesn't load but active session is live
+    loadUserPosts(user.displayName || "Anonymous Artist");
   }
 
   loginBtn.style.display="none";
