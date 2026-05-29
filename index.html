@@ -13,9 +13,9 @@
 <style>
 
 :root{
-  --bg:#f7f7f7;
+  --bg:#ffffff;
   --text:#111;
-  --purple:#caa6ff;
+  --purple:#b18eff;
 }
 
 *{
@@ -28,12 +28,13 @@ body{
   font-family:"Inter",sans-serif;
   background:var(--bg);
   color:var(--text);
+  padding-bottom: 3rem;
 }
 
 /* HEADER */
 header{
   width:100%;
-  padding:1rem;
+  padding:1rem 2rem;
   display:flex;
   justify-content:center;
 }
@@ -42,7 +43,7 @@ header{
   width:100%;
   display:flex;
   align-items:center;
-  gap:1rem;
+  gap:1.5rem;
 }
 
 .logo{
@@ -54,7 +55,7 @@ header{
 .search-bar{
   flex:1;
   height:42px;
-  border:1px solid #444;
+  border:1px solid #111;
   border-radius:999px;
   background:white;
   display:flex;
@@ -66,19 +67,21 @@ header{
   border:none;
   outline:none;
   width:100%;
+  font-size: 1rem;
 }
 
 /* NAV */
 nav{
   display:flex;
   align-items:center;
-  gap:1.2rem;
+  gap:1.5rem;
   margin-left:auto;
 }
 
 nav a{
   text-decoration:none;
   color:#111;
+  font-weight: 500;
 }
 
 /* ICON */
@@ -93,8 +96,8 @@ nav a{
 }
 
 .icon-button img{
-  width:20px;
-  height:20px;
+  width:24px;
+  height:24px;
 }
 
 /* DROPDOWN */
@@ -148,10 +151,12 @@ nav a{
 
 /* HERO */
 .hero{
-  height:380px;
+  height:420px;
   margin:0 1rem;
-  border-radius:0 0 18px 18px;
-  background:linear-gradient(90deg,#dff5ff,#f6f6f6,#dff5ff);
+  border-radius: 0 0 24px 24px;
+  background: radial-gradient(circle at top right, #e3f5ff, transparent 40%),
+              radial-gradient(circle at top left, #e3f5ff, transparent 40%),
+              #ffffff;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -159,18 +164,119 @@ nav a{
 }
 
 .hero-content h1{
-  font-size:4rem;
-  font-weight:500;
+  font-size: 3.5rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.hero-content p {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 2rem;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
 }
 
 .hero-btn{
-  padding:1rem 1.2rem;
-  border-radius:14px;
-  text-decoration:none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
 }
 
-.hero-btn.black{background:black;color:white;}
-.hero-btn.purple{background:var(--purple);color:black;}
+.hero-btn.black{
+  background: black;
+  color: white;
+}
+
+.hero-btn.purple{
+  background: var(--purple);
+  color: black;
+}
+
+/* CONTENT SECTIONS */
+.section-container {
+  padding: 2rem;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+/* TOP ARTISTS GRID */
+.artists-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+.artist-card {
+  border: 1px solid #ccc;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+.artist-banner {
+  height: 140px;
+  background: #cccccc;
+}
+
+.artist-info {
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  border-top: 1px solid #ccc;
+}
+
+.artist-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #cccccc;
+  flex-shrink: 0;
+}
+
+.artist-name-skeleton {
+  height: 10px;
+  background: #cccccc;
+  width: 80%;
+  border-radius: 4px;
+}
+
+/* MOST POPULAR GRID */
+.popular-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+}
+
+.popular-card {
+  height: 280px;
+  background: #cccccc;
+  border: 1px solid #ccc;
+  border-radius: 16px;
+}
+
+/* Responsive Scaling down if viewport is smaller */
+@media (max-width: 1024px) {
+  .artists-grid, .popular-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
 
 </style>
 </head>
@@ -190,11 +296,10 @@ nav a{
       <a href="posts.html">Gallery</a>
       <a href="#">About</a>
 
-      <!-- ACCOUNT -->
       <div class="account-wrapper">
 
         <div class="icon-button" id="accountButton">
-          <img src="img/my-account-5.png">
+          <img src="img/my-account-5.png" alt="👤">
         </div>
 
         <div class="account-menu" id="accountMenu">
@@ -203,11 +308,9 @@ nav a{
             Not Logged In
           </div>
 
-          <!-- LOGIN / SIGNUP (ONLY WHEN LOGGED OUT) -->
           <a href="account.html?mode=login" id="loginBtn">Log In</a>
           <a href="account.html?mode=signup" id="signupBtn">Sign Up</a>
 
-          <!-- ONLY WHEN LOGGED IN -->
           <a href="Acount_info.html?mode=account"
              id="viewAccountBtn"
              style="display:none;">
@@ -228,8 +331,65 @@ nav a{
 <section class="hero">
   <div class="hero-content">
     <h1>Welcome to ArtMoots</h1>
+    <p>Share Art, Meet Moots and Grow Together!</p>
+    <div class="hero-buttons">
+      <a href="#" class="hero-btn black">Want to know more?</a>
+      <a href="#" class="hero-btn purple">Lets see some art!</a>
+    </div>
   </div>
 </section>
+
+<main class="section-container">
+  
+  <h2 class="section-title">Top Artists</h2>
+  <div class="artists-grid">
+    <div class="artist-card">
+      <div class="artist-banner"></div>
+      <div class="artist-info">
+        <div class="artist-avatar"></div>
+        <div class="artist-name-skeleton"></div>
+      </div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-banner"></div>
+      <div class="artist-info">
+        <div class="artist-avatar"></div>
+        <div class="artist-name-skeleton"></div>
+      </div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-banner"></div>
+      <div class="artist-info">
+        <div class="artist-avatar"></div>
+        <div class="artist-name-skeleton"></div>
+      </div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-banner"></div>
+      <div class="artist-info">
+        <div class="artist-avatar"></div>
+        <div class="artist-name-skeleton"></div>
+      </div>
+    </div>
+    <div class="artist-card">
+      <div class="artist-banner"></div>
+      <div class="artist-info">
+        <div class="artist-avatar"></div>
+        <div class="artist-name-skeleton"></div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="section-title">Most Popular</h2>
+  <div class="popular-grid">
+    <div class="popular-card"></div>
+    <div class="popular-card"></div>
+    <div class="popular-card"></div>
+    <div class="popular-card"></div>
+    <div class="popular-card"></div>
+  </div>
+
+</main>
 
 <script type="module">
 
@@ -288,7 +448,7 @@ onAuthStateChanged(auth, async (user) => {
     const ref = doc(db, "users", user.uid);
     const snap = await getDoc(ref);
 
-    if (snap.exists()) {
+  if (snap.exists()) {
       accountUser.textContent = snap.data().name;
     } else {
       accountUser.textContent = user.email;
